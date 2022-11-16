@@ -1,12 +1,12 @@
 class Level1 extends Phaser.Scene {
 
     constructor() {
-        super("level1");
+        super("Level1");
     }
 
     preload() {
-        this.load.spritesheet('guy', 'assets/guy.png', { frameWidth: 32, frameHeight: 48 });
-        this.load.image('sky', 'assets/sky.png');
+        this.load.spritesheet('guy', '../../resources/img/dude.png', { frameWidth: 32, frameHeight: 48 });
+        this.load.image('sky', '../../resources/img//sky.png');
     }
 
     create() {
