@@ -22,9 +22,11 @@ class Level1 extends Phaser.Scene {
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        this.player1keys = [this.keyA, this.keyD, this.keyW, this.keyS];
+        this.atkP1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
         // J2: cursores
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.atkP2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
 
         // Animaciones de movimiento de los jugadores
         this.anims.create({
@@ -60,6 +62,13 @@ class Level1 extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
+
+        this.anims.create({
+            key: 'attack',
+            frames: this.anims.generateFrameNumbers('guy', { start: 4, end: 4 }),
+            frameRate: 10,
+            repeat: -1
+        });
     }
 
     update() {
@@ -87,6 +96,11 @@ class Level1 extends Phaser.Scene {
             this.player1.play('turn');
         }
 
+        // Ataque JUGADOR 1
+        if(this.atkP1.isDown){
+            this.player1.play('attack');
+        }
+
         // Eventos de controles del JUGADOR 2
         if (this.cursors.left.isDown) {
             this.player2.setVelocityX(-160);
@@ -108,6 +122,11 @@ class Level1 extends Phaser.Scene {
             this.player2.setVelocityX(0);
             this.player2.setVelocityY(0);
             this.player2.play('turn');
+        }
+
+        // Ataque JUGADOR 2
+        if(this.atkP2.isDown){
+            this.player2.play('attack');
         }
     }
 
