@@ -5,7 +5,7 @@ class Level1 extends Phaser.Scene {
     }
 
     preload() {
-        this.load.spritesheet('guy', '../../resources/img/dude.png', { frameWidth: 32, frameHeight: 48 });
+        this.load.spritesheet('guy', '../../resources/img/heroDef.png', { frameWidth: 50, frameHeight: 65 });
         this.load.image('sky', '../../resources/img//sky.png');
     }
 
@@ -15,6 +15,13 @@ class Level1 extends Phaser.Scene {
         // Creación de los dos personajes
         this.player1 = this.physics.add.sprite(100, 200, 'guy');
         this.player2 = this.physics.add.sprite(100, 400, 'guy');
+
+        // this.player1.setScale(2);
+        // this.player2.seScale(2);
+
+        // Prueba de enemigo
+        // this.enemy = this.physics.add.sprite(500, 300, 'guy');
+        // this.enemy.setScale(2);
 
         // Controles de los dos jugadores
         // J1: ASDW
@@ -31,7 +38,7 @@ class Level1 extends Phaser.Scene {
         // Animaciones de movimiento de los jugadores
         this.anims.create({
             key: 'left',
-            frames: this.anims.generateFrameNumbers('guy', { start: 0, end: 3 }),
+            frames: this.anims.generateFrameNumbers('guy', { start: 12, end: 17 }),
             frameRate: 10,
             repeat: -1
         });
