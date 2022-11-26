@@ -15,7 +15,7 @@ class Level1 extends Phaser.Scene {
         // Creación de los dos personajes
         this.player1 = this.physics.add.sprite(100, 200, 'vivo');
         this.player2 = this.physics.add.sprite(100, 400, 'vivo');
-        
+
         this.player1.turnedLeft = false;
         this.player2.turnedLeft = false;
 
@@ -108,15 +108,31 @@ class Level1 extends Phaser.Scene {
             this.player1.setVelocityX(-160);
             this.player1.turnedLeft = true;
             this.player1.play('left', true);
+
+            if (this.keyW.isDown) {
+                this.player1.setVelocityY(-160);
+            }
+
+            if (this.keyS.isDown) {
+                this.player1.setVelocityY(160);
+            }
         }
         else if (this.keyD.isDown) {
             this.player1.setVelocityX(160);
             this.player1.turnedLeft = false;
             this.player1.play('right', true);
+
+            if (this.keyW.isDown) {
+                this.player1.setVelocityY(-160);
+            }
+
+            if (this.keyS.isDown) {
+                this.player1.setVelocityY(160);
+            }
         }
         else if (this.keyW.isDown) {
             this.player1.setVelocityY(-160);
-            if(this.player1.turnedLeft){
+            if (this.player1.turnedLeft) {
                 this.player1.play('upLeft', true);
             } else {
                 this.player1.play('upRight', true);
@@ -124,7 +140,7 @@ class Level1 extends Phaser.Scene {
         }
         else if (this.keyS.isDown) {
             this.player1.setVelocityY(160);
-            if(this.player1.turnedLeft){
+            if (this.player1.turnedLeft) {
                 this.player1.play('downLeft', true);
             } else {
                 this.player1.play('downRight', true);
@@ -133,7 +149,7 @@ class Level1 extends Phaser.Scene {
         else {
             this.player1.setVelocityX(0);
             this.player1.setVelocityY(0);
-            if(this.player1.turnedLeft){
+            if (this.player1.turnedLeft) {
                 this.player1.play('turnLeft');
             } else {
                 this.player1.play('turnRight');
@@ -141,8 +157,8 @@ class Level1 extends Phaser.Scene {
         }
 
         // Ataque JUGADOR 1
-        if(this.atkP1.isDown){
-            if(this.player1.turnedLeft){
+        if (this.atkP1.isDown) {
+            if (this.player1.turnedLeft) {
                 this.player1.play('attackLeft');
             } else {
                 this.player1.play('attackRight');
