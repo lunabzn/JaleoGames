@@ -5,8 +5,8 @@ class Level1 extends Phaser.Scene {
     }
 
     preload() {
-        this.load.spritesheet('vivo', '../../resources/img/spritesVivo8.png', { frameWidth: 160, frameHeight: 160 , endframe: 18});
-        this.load.spritesheet('tuerto', '../../resources/img/spritesTuerto8.png', { frameWidth: 160, frameHeight: 160 , endframe: 18});
+        this.load.spritesheet('vivo', '../../resources/img/spritesVivo8.png', { frameWidth: 160, frameHeight: 160 , endframe: 17});
+        this.load.spritesheet('tuerto', '../../resources/img/spritesTuerto8.png', { frameWidth: 160, frameHeight: 160 , endframe: 17});
         this.load.image('sky', '../../resources/img//sky.png');
     }
 
