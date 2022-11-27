@@ -9,10 +9,14 @@ class selectorLevelScene extends Phaser.Scene {
             this.load.image('nivel1', 'assets/lvl1.png');
             this.load.image('nivel2', 'assets/lvl2.png');
             this.load.image('nivel3', 'assets/lvl3.png');
+            this.load.audio("click", ["master/resources/audio/click.mp3"]);
+
         }
 
     create(){
         this.add.image(0,0,"image-menu").setOrigin(0).setScale(0.75);
+        this.clickSound = this.sound.add("click");
+
         let playButtonVolver = this.add.image(game.config.width/2,game.config.height/2+175,"volver").setScale(0.5);
 
         let playButtonLvl1 = this.add.image(120,game.config.height/2,"nivel1").setScale(1);
@@ -24,22 +28,29 @@ class selectorLevelScene extends Phaser.Scene {
 
         playButtonVolver.setInteractive();
         playButtonVolver.on('pointerdown',()=>{
-            
+
+            this.clickSound.play();
             this.scene.start('selectorModeScene')
         })
 
         playButtonLvl1.setInteractive();
         playButtonLvl1.on('pointerdown',()=>{
+
+            this.clickSound.play();
             level=1;
             this.scene.start('selectorCharacterScene',level)
         })
         playButtonLvl2.setInteractive();
         playButtonLvl2.on('pointerdown',()=>{
+
+            this.clickSound.play();
             level=2;
             this.scene.start('selectorCharacterScene',level)
         })
         playButtonLvl3.setInteractive();
         playButtonLvl3.on('pointerdown',()=>{
+
+            this.clickSound.play();
             level=3;
             this.scene.start('selectorCharacterScene',level)
         })
