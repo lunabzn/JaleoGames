@@ -223,24 +223,11 @@ class Level1 extends Phaser.Scene {
 
 
     enemyFollow(player,enemy){
-        var enemyPos = player.getCenter();
-        var playerPos = enemy.getCenter();
-        var points = [playerPos.x,playerPos.y,enemyPos.x,enemyPos.y];
-        var curve = new Phaser.Curves.Spline(points);
-        var graphics = this.add.graphics();
-
-        graphics.lineStyle(1, 0xffffff, 1);
-    
-        curve.draw(graphics, 64);
-    
-        graphics.fillStyle(0x00ff00, 1);
         
-        var e = this.add.follower(curve,playerPos.x,playerPos.y,'girlPolice');
-        e.startFollow(10000);   
     }
 
     enemyAttack(){
-
+           this.physics.moveToObject(enemy,player,100);
     }
 
     update() {
