@@ -7,7 +7,7 @@ class mainScene extends Phaser.Scene {
     preload() {
         this.load.image('play', '../../resources/img/play.png');
         this.load.image('bg-image-menu', '../../resources/img/bg-image-menu.jpg');
-        this.load.audio("click", ["../../resources/audio/click.mp3"])
+        this.load.audio("click", ["../../resources/audio/click.mp3"]);
     }
 
     create() {

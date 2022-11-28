@@ -9,7 +9,7 @@ class selectorModeScene extends Phaser.Scene {
         this.load.image('online', '../../resources/img/online.png');
         this.load.image('offline', '../../resources/img/offline.png');
         this.load.image('bg-image-menu', '../../resources/img/bg-image-menu.jpg');
-        this.load.audio("click", ["../../resources/audio/click.mp3"])
+        this.load.audio("click", ["../../resources/audio/click.mp3"]);
     }
 
     create() {

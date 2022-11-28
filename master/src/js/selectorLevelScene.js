@@ -9,7 +9,7 @@ class selectorLevelScene extends Phaser.Scene {
         this.load.image('nivel1', '../../resources/img/nivel1.png');
         this.load.image('nivel2', '../../resources/img/nivel2.png');
         this.load.image('nivel3', '../../resources/img/nivel3.png');
-        this.load.audio("click", ["../../resources/audio/click.mp3"])
+        this.load.audio("click", ["../../resources/audio/click.mp3"]);
     }
 
     create() {
