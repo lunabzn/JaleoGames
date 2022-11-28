@@ -6,7 +6,7 @@ class Level1 extends Phaser.Scene {
 
     //funcion que genera un numero aletorio comprendido entre un minimo y un maximo (ambos incluidos)
     randomNum(min,max) {
-        return MathFloor(Math.random() * (max - min + 1) + min);
+        return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
 
@@ -205,11 +205,76 @@ class Level1 extends Phaser.Scene {
 
         
         //ANIMACIONES ENEMIGO
+        
         this.anims.create({
-            key: 'p3TurnLeft',
-            frames: [{ key: 'girlPolice', frame: 11 }],
+            key: 'eLeft',
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 8, end: 11 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'eTurnLeft',
+            frames: [{ key: 'girlPolice', frame: 12 }],
             frameRate: 20,
         });
+
+        this.anims.create({
+            key: 'eRight',
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 14, end: 17 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'eTurnRight',
+            frames: [{ key: 'girlPolice', frame: 13 }],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'eUpLeft',
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 8, end: 11 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'eUpRight',
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 14, end: 17 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'eDownLeft',
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 8, end: 11 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'eDownRight',
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 14, end: 17 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'eAttackLeft',
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 6, end: 6 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'eAttackRight',
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 7, end: 7 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        
+        
 
         
         
@@ -217,26 +282,61 @@ class Level1 extends Phaser.Scene {
 
     
 
-    enemyStop(){
-
+    enemyStop(enemy){
+            enemy.setVelocityX(0);
+            enemy.setVelocityY(0);
     }
 
+
+    angleBetweenPlayerThing(player, coordx, coordy){
+        var centerCoords = player.getCenter();
+        var angle= Phaser.Math.Angle.Between(centerCoords.x,centerCoords.y,coordx,coordy);
+        return angle;
+    }
+
+    
 
     enemyFollow(player,enemy){
-        this.physics.moveToObject(enemy,player,100);
+        //velocidad del enemigo
+        var vEnemy=100;
+        
+        this.physics.moveToObject(enemy,player,vEnemy);
+        //posicion del centro del sprite jugador
+        var playerPos = player.getCenter();
+
+        //posicion del centro del sprite enemigo
+        var enemyPos = enemy.getCenter();
+        var dist = Phaser.Math.Distance.Between(playerPos.x,playerPos.y,enemyPos.x,enemyPos.y);
+        //separacion de sprites
+        var separation = 55;
+
+        var angleTopRight = this.angleBetweenPlayerThing(player,player.getTopRight().x,player.getTopRight().y);
+        var angleBottomRight = this.angleBetweenPlayerThing(player,player.getBottomRight().x,player.getBottomRight().y);
+        var anglePlayerEnemy = this.angleBetweenPlayerThing(player,enemyPos.x,enemyPos.y);
+        if(dist<=separation){
+            this.enemyStop(enemy);
+            if(anglePlayerEnemy>=angleTopRight && anglePlayerEnemy<=angleBottomRight ){
+                this.enemyAttack(enemy);
+            }
+        }
     }
 
-    enemyAttack(){
-           
+
+
+    
+
+    enemyAttack(enemy){
+        //numero con el que se ataca
+        var nAttack = 4;
+        //la probabilidad del ataque del enemigo es del 25%
+        var probabilitty =this.randomNum(1,4);
+
+        if(nAttack==probabilitty){
+            enemy.play('eAttackLeft',true);
+        }
     }
 
     update() {
-
-        
-        
-        
-        
-
 
         // Eventos de controles del JUGADOR 1
         if (this.keyA.isDown) {
