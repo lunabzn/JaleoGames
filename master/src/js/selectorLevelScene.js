@@ -4,11 +4,11 @@ class selectorLevelScene extends Phaser.Scene {
 
     }
         preload() {
-            this.load.image('image-menu', 'assets/bg-image-menu.jpg');
-            this.load.image('volver', 'assets/botonvolver.png');
-            this.load.image('nivel1', 'assets/nivel1.png');
-            this.load.image('nivel2', 'assets/nivel2.png');
-            this.load.image('nivel3', 'assets/nivel3.png');
+            this.load.image('image-menu', '../../resources/img/bg-image-menu.jpg');
+            this.load.image('volver', '../../resources/img/botonvolver.png');
+            this.load.image('nivel1', '../../resources/img/nivel1.png');
+            this.load.image('nivel2', '../../resources/img/nivel2.png');
+            this.load.image('nivel3', '../../resources/img/nivel3.png');
         }
 
     create(){
@@ -30,7 +30,7 @@ class selectorLevelScene extends Phaser.Scene {
         playButtonLvl1.setInteractive();
         playButtonLvl1.on('pointerdown',()=>{
             //this.scene.start('selectorCharacterScene',level)
-            console.log('Pasamos al game');
+            this.scene.start('Level1')
         })
         //playButtonLvl2.setInteractive();
         //playButtonLvl2.on('pointerdown',()=>{

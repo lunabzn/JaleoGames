@@ -5,10 +5,10 @@ class selectorModeScene extends Phaser.Scene {
     }
         preload(){
             
-            this.load.image('volver', 'assets/botonvolver.png');
-            this.load.image('online', 'assets/online.png');
-            this.load.image('offline', 'assets/offline.png');
-            this.load.image('bg-image-menu', 'assets/bg-image-menu.jpg');
+            this.load.image('volver', '../../resources/img/botonvolver.png');
+            this.load.image('online', '../../resources/img/online.png');
+            this.load.image('offline', '../../resources/img/offline.png');
+            this.load.image('bg-image-menu', '../../resources/img/bg-image-menu.jpg');
         }
     
     create(){
