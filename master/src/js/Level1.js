@@ -223,11 +223,11 @@ class Level1 extends Phaser.Scene {
 
 
     enemyFollow(player,enemy){
-        
+        this.physics.moveToObject(enemy,player,100);
     }
 
     enemyAttack(){
-           this.physics.moveToObject(enemy,player,100);
+           
     }
 
     update() {
