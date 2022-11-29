@@ -7,10 +7,23 @@ class Level1 extends Phaser.Scene {
     preload() {
         this.load.spritesheet('guy', '../../resources/img/dude.png', { frameWidth: 32, frameHeight: 48 });
         this.load.image('sky', '../../resources/img//sky.png');
+        this.load.audio("level1", ["../../resources/audio/musica_nivel1.mp3"]);
     }
 
     create() {
         this.background = this.add.image(400, 300, 'sky');
+        this.level1Music = this.sound.add("level1");
+
+        var level1MusicConfig = {
+            mute: false,
+            volume: 1,
+            detune: 0,
+            seek: 0,
+            loop: true,
+            delay: 0
+        }
+
+        this.level1Music.play(level1MusicConfig);
 
         // Creación de los dos personajes
         this.player1 = this.physics.add.sprite(100, 200, 'guy');
@@ -60,6 +73,7 @@ class Level1 extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
+
     }
 
     update() {

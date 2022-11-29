@@ -17,9 +17,10 @@ class mainScene extends Phaser.Scene {
         let playButton = this.add.image(game.config.width / 2 + 40, game.config.height / 2 + 150, 'play').setScale(0.6);
 
         playButton.setInteractive();
+
         playButton.on('pointerdown', () => {
             this.clickSound.play();
-            this.scene.start('selectorModeScene')
+            this.scene.start('selectorModeScene');
         })
     }
 };
