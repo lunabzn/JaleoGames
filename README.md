@@ -20,5 +20,9 @@ Interfaz de inicio del juego Graffic-Jam con un botón que al ser pulsado llevar
 
 ![image](https://user-images.githubusercontent.com/82967594/204653038-7394b02b-7390-4a73-b7e4-a8df912c5d52.png)
 
-Interfaz de selección del modo de juego donde se muestra la opción de modo de juego off-line, on-line y la posibilidad de volver hacia la interfaz de inicio de juego.
+Interfaz de selección del modo de juego donde se muestra la opción de modo de juego off-line, on-line y la posibilidad de volver hacia la interfaz de inicio de juego (Solo está habilitado jugar el modo de juego off-line).
+
+![image](https://user-images.githubusercontent.com/82967594/204653505-4f476333-4ddf-4ec9-8f8c-402f384ea661.png)
+
+Interfaz del selector de niveles dando la posibilidad de seleccionar entre el nivel 1, nivel 2 y nivel 3 (Aunque a fecha de la entrega tan solo está habilitado jugar el nivel 1). Además, al igual que en la interfaz anterior, te da la opción de volver al selector de modo de juego.
 
