@@ -46,6 +46,7 @@ En el momento en el que los jugadores mueran el nivel acaba y salta esta pantall
 ![image](https://user-images.githubusercontent.com/82967594/204658351-8f91597e-cb0d-4900-9a87-410504454256.png)
 
 A continuación se mostrarán los diversos diagramas de navegación del juego:
+
 Diagrama de la interfaz del menú del juego con la opcion de jugar que desenboca en el selector de modo del juego y en la selección del nivel.
 
 ![image](https://user-images.githubusercontent.com/82967594/204657875-50a2d8c3-7522-4192-b47a-1c36aeba5d28.png)
