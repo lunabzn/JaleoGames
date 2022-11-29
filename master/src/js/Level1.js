@@ -45,8 +45,8 @@ class Level1 extends Phaser.Scene {
         this.player2.body.setSize(this.player2.width * 0.5, this.player2.height * 0.85);
 
         this.quantEnemiesRound1 = 3;
-        this.quantEnemiesRound2 = 5;
-        this.quantEnemiesRound3 = 7;
+        this.quantEnemiesRound2 = 4;
+        this.quantEnemiesRound3 = 6;
         this.roundCont = 1;
 
         this.activeEnemies = [this.quantEnemiesRound1];
@@ -318,6 +318,7 @@ class Level1 extends Phaser.Scene {
                     police.life -= 1;
                     if (police.life <= 0) {
                         police.y = -50;
+                        police.body.moves = false;
                     }
                 }
                 //numero con el que se ataca
@@ -346,6 +347,7 @@ class Level1 extends Phaser.Scene {
                     police.life -= 1;
                     if (police.life <= 0) {
                         police.y = -50;
+                        police.body.moves = false;
                     }
                 }
                 //numero con el que se ataca
@@ -486,8 +488,11 @@ class Level1 extends Phaser.Scene {
         if (this.player1.life <= 0) {
             if (this.player1.turnedLeft) {
                 this.player1.play('p1DefeatLeft', true);
+                this.player1.setImmovable(true);
+
             } else {
                 this.player1.play('p1DefeatRight', true);
+                this.player1.setImmovable(true);
             }
         } else {
             // Eventos de controles del JUGADOR 1
@@ -566,8 +571,10 @@ class Level1 extends Phaser.Scene {
         if (this.player2.life <= 0) {
             if (this.player2.turnedLeft) {
                 this.player2.play('p2DefeatLeft', true);
+                this.player2.setImmovable(true);
             } else {
                 this.player2.play('p2DefeatRight', true);
+                this.player2.setImmovable(true);
             }
         } else {
             // Eventos de controles del JUGADOR 2
@@ -641,15 +648,20 @@ class Level1 extends Phaser.Scene {
             }
         }
 
-
-
-
         for (var i = 0; i < this.activeEnemies.length; i++) {
             if (this.activeEnemies[i].alive) {
                 if (i % 2 == 0) {
-                    this.enemyFollow(this.player1, this.activeEnemies[i]);
+                    if(this.player1.life > 0){
+                        this.enemyFollow(this.player1, this.activeEnemies[i]);
+                    } else {
+                        this.enemyFollow(this.player2, this.activeEnemies[i]);
+                    }
                 } else {
-                    this.enemyFollow(this.player2, this.activeEnemies[i]);
+                    if(this.player2.life > 0){
+                        this.enemyFollow(this.player2, this.activeEnemies[i]);
+                    } else {
+                        this.enemyFollow(this.player1, this.activeEnemies[i]);
+                    }
                 }
             }
         }
