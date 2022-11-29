@@ -68,6 +68,7 @@ A continuación se mostrará el diseño del juego enseñando los diferentes spri
 ![spritesTuerto8](https://user-images.githubusercontent.com/82967594/204659061-f2b7af86-3bb1-4643-9556-e1a4edf03363.png)
 ![spritesVivo](https://user-images.githubusercontent.com/82967594/204659098-3dd3981a-d13e-4f98-9bb3-8f455d842c4c.png)
 ![tuertoLife](https://user-images.githubusercontent.com/82967594/204659131-ab85146b-af85-4441-897d-fe7a1e322e80.png)
+
 ![vivoLife](https://user-images.githubusercontent.com/82967594/204659151-f69eb419-8649-491a-a970-10bfe0a472ef.png)
 
 
