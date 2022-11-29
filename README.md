@@ -26,3 +26,6 @@ Interfaz de selección del modo de juego donde se muestra la opción de modo de 
 
 Interfaz del selector de niveles dando la posibilidad de seleccionar entre el nivel 1, nivel 2 y nivel 3 (Aunque a fecha de la entrega tan solo está habilitado jugar el nivel 1). Además, al igual que en la interfaz anterior, te da la opción de volver al selector de modo de juego.
 
+![image](https://user-images.githubusercontent.com/82967594/204653993-7c2e30b8-4a01-400c-86d5-9ad40ae64c40.png)
+
+En esta pantalla se muestra el nivel 1 indicando en las esquinas superior la vida de los dos personajes reflejadas en corazones y en la esquina inferior derecha el botón de pausar el juego. Además se encuentran los respectivos personajes y policias sobre un escenario.
