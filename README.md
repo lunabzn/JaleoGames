@@ -43,7 +43,32 @@ Al superar el nivel a los jugadores se les lanzará esta pantalla donde indica q
 
 En el momento en el que los jugadores mueran el nivel acaba y salta esta pantalla con la opción de volver al menu, es decir, al selector de niveles.
 
-![image](https://user-images.githubusercontent.com/82967594/204655276-e190583d-e966-4869-81fb-00fb8d70002f.png)
+![image](https://user-images.githubusercontent.com/82967594/204658351-8f91597e-cb0d-4900-9a87-410504454256.png)
+
+A continuación se mostrarán los diversos diagramas de navegación del juego:
+Diagrama de la interfaz del menú del juego con la opcion de jugar que desenboca en el selector de modo del juego y en la selección del nivel.
+
+![image](https://user-images.githubusercontent.com/82967594/204657875-50a2d8c3-7522-4192-b47a-1c36aeba5d28.png)
+
+Diagrama de interfaz de pausa con la opción de reanudar o volver a empezar.
+
+![image](https://user-images.githubusercontent.com/82967594/204658452-15eb4473-0122-45b2-89be-442515ba9aa7.png)
+
+Diagrama de interfaz del final de partida en caso de Victoria con la opción de ir al menú.
+
+![image](https://user-images.githubusercontent.com/82967594/204658536-419fe77d-9ea4-4fe5-b8ac-8ba11135ab60.png)
+
+Diagrama de interfaz del final de partida en caso de Derrota con la opción de ir al menú.
+
+![image](https://user-images.githubusercontent.com/82967594/204658640-d4a37212-468a-459c-a053-1bd8115c9f65.png)
+
+A continuación se mostrará el diseño del juego enseñando los diferentes sprites:º
+
+![spritesapolis](https://user-images.githubusercontent.com/82967594/204659016-bad415a9-0bf2-4aec-b0ff-414f8d16a7d3.png)
+![spritesTuerto8](https://user-images.githubusercontent.com/82967594/204659061-f2b7af86-3bb1-4643-9556-e1a4edf03363.png)
+![spritesVivo](https://user-images.githubusercontent.com/82967594/204659098-3dd3981a-d13e-4f98-9bb3-8f455d842c4c.png)
+![tuertoLife](https://user-images.githubusercontent.com/82967594/204659131-ab85146b-af85-4441-897d-fe7a1e322e80.png)
+![vivoLife](https://user-images.githubusercontent.com/82967594/204659151-f69eb419-8649-491a-a970-10bfe0a472ef.png)
 
 
 
