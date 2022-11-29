@@ -15,5 +15,10 @@ LUCAS RUBIO LEZANA *l.rubiol.2020@alumnos.urjc.es*  **GITHUB:** *LucasWiggie*</b
 
 
 ![image](https://user-images.githubusercontent.com/82967594/204652679-f5da9bcb-70c2-4528-8d15-ab6aade0b1ed.png)
+
 Interfaz de inicio del juego Graffic-Jam con un botón que al ser pulsado llevará al jugador a la selección del modo de juego.
+
+![image](https://user-images.githubusercontent.com/82967594/204653038-7394b02b-7390-4a73-b7e4-a8df912c5d52.png)
+
+Interfaz de selección del modo de juego donde se muestra la opción de modo de juego off-line, on-line y la posibilidad de volver hacia la interfaz de inicio de juego.
 
