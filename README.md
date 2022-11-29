@@ -62,13 +62,12 @@ Diagrama de interfaz del final de partida en caso de Derrota con la opción de i
 
 ![image](https://user-images.githubusercontent.com/82967594/204658640-d4a37212-468a-459c-a053-1bd8115c9f65.png)
 
-A continuación se mostrará el diseño del juego enseñando los diferentes sprites:º
+A continuación se mostrará el diseño del juego enseñando los diferentes sprites:
 
 ![spritesapolis](https://user-images.githubusercontent.com/82967594/204659016-bad415a9-0bf2-4aec-b0ff-414f8d16a7d3.png)
 ![spritesTuerto8](https://user-images.githubusercontent.com/82967594/204659061-f2b7af86-3bb1-4643-9556-e1a4edf03363.png)
 ![spritesVivo](https://user-images.githubusercontent.com/82967594/204659098-3dd3981a-d13e-4f98-9bb3-8f455d842c4c.png)
 ![tuertoLife](https://user-images.githubusercontent.com/82967594/204659131-ab85146b-af85-4441-897d-fe7a1e322e80.png)
-
 ![vivoLife](https://user-images.githubusercontent.com/82967594/204659151-f69eb419-8649-491a-a970-10bfe0a472ef.png)
 
 ![bg-image-menu1](https://user-images.githubusercontent.com/82967594/204659344-277ca8d0-5e9e-4ad1-93aa-984bafdfb8e6.jpg)
