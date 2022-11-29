@@ -15,6 +15,5 @@ LUCAS RUBIO LEZANA *l.rubiol.2020@alumnos.urjc.es*  **GITHUB:** *LucasWiggie*</b
 
 
 ![image](https://user-images.githubusercontent.com/82967594/204652679-f5da9bcb-70c2-4528-8d15-ab6aade0b1ed.png)
-
 Interfaz de inicio del juego Graffic-Jam con un botón que al ser pulsado llevará al jugador a la selección del modo de juego.
 
