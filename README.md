@@ -71,6 +71,8 @@ A continuación se mostrará el diseño del juego enseñando los diferentes spri
 
 ![vivoLife](https://user-images.githubusercontent.com/82967594/204659151-f69eb419-8649-491a-a970-10bfe0a472ef.png)
 
+![bg-image-menu1](https://user-images.githubusercontent.com/82967594/204659344-277ca8d0-5e9e-4ad1-93aa-984bafdfb8e6.jpg)
+
 
 
 
