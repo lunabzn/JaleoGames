@@ -30,8 +30,12 @@ class Level1 extends Phaser.Scene {
         //carga de enemigo: policia chica
         this.load.spritesheet('girlPolice', '../../resources/img/spritesPoliciaChicaDef.png', { frameWidth: fStandarWidth, frameHeight: fStandarHeight, endframe: endF });
 
+        //sonidos de ataque y daño
+        this.load.audio("spray", ["../../resources/audio/ataque_vivo.mp3"]);
+        this.load.audio("paint", ["../../resources/audio/ataque_tuerto.mp3"]);
+        //this.load.audio("damage", ["../../resources/audio/dano.mp3"]);
+        this.load.audio("punch", ["../../resources/audio/punetazo.mp3"]);
     }
-
 
 
     create() {
@@ -45,8 +49,8 @@ class Level1 extends Phaser.Scene {
         this.player2.body.setSize(this.player2.width * 0.5, this.player2.height * 0.85);
 
         this.quantEnemiesRound1 = 3;
-        this.quantEnemiesRound2 = 4;
-        this.quantEnemiesRound3 = 6;
+        this.quantEnemiesRound2 = 5;
+        this.quantEnemiesRound3 = 7;
         this.roundCont = 1;
 
         this.activeEnemies = [this.quantEnemiesRound1];
@@ -66,6 +70,12 @@ class Level1 extends Phaser.Scene {
         this.player2.attackRight = false;
 
         this.physics.add.collider(this.player1, this.player2);
+
+        //Efectos de sonido
+        this.spraySound = this.sound.add("spray");
+        this.paintSound = this.sound.add("paint");
+        //this.damageSound = this.sound.add("damage");
+        this.punchSound = this.sound.add("punch");
 
         // Controles de los dos jugadores
         // J1: ASDW
@@ -162,7 +172,6 @@ class Level1 extends Phaser.Scene {
             frameRate: 10,
             repeat: 1
         });
-
 
         // ANIMACIONES JUGADOR 2
         this.anims.create({
@@ -318,7 +327,6 @@ class Level1 extends Phaser.Scene {
                     police.life -= 1;
                     if (police.life <= 0) {
                         police.y = -50;
-                        police.body.moves = false;
                     }
                 }
                 //numero con el que se ataca
@@ -333,11 +341,13 @@ class Level1 extends Phaser.Scene {
                     if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
                     {
                         police.play('eAttackLeft', true);
+                        //this.punchSound.play();
                         player.life -= 1;
                     } else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
                     {
                         police.play('eAttackRight', true);
-                        player.life -= 1;
+                        this.punchSound.play();
+                        //player.life -= 1;
                     }
                 }
             });
@@ -347,7 +357,6 @@ class Level1 extends Phaser.Scene {
                     police.life -= 1;
                     if (police.life <= 0) {
                         police.y = -50;
-                        police.body.moves = false;
                     }
                 }
                 //numero con el que se ataca
@@ -362,10 +371,12 @@ class Level1 extends Phaser.Scene {
                     if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
                     {
                         police.play('eAttackLeft', true);
+                        //this.punchSound.play();
                         player.life -= 1;
                     } else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
                     {
                         police.play('eAttackRight', true);
+                        //this.punchSound.play();
                         player.life -= 1;
                     }
                 }
@@ -451,9 +462,11 @@ class Level1 extends Phaser.Scene {
         if (nAttack == probabilitty) {
             if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
             {
+                this.punchSound.play();
                 enemy.play('eAttackLeft', true);
             } else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
             {
+                this.punchSound.play();
                 enemy.play('eAttackRight', true);
             }
         }
@@ -488,11 +501,8 @@ class Level1 extends Phaser.Scene {
         if (this.player1.life <= 0) {
             if (this.player1.turnedLeft) {
                 this.player1.play('p1DefeatLeft', true);
-                this.player1.setImmovable(true);
-
             } else {
                 this.player1.play('p1DefeatRight', true);
-                this.player1.setImmovable(true);
             }
         } else {
             // Eventos de controles del JUGADOR 1
@@ -553,13 +563,20 @@ class Level1 extends Phaser.Scene {
                 if (this.player1.turnedLeft) {
                     this.player1.setVelocityX(0);
                     this.player1.setVelocityY(0);
+                    if (!this.player1.attackLeft) {
+                        this.spraySound.play();
+                    }
                     this.player1.attackLeft = true;
                     this.player1.play('p1AttackLeft');
                 } else {
                     this.player1.setVelocityX(0);
                     this.player1.setVelocityY(0);
+                    if (!this.player1.attackRight) {
+                        this.spraySound.play();
+                    }
                     this.player1.attackRight = true;
                     this.player1.play('p1AttackRight');
+
                 }
             }
             if (this.player1.atkP1.isUp) {
@@ -571,10 +588,8 @@ class Level1 extends Phaser.Scene {
         if (this.player2.life <= 0) {
             if (this.player2.turnedLeft) {
                 this.player2.play('p2DefeatLeft', true);
-                this.player2.setImmovable(true);
             } else {
                 this.player2.play('p2DefeatRight', true);
-                this.player2.setImmovable(true);
             }
         } else {
             // Eventos de controles del JUGADOR 2
@@ -635,10 +650,18 @@ class Level1 extends Phaser.Scene {
                 if (this.player2.turnedLeft) {
                     this.player2.setVelocityX(0);
                     this.player2.setVelocityY(0);
+                    if (!this.player2.attackLeft) {
+                        this.paintSound.play();
+                    }
+                    this.player2.attackLeft = true;
                     this.player2.play('p2AttackLeft');
                 } else {
                     this.player2.setVelocityX(0);
                     this.player2.setVelocityY(0);
+                    if (!this.player2.attackRight) {
+                        this.paintSound.play();
+                    }
+                    this.player2.attackRight = true;
                     this.player2.play('p2AttackRight');
                 }
             }
@@ -648,20 +671,15 @@ class Level1 extends Phaser.Scene {
             }
         }
 
+
+
+
         for (var i = 0; i < this.activeEnemies.length; i++) {
             if (this.activeEnemies[i].alive) {
                 if (i % 2 == 0) {
-                    if(this.player1.life > 0){
-                        this.enemyFollow(this.player1, this.activeEnemies[i]);
-                    } else {
-                        this.enemyFollow(this.player2, this.activeEnemies[i]);
-                    }
+                    this.enemyFollow(this.player1, this.activeEnemies[i]);
                 } else {
-                    if(this.player2.life > 0){
-                        this.enemyFollow(this.player2, this.activeEnemies[i]);
-                    } else {
-                        this.enemyFollow(this.player1, this.activeEnemies[i]);
-                    }
+                    this.enemyFollow(this.player2, this.activeEnemies[i]);
                 }
             }
         }
