@@ -31,11 +31,11 @@ En esta pantalla se muestra el nivel 1 indicando en las esquinas superior la vid
 
 En el momento en el que uno de los dos jugadores muere este queda sin poder hacer nada en el nivel mostrandose a este mismo aturdido con estrellas en la cabeza.
 
-![image](https://user-images.githubusercontent.com/82967594/204654379-fc09ac55-084e-4bc3-94fe-3e4545ccf273.png)
+![image](https://user-images.githubusercontent.com/82967594/204655605-fd7a0f31-16e6-4ddd-a76b-32692b721c53.png)
 
 Al pulsar el botón de la esquina inferior derecha del nivel 1 se conduce a los jugadores a la interfaz de pausa con la opción de reanudar el juego o de volver a empezarlo de nuevo.
 
-![image](https://user-images.githubusercontent.com/82967594/204655605-fd7a0f31-16e6-4ddd-a76b-32692b721c53.png)
+![image](https://user-images.githubusercontent.com/82967594/204654379-fc09ac55-084e-4bc3-94fe-3e4545ccf273.png)
 
 Al superar el nivel a los jugadores se les lanzará esta pantalla donde indica que han superado con éxito el nivel. Además, aparece un botón "menu" que llevará de nuevo al selector de niveles.
 
