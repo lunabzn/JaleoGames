@@ -73,7 +73,16 @@ A continuación se mostrará el diseño del juego enseñando los diferentes spri
 
 ![bg-image-menu1](https://user-images.githubusercontent.com/82967594/204659344-277ca8d0-5e9e-4ad1-93aa-984bafdfb8e6.jpg)
 
+**LOS FALLOS OBSERVADOS SON:**
 
+- El fondo de las pantallas de pausa, gameOver y gameWin dan fallo cuando se carga una de las pantallas. El fondo del primer menu en aparecer es el que sale en los tres menus restantes.
+
+- Las animaciones del ataque de los enemigos son muy rápidas y los enemigos se superponen.
+
+- Las detección de ataque tanto de enemigo a jugador como de jugador a enemigo está implementado de forma problematica en cuanto a las colisiones.
+Se detecta la colisión por el bounding box de cada uno por lo que solo se detectan los ataques si se están moviendo y chocando en direccion al enemigo.
+
+- Están implementados los world colliders pero si el personaje es empujado por el enemigo estos no funcionan.
 
 
 
