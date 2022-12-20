@@ -49,7 +49,7 @@ A continuación se mostrarán los diversos diagramas de navegación del juego:
 
 Diagrama de la interfaz del menú del juego con la opcion de jugar que desenboca en el selector de modo del juego y en la selección del nivel.
 
-![image](https://user-images.githubusercontent.com/82967594/204657875-50a2d8c3-7522-4192-b47a-1c36aeba5d28.png)
+![Diagrama de interfaces_2022-12-20_21-08-29](https://user-images.githubusercontent.com/84155484/208774146-526ffcba-78bd-4dba-b5a3-90bfe2b5ce39.png)
 
 Diagrama de interfaz de pausa con la opción de reanudar o volver a empezar.
 
