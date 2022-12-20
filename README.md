@@ -19,7 +19,7 @@ Interfaz de inicio del juego Graffic-Jam con un botón que al ser pulsado llevar
 
 Interfaz de selección del modo de juego donde se muestra la opción de modo de juego off-line, on-line y la posibilidad de volver hacia la interfaz de inicio de juego (Solo está habilitado jugar el modo de juego off-line).
 
-![image](https://user-images.githubusercontent.com/82967594/204653038-7394b02b-7390-4a73-b7e4-a8df912c5d52.png)
+![Captura de pantalla 2022-12-20 225053 fondo imagen](https://user-images.githubusercontent.com/84155484/208774049-25cc2e05-626f-4e23-a065-caa712bd2856.jpg)
 
 Interfaz del selector de niveles dando la posibilidad de seleccionar entre el nivel 1, nivel 2 y nivel 3 (Aunque a fecha de la entrega tan solo está habilitado jugar el nivel 1). Además, al igual que en la interfaz anterior, te da la opción de volver al selector de modo de juego.
 
@@ -83,6 +83,7 @@ A continuación se mostrará el diseño del juego enseñando los diferentes spri
 Se detecta la colisión por el bounding box de cada uno por lo que solo se detectan los ataques si se están moviendo y chocando en direccion al enemigo.
 
 - Están implementados los world colliders pero si el personaje es empujado por el enemigo estos no funcionan.
+
 
 
 
