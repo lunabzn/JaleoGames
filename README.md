@@ -66,7 +66,7 @@ Diagrama de interfaz del final de partida en caso de Derrota con la opción de i
 
 ![image](https://user-images.githubusercontent.com/82967594/204658640-d4a37212-468a-459c-a053-1bd8115c9f65.png)
 
-**Diagrama de las clases utilizadas para la implementación del Lobby:**
+# **Diagrama de las clases utilizadas para la implementación del Lobby:**
 
 ![Diagrama de clases](https://user-images.githubusercontent.com/84155484/208774497-47ce8022-431c-4cda-8874-79595c80f759.png)
 
@@ -82,7 +82,7 @@ A continuación se mostrará el diseño del juego enseñando los diferentes spri
 
 ![bg-image-menu1](https://user-images.githubusercontent.com/82967594/204659344-277ca8d0-5e9e-4ad1-93aa-984bafdfb8e6.jpg)
 
-**INSTRUCCIONES PRECISAS PARA EJECUTAR LA APLICACIÓN**
+# **INSTRUCCIONES PRECISAS PARA EJECUTAR LA APLICACIÓN**
 Para proceder con los diferentes pasos para ejecutar la aplicación es necesario descargar previamente una máquina virtual que traduzca el código.
 Página para instalarlo: https://www.java.com/es/download/
 
