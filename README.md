@@ -21,6 +21,9 @@ Interfaz de selección del modo de juego donde se muestra la opción de modo de 
 
 ![Captura de pantalla 2022-12-20 225053 fondo imagen](https://user-images.githubusercontent.com/84155484/208774049-25cc2e05-626f-4e23-a065-caa712bd2856.jpg)
 
+Interfaz del Lobby, donde se muestra el chat funcional y los jugadores que estan conectados:
+
+
 Interfaz del selector de niveles dando la posibilidad de seleccionar entre el nivel 1, nivel 2 y nivel 3 (Aunque a fecha de la entrega tan solo está habilitado jugar el nivel 1). Además, al igual que en la interfaz anterior, te da la opción de volver al selector de modo de juego.
 
 ![image](https://user-images.githubusercontent.com/82967594/204653505-4f476333-4ddf-4ec9-8f8c-402f384ea661.png)
@@ -62,6 +65,10 @@ Diagrama de interfaz del final de partida en caso de Victoria con la opción de 
 Diagrama de interfaz del final de partida en caso de Derrota con la opción de ir al menú.
 
 ![image](https://user-images.githubusercontent.com/82967594/204658640-d4a37212-468a-459c-a053-1bd8115c9f65.png)
+
+Diagrama de las clases utilizadas para la implementación del Lobby:
+
+![Diagrama de clases](https://user-images.githubusercontent.com/84155484/208774497-47ce8022-431c-4cda-8874-79595c80f759.png)
 
 A continuación se mostrará el diseño del juego enseñando los diferentes sprites:
 
