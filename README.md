@@ -89,7 +89,8 @@ Página para instalarlo: https://www.java.com/es/download/
 Una vez descargado hay que acceder a la siguiente ruta Prac3_GrafficJam/target/items-backend-and-frontend-0.0.1-SNAPSHOT.jar y abrirlo con Spring Tool Suite. Una vez este abierto hacer click derecho sobre el proyecto en el explorador e irse a Run As y finalmente hacer click sobre Spring Boot App.
 Tras hacer los pasos anteriores se tendrá que ir al navegador y poner en este "localhost:8080"
 
---- **LOS FALLOS OBSERVADOS SON:** ---
+___
+**LOS FALLOS OBSERVADOS SON:** 
 
 - El fondo de las pantallas de pausa, gameOver y gameWin dan fallo cuando se carga una de las pantallas. El fondo del primer menu en aparecer es el que sale en los tres menus restantes.
 
