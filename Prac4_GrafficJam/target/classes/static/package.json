@@ -1,0 +1,14 @@
+{
+  "name": "juegos-en-red",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Luna.Bouzon.Rodriguez, Yeray.da.Silva.de.las.Heras, Rafael.González.de.Canales.Lora, Marta.Raboso.Gomez, Fabio.Elias.Rengifo.garcia, Lucas.Rubio.Lezana",
+  "license": "ISC",
+  "dependencies": {
+    "phaser": "^3.55.2"
+  }
+}

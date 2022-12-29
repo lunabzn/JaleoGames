@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title> Graffic Jam </title>
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
+
+    <script type="text/javascript" src="connection.js"></script>
+    <script type="text/javascript" src="audioManager.js"></script>
+    <script type="text/javascript" src="mainScene.js"></script>
+    <script type="text/javascript" src="loadingServer.js"></script>
+    <script type="text/javascript" src="selectorModeScene.js"></script>
+    <script type="text/javascript" src="selectorLevelScene.js"></script>
+    <script type="text/javascript" src="Level1.js"></script>
+    <script type="text/javascript" src="pauseScene.js"></script>
+    <script type="text/javascript" src="gameOver.js"></script>
+    <script type="text/javascript" src="gameWin.js"></script>
+    <script type="text/javascript" src="Lobby.js"></script>
+    <script type="text/javascript" src="game.js"></script>
+</head>
+
+<body>
+    <script>
+        var repeticion = 0;
+        var crearPartidaBool = false;
+        var barrera = false;
+        var isPaused = false;
+        var ID_Funcion = 5;
+        var Soy_J1 = false;
+        var randomDecision = 0;
+        var StartGame = false;
+        var ID_Partida = 0;
+        var iAmFirst = false;
+
+        var LocalJ1 = false;
+
+        var J1_id = 10;
+        var J1_skin = 0;
+        var J1_saltando = false;
+        var J1_CogerPowerup = false;
+        var J1_Vida = 3;
+        //var J1_DañoRecibido = false;
+        var J1_Muerto = false;
+        var J1_Powerup = 0;
+        var J1_PowerupGenerado = false;
+        var J1_PinchoGenerado = false;
+        //var J1_session = 0;
+
+        var hola = "He llegado al server";
+
+        var J2_id = 10;
+        var J2_skin = 0;
+        var J2_saltando = false;
+        var J2_CogerPowerup = false;
+        var J2_PowerupGenerado = false;
+        var J2_Vida = 3;
+        //var J2_DañoRecibido = false;
+        var J2_Muerto = false;
+        var J2_Powerup = 0;
+        var J2_PinchoGenerado = false;
+    </script>
+
+	<div id="videogame"></div>
+</body>
+
+</html>
