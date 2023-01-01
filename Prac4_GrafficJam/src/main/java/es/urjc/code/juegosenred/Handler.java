@@ -79,8 +79,8 @@ public class Handler extends TextWebSocketHandler {
                     WebSocketSession sesionLocalJ1 = f.getJ1().getSession();
                     WebSocketSession sesionLocalJ2 = f.getJ2().getSession();
 
-                    msg.put("idFuncion", 4);
-                    msgaux.put("idFuncion", 4);
+                    msg.put("idFuncion", 6);
+                    msgaux.put("idFuncion", 6);
 
                     msg.put("estadoPartida", true);
                     msgaux.put("estadoPartida", true);
@@ -150,25 +150,101 @@ public class Handler extends TextWebSocketHandler {
 
                 break;
 
-            case (5):
-                int gameId = node.get("idPartida").asInt();
-                int playerId = node.get("idJugador").asInt();
-                String debug = "MENSAJE DE MOV.IZQ HA PASADO POR EL SERVER";
-                Partida gameAux = partidillas.get(gameId);
-                msg.put("idFuncion", 5);
-                msg.put("stringPrueba", debug);
-               
-                if (playerId == gameAux.getJ1().getId()) { //Si el jugador que ha enviado el mensaje al servidor es el J1, enviamos de vuelta un mensaje al J2 de su misma partida
+            case (4): // Movimiento hacia la izquierda 
+                int gameId_c4 = node.get("idPartida").asInt();
+                int playerId_c4 = node.get("idJugador").asInt();
+                String debug_c4 = "MENSAJE DE MOV.IZQ HA PASADO POR EL SERVER";
+                Partida gameAux_c4 = partidillas.get(gameId_c4);
+
+                msg.put("idFuncion", 4);
+                msg.put("stringPrueba", debug_c4);
+
+                if (playerId_c4 == gameAux_c4.getJ1().getId()) { // Si el jugador que ha enviado el mensaje al servidor
+                                                                 // es el J1, enviamos de vuelta un mensaje al J2 de su
+                                                                 // misma partida
                     System.err.println("se va a enviar el mensaje al J2");
-                    WebSocketSession sesionaux5 = gameAux.getJ2().getSession();
-                    sesionaux5.sendMessage(new TextMessage(msg.toString()));
-                } else {  //Si el jugador que ha enviado el mensaje al servidor es el J2, enviamos de vuelta un mensaje al J1 de su misma partida
-                    WebSocketSession sesionaux25 = gameAux.getJ1().getSession();
+                    WebSocketSession auxSession_c4 = gameAux_c4.getJ2().getSession();
+                    auxSession_c4.sendMessage(new TextMessage(msg.toString()));
+                } else { // Si el jugador que ha enviado el mensaje al servidor es el J2, enviamos de
+                         // vuelta un mensaje al J1 de su misma partida
+                    WebSocketSession auxSession2_c4 = gameAux_c4.getJ1().getSession();
                     System.err.println("se va a enviar el mensaje al J1");
-                    sesionaux25.sendMessage(new TextMessage(msg.toString()));
+                    auxSession2_c4.sendMessage(new TextMessage(msg.toString()));
                 }
 
                 break;
+
+            case (5): // Movimiento hacia la derecha
+                int gameId_c5 = node.get("idPartida").asInt();
+                int playerId_c5 = node.get("idJugador").asInt();
+                String debug_c5 = "MENSAJE DE MOV.DER HA PASADO POR EL SERVER";
+                Partida gameAux_c5 = partidillas.get(gameId_c5);
+
+                msg.put("idFuncion", 5);
+                msg.put("stringPrueba", debug_c5);
+
+                if (playerId_c5 == gameAux_c5.getJ1().getId()) { 
+                    // Si el jugador que ha enviado el mensaje al servidor
+                    // es el J1, enviamos de vuelta un mensaje al J2 de su misma partida
+                    System.err.println("se va a enviar el mensaje al J2");
+                    WebSocketSession auxSession_c5 = gameAux_c5.getJ2().getSession();
+                    auxSession_c5.sendMessage(new TextMessage(msg.toString()));
+                } else { 
+                    // Si el jugador que ha enviado el mensaje al servidor es el J2, enviamos de
+                    // vuelta un mensaje al J1 de su misma partida
+                    WebSocketSession auxSession2_c5 = gameAux_c5.getJ1().getSession();
+                    System.err.println("se va a enviar el mensaje al J1");
+                    auxSession2_c5.sendMessage(new TextMessage(msg.toString()));
+                }
+                break;
+
+            case (7): // Movimiento hacia arriba
+                int gameId_c7 = node.get("idPartida").asInt();
+                int playerId_c7 = node.get("idJugador").asInt();
+                String debug_c7 = "MENSAJE DE MOV.ARRIBA HA PASADO POR EL SERVER";
+                Partida gameAux_c7 = partidillas.get(gameId_c7);
+
+                msg.put("idFuncion", 7);
+                msg.put("stringPrueba", debug_c7);
+
+                if (playerId_c7 == gameAux_c7.getJ1().getId()) { 
+                    // Si el jugador que ha enviado el mensaje al servidor
+                    // es el J1, enviamos de vuelta un mensaje al J2 de su misma partida
+                    System.err.println("se va a enviar el mensaje al J2");
+                    WebSocketSession auxSession_c7 = gameAux_c7.getJ2().getSession();
+                    auxSession_c7.sendMessage(new TextMessage(msg.toString()));
+                } else { 
+                    // Si el jugador que ha enviado el mensaje al servidor es el J2, enviamos de
+                    // vuelta un mensaje al J1 de su misma partida
+                    WebSocketSession auxSession2_c7 = gameAux_c7.getJ1().getSession();
+                    System.err.println("se va a enviar el mensaje al J1");
+                    auxSession2_c7.sendMessage(new TextMessage(msg.toString()));
+                }
+            break;
+
+            case (8): // Movimiento hacia abajo
+                int gameId_c8 = node.get("idPartida").asInt();
+                int playerId_c8 = node.get("idJugador").asInt();
+                String debug_c8 = "MENSAJE DE MOV.ARRIBA HA PASADO POR EL SERVER";
+                Partida gameAux_c8 = partidillas.get(gameId_c8);
+
+                msg.put("idFuncion", 8);
+                msg.put("stringPrueba", debug_c8);
+
+                if (playerId_c8 == gameAux_c8.getJ1().getId()) { 
+                    // Si el jugador que ha enviado el mensaje al servidor
+                    // es el J1, enviamos de vuelta un mensaje al J2 de su misma partida
+                    System.err.println("se va a enviar el mensaje al J2");
+                    WebSocketSession auxSession_c8 = gameAux_c8.getJ2().getSession();
+                    auxSession_c8.sendMessage(new TextMessage(msg.toString()));
+                } else { 
+                    // Si el jugador que ha enviado el mensaje al servidor es el J2, enviamos de
+                    // vuelta un mensaje al J1 de su misma partida
+                    WebSocketSession auxSession2_c8 = gameAux_c8.getJ1().getSession();
+                    System.err.println("se va a enviar el mensaje al J1");
+                    auxSession2_c8.sendMessage(new TextMessage(msg.toString()));
+                }
+            break;
 
         }
     }
