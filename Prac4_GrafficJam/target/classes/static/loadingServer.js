@@ -21,7 +21,7 @@ class loadingServer extends Phaser.Scene {
         }
 
         if (StartGame == true) {
-            this.scene.start("Level1");
+            this.scene.start("onlineLevel");
         }
     }
 }

@@ -29,7 +29,7 @@ public class Handler extends TextWebSocketHandler {
     int numPartidaActual = 0;
     int numJugadoresActual = 0;
     final int N_JUGADORES = 8;
-    final int N_PARTIDAS = 4;
+    final int N_PARTIDAS = 40;
     int JUGADORESACTUALES = 0;
     int PARTIDASACTUALES = 0;
     boolean primeravez = true;
@@ -118,7 +118,7 @@ public class Handler extends TextWebSocketHandler {
                 session.sendMessage(new TextMessage(msg.toString()));
                 break;
 
-            case (2):
+            case (2): //Ataque jugador
                 break;
             
             case(3): //Crear jugador
@@ -145,10 +145,30 @@ public class Handler extends TextWebSocketHandler {
                 }else {
                     String textito = "Jugadores llenos :("; //Debug
                 }
-                msg.put("idFuncion", 3); //La función en cliente que quiero que haga al recibir el mensaje del servidor
-                session.sendMessage(new TextMessage(msg.toString())); //Envio el mensaje
-                
-                break;    
+                msg.put("idFuncion", 3); // La función en cliente que quiero que haga al recibir el mensaje del servidor
+                session.sendMessage(new TextMessage(msg.toString())); // Envio el mensaje
+
+                break;
+
+            case (5):
+                int gameId = node.get("idPartida").asInt();
+                int playerId = node.get("idJugador").asInt();
+                String debug = "MENSAJE DE MOV.IZQ HA PASADO POR EL SERVER";
+                Partida gameAux = partidillas.get(gameId);
+                msg.put("idFuncion", 5);
+                msg.put("stringPrueba", debug);
+               
+                if (playerId == gameAux.getJ1().getId()) { //Si el jugador que ha enviado el mensaje al servidor es el J1, enviamos de vuelta un mensaje al J2 de su misma partida
+                    System.err.println("se va a enviar el mensaje al J2");
+                    WebSocketSession sesionaux5 = gameAux.getJ2().getSession();
+                    sesionaux5.sendMessage(new TextMessage(msg.toString()));
+                } else {  //Si el jugador que ha enviado el mensaje al servidor es el J2, enviamos de vuelta un mensaje al J1 de su misma partida
+                    WebSocketSession sesionaux25 = gameAux.getJ1().getSession();
+                    System.err.println("se va a enviar el mensaje al J1");
+                    sesionaux25.sendMessage(new TextMessage(msg.toString()));
+                }
+
+                break;
 
         }
     }

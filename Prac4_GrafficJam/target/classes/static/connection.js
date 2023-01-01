@@ -16,7 +16,7 @@ socket.onmessage = function (event) {
 
 		//LO QUE RECIBO DEL SERVIDOR
 		case (0): //CrearPartida() (Pending)
-			ID_Partida = aux.idPartida;//EJEMPLO if(aux.Estado) // EN SERVER ESTARIA msg.put("Estado", partidas.getId(idpartida).getVacio();
+			ID_Partida = aux.idPartida;
 			Soy_J1 = aux.soyJ1;
 			console.log("aux " + aux.soyJ1);
 			console.log("la buena " + Soy_J1);
@@ -29,9 +29,6 @@ socket.onmessage = function (event) {
 			break;
 
 		case (2)://Jugador coge powerup
-			console.log("He cogido powerup")
-			WEB_TipoPowerup = aux.tipoPowerup;
-			cogerPowerup();
 			break;
 
 		case (3)://crearJugador() 
@@ -52,27 +49,19 @@ socket.onmessage = function (event) {
 
 			break;
 
-		case (5):
-			console.log("Me han dicho que salte");
-			saltoJugador();
-
+		case (5): // Mover jugador a la izquierda
+			console.log(aux.stringPrueba);
+			console.log("connection.js: El otro jugador se va a mover a la izquierda");
+			activate_WEB_goLeft();
 			break;
 
 		case (6):
-			console.log("Me han dicho que genere un powerup ");
-			generarPowerup();
 			break;
 
 		case (7):
-			console.log("Me han dicho que he recibido daño");
-			//recibirDaño();
 			break;
 
 		case (8):
-			console.log("Me han dicho que genere un obstáculo");
-			WEB_J1randObstaculo = aux.randObst;
-			WEB_J2randObstaculo = aux.randObst;
-			generarObstaculo();
 			break;
 
 		case (10):
@@ -121,14 +110,14 @@ function crearJugador(){ //Mi función que recibe los datos que necesito del jug
 
 }
 
-function jugadorSalto(){ //Mi función que recibe los datos que necesito del jugador 2
+function playerMoveLeft(){ 
 	let message ={
 			idFuncion: 5,
 			idPartida: ID_Partida,
 			idJugador: J1_id
 	}
-	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
-
+	socket.send(JSON.stringify(message)); 
+	console.log("connection.js: mensaje a server de mov.izq. enviado");
 }
 
 function jugadorPowerup(){ //Mi función que recibe los datos que necesito del jugador 2
