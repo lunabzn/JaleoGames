@@ -4,6 +4,10 @@ var WEB_goLeft = false;
 var WEB_goRight = false;
 var WEB_goUp = false;
 var WEB_goDown = false;
+var WEB_dontGoLeft = false;
+var WEB_dontGoRight = false;
+var WEB_dontGoUp = false;
+var WEB_dontGoDown = false;
 
 
 class onlineLevel extends Phaser.Scene {
@@ -171,6 +175,7 @@ class onlineLevel extends Phaser.Scene {
             repeat: -1
         });
 
+        // ANIMACIONES VIVO
         this.anims.create({
             key: 'p1TurnLeft',
             frames: [{ key: 'vivo', frame: 12 }],
@@ -247,7 +252,7 @@ class onlineLevel extends Phaser.Scene {
         });
 
 
-        // ANIMACIONES JUGADOR 2
+        // ANIMACIONES TUERTO
         this.anims.create({
             key: 'p2Left',
             frames: this.anims.generateFrameNumbers('tuerto', { start: 8, end: 11 }),
@@ -384,6 +389,13 @@ class onlineLevel extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
+
+        // Preparamos los dos personajes orientados hacia la derecha
+        if(Soy_J1){
+            this.player2.play('p2TurnRight');
+        } else {
+            this.player2.play('p1TurnRight');
+        }
 
     }
     /////////// FIN FUNCION CREATE //////////
@@ -600,14 +612,16 @@ class onlineLevel extends Phaser.Scene {
         ////////////////////////////////// APARTADO ONLINE (WEBSOCKETS)
 
         if (WEB_goLeft) { // Movimiento a la izquierda del otro jugador
-            this.player2.setVelocityX(-160);
-            this.player2.turnedLeft = true;
-
+            console.log("El OTRO jugador se va a mover a la izquierda");
+            
             if (Soy_J1) {
                 this.player2.play('p2Left', true); // si soy el J1, el player2 tiene el skin de Tuerto. Ejecutamos la animacion de mov a la izq de Tuerto 
             } else {
                 this.player2.play('p1Left', true); // si soy el J2, el player2 tiene el skin de Vivo. Ejecutamos la animacion de mov a la izq de Vivo
             }
+            
+            this.player2.setVelocityX(-160);
+            this.player2.turnedLeft = true;
 
             if (WEB_goUp) {
                 this.player2.setVelocityY(-160);
@@ -616,9 +630,31 @@ class onlineLevel extends Phaser.Scene {
                 this.player2.setVelocityY(160);
             }
 
-            WEB_goLeft = false;
+            if (WEB_dontGoLeft) {
+                console.log("WEB_dontGoLeft  " + WEB_dontGoLeft);
+                WEB_goLeft = false;
+                this.player2.setVelocityX(0);
+                this.player2.setVelocityY(0);
+                if (this.player2.turnedLeft) {
+                    if (Soy_J1) {
+                        this.player2.play('p2TurnLeft');
+                    } else {
+                        this.player2.play('p1TurnLeft');
+                    }
+                } else {
+                    if (Soy_J1) {
+                        this.player2.play('p2TurnRight');
+                    } else {
+                        this.player2.play('p1TurnRight');
+                    }
+                }
+                WEB_dontGoLeft = false;
+            }
 
-        } else if (WEB_goRight){
+        } 
+        
+        if (WEB_goRight) {
+            console.log("El OTRO jugador se va a mover a la derecha");
             this.player2.setVelocityX(160);
             this.player2.turnedLeft = false;
 
@@ -635,11 +671,34 @@ class onlineLevel extends Phaser.Scene {
                 this.player2.setVelocityY(160);
             }
 
-            WEB_goRight = false;
+            if (WEB_dontGoRight) {
+                console.log("WEB_dontGoRight  " + WEB_dontGoRight);
+                WEB_goRight = false;
+                this.player2.setVelocityX(0);
+                this.player2.setVelocityY(0);
+                if (this.player2.turnedLeft) {
+                    if (Soy_J1) {
+                        this.player2.play('p2TurnLeft');
+                    } else {
+                        this.player2.play('p1TurnLeft');
+                    }
+                } else {
+                    if (Soy_J1) {
+                        this.player2.play('p2TurnRight');
+                    } else {
+                        this.player2.play('p1TurnRight');
+                    }
+                }
+                WEB_dontGoRight = false;
+            }
 
-        } else if (WEB_goUp) {
-            this.player.setVelocityY(-160);
-            if (this.player.turnedLeft) {
+        } 
+        
+        if (WEB_goUp) {
+            console.log("El OTRO jugador se va a mover a arriba");
+            this.player2.setVelocityY(-160);
+
+            if (this.player2.turnedLeft) {
                 if (Soy_J1) {
                     this.player2.play('p2UpLeft', true);
                 } else {
@@ -653,9 +712,41 @@ class onlineLevel extends Phaser.Scene {
                 }
             }
 
-        } else if (WEB_goDown){
-            this.player.setVelocityY(160);
-            if (this.player.turnedLeft) {
+            if (WEB_goLeft) {
+                this.player2.setVelocityX(-160);
+            }
+            if (WEB_goRight) {
+                this.player2.setVelocityX(160);
+            }
+
+            if (WEB_dontGoUp) {
+                console.log("WEB_dontGoUp  " + WEB_dontGoUp);
+                WEB_goUp = false;
+                this.player2.setVelocityX(0);
+                this.player2.setVelocityY(0);
+                if (this.player2.turnedLeft) {
+                    if (Soy_J1) {
+                        this.player2.play('p2TurnLeft');
+                    } else {
+                        this.player2.play('p1TurnLeft');
+                    }
+                } else {
+                    if (Soy_J1) {
+                        this.player2.play('p2TurnRight');
+                    } else {
+                        this.player2.play('p1TurnRight');
+                    }
+                }
+                WEB_dontGoUp = false;
+            }
+
+        } 
+        
+        if (WEB_goDown){
+            console.log("El OTRO jugador se va a mover a abajo");
+            this.player2.setVelocityY(160);
+
+            if (this.player2.turnedLeft) {
                 if(Soy_J1){
                     this.player2.play('p2DownLeft', true);
                 } else {
@@ -668,8 +759,36 @@ class onlineLevel extends Phaser.Scene {
                     this.player2.play('p1DownRight', true);
                 }
             }
-        } 
 
+            if (WEB_goLeft) {
+                this.player2.setVelocityX(-160);
+            }
+            if (WEB_goRight) {
+                this.player2.setVelocityX(160);
+            }
+
+            if (WEB_dontGoDown) {
+                console.log("WEB_dontGoDown  " + WEB_dontGoDown);
+                WEB_goDown = false;
+                this.player2.setVelocityX(0);
+                this.player2.setVelocityY(0);
+                if (this.player2.turnedLeft) {
+                    if (Soy_J1) {
+                        this.player2.play('p2TurnLeft');
+                    } else {
+                        this.player2.play('p1TurnLeft');
+                    }
+                } else {
+                    if (Soy_J1) {
+                        this.player2.play('p2TurnRight');
+                    } else {
+                        this.player2.play('p1TurnRight');
+                    }
+                }
+                WEB_dontGoDown = false;
+            }
+
+        }        
 
         //ACTUALIZA CORAZONES
         this.updateHearts();
@@ -700,7 +819,7 @@ class onlineLevel extends Phaser.Scene {
         } else {
             // Eventos de controles del JUGADOR 1
             if (this.player.keyA.isDown) { // Si el Jugador 1 pulsa la A, se mueve hacia la izq
-                playerMoveLeft();
+                playerMoveLeft(); // Avisamos al otro cliente de que nos movemos a la izquierda
                 this.player.setVelocityX(-160);
                 this.player.turnedLeft = true;
                 
@@ -711,15 +830,17 @@ class onlineLevel extends Phaser.Scene {
                 }                
                 
                 if (this.player.keyW.isDown) {
+                    playerMoveUp();
                     this.player.setVelocityY(-160);
                 }
 
                 if (this.player.keyS.isDown) {
+                    playerMoveDown();
                     this.player.setVelocityY(160);
                 }
             }
             else if (this.player.keyD.isDown) { // Si el Jugador 1 pulsa la D, se mueve hacia la der
-                playerMoveRight();
+                playerMoveRight(); // Avisamos al otro cliente de que nos movemos a la derecha
                 this.player.setVelocityX(160);
                 this.player.turnedLeft = false;
                 
@@ -730,23 +851,27 @@ class onlineLevel extends Phaser.Scene {
                 } 
 
                 if (this.player.keyW.isDown) {
+                    playerMoveUp();
                     this.player.setVelocityY(-160);
                 }
 
                 if (this.player.keyS.isDown) {
+                    playerMoveDown();
                     this.player.setVelocityY(160);
                 }
             }
             else if (this.player.keyW.isDown) { // Si el Jugador 1 pulsa la W, se mueve hacia arriba
-                playerMoveUp();
+                playerMoveUp(); // Avisamos al otro cliente de que nos movemos hacia arriba
                 this.player.setVelocityY(-160);
                 if (this.player.turnedLeft) {
+                    //playerMoveLeft();
                     if(Soy_J1){
                         this.player.play('p1UpLeft', true);
                     } else {
                         this.player.play('p2UpLeft', true);
                     } 
                 } else {
+                    //playerMoveRight();
                     if(Soy_J1){
                         this.player.play('p1UpRight', true);
                     } else {
@@ -755,15 +880,17 @@ class onlineLevel extends Phaser.Scene {
                 }
             }
             else if (this.player.keyS.isDown) { // Si el Jugador 1 pulsa la S, se mueve hacia abajo
-                playerMoveDown();
+                playerMoveDown(); // Avisamos al otro cliente de que nos movemos hacia abajo
                 this.player.setVelocityY(160);
                 if (this.player.turnedLeft) {
+                    //playerMoveLeft();
                     if(Soy_J1){
                         this.player.play('p1DownLeft', true);
                     } else {
                         this.player.play('p2DownLeft', true);
                     } 
                 } else {
+                    //playerMoveRight();
                     if(Soy_J1){
                         this.player.play('p1DownRight', true);
                     } else {
@@ -772,8 +899,27 @@ class onlineLevel extends Phaser.Scene {
                 }
             }
             else { // Si el Jugador 1 no pulsa ninguna tecla, se queda quieto mirando hacia la última dirección que estaba
+                
+                if(this.player.keyA.isUp){
+                    //console.log("este jugador ha soltado la tecla A");
+                    playerStopMoveLeft();
+                } 
+                if (this.player.keyD.isUp) {
+                    //console.log("este jugador ha soltado la tecla D");
+                    playerStopMoveRight();
+                } 
+                if (this.player.keyW.isUp){
+                    //console.log("este jugador ha soltado la tecla W");
+                    playerStopMoveUp();
+                } 
+                if (this.player.keyS.isUp){
+                    //console.log("este jugador ha soltado la tecla S");
+                    playerStopMoveDown();
+                }
+                
                 this.player.setVelocityX(0);
                 this.player.setVelocityY(0);
+
                 if (this.player.turnedLeft) {
                     if(Soy_J1){
                         this.player.play('p1TurnLeft');
@@ -889,21 +1035,21 @@ class onlineLevel extends Phaser.Scene {
                 // }
             }
             else {
-                this.player2.setVelocityX(0);
-                this.player2.setVelocityY(0);
-                if (this.player2.turnedLeft) {
-                    if(Soy_J1){
-                        this.player2.play('p2TurnLeft');
-                    } else {
-                        this.player2.play('p1TurnLeft');
-                    }
-                } else {
-                    if(Soy_J1){
-                        this.player2.play('p2TurnRight');
-                    } else {
-                        this.player2.play('p1TurnRight');
-                    }
-                }
+                // this.player2.setVelocityX(0);
+                // this.player2.setVelocityY(0);
+                // if (this.player2.turnedLeft) {
+                //     if(Soy_J1){
+                //         this.player2.play('p2TurnLeft');
+                //     } else {
+                //         this.player2.play('p1TurnLeft');
+                //     }
+                // } else {
+                //     if(Soy_J1){
+                //         this.player2.play('p2TurnRight');
+                //     } else {
+                //         this.player2.play('p1TurnRight');
+                //     }
+                // }
             }
 
             // Ataque JUGADOR 2
@@ -998,7 +1144,7 @@ class onlineLevel extends Phaser.Scene {
             }
         }
 
-        //cambiar escena a gameover
+        //Cambiar escena a gameover
         if(this.player.life==0 && this.player2.life==0){
             this.scene.start('gameOver');
             this.scene.stop('Level1');
@@ -1010,21 +1156,38 @@ class onlineLevel extends Phaser.Scene {
 
 // FUNCIONES A EJECUTAR CUANDO connection.js LO SOLICITE
 function activate_WEB_goLeft(){
-    console.log("onlineLevel.js: El otro jugador se va a mover a la izquierda");
+    //console.log("El OTRO jugador se va a mover a la izquierda");
     WEB_goLeft = true;
 }
 
 function activate_WEB_goRight(){
-    console.log("onlineLevel.js: El otro jugador se va a mover a la derecha");
+    //console.log("El OTRO jugador se va a mover a la derecha");
     WEB_goRight = true;
 }
 
 function activate_WEB_goUp(){
-    console.log("onlineLevel.js: El otro jugador se va a mover hacia arriba");
+    //console.log("El OTRO jugador se va a mover hacia arriba");
     WEB_goUp = true;
 }
 
 function activate_WEB_goDown(){
-    console.log("onlineLevel.js: El otro jugador se va a mover hacia abajo");
+    //console.log("El OTRO jugador se va a mover hacia abajo");
     WEB_goDown = true;
+}
+
+function deactivate_WEB_goLeft(){
+    //console.log("El OTRO jugador ha soltado la tecla A");
+    WEB_dontGoLeft = true;
+}
+function deactivate_WEB_goRight(){
+    //console.log("El OTRO jugador ha soltado la tecla D");
+    WEB_dontGoRight = true;
+}
+function deactivate_WEB_goUp(){
+    //console.log("El OTRO jugador ha soltado la tecla W");
+    WEB_dontGoUp = true;
+}
+function deactivate_WEB_goDown(){
+    //console.log("El OTRO jugador ha soltado la tecla S");
+    WEB_dontGoDown = true;
 }

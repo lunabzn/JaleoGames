@@ -39,14 +39,14 @@ socket.onmessage = function (event) {
 			break;
 
 		case (4): // Mover jugador a la izquierda
-			console.log(aux.stringPrueba);
-			console.log("connection.js: El otro jugador se va a mover a la izquierda");
+			//console.log(aux.stringPrueba);
+			//console.log("connection.js: El otro jugador se va a mover a la izquierda");
 			activate_WEB_goLeft();
 			break;
 
 		case (5): // Mover jugador a la derecha
-			console.log(aux.stringPrueba);
-			console.log("connection.js: El otro jugador se va a mover a la derecha");
+			//console.log(aux.stringPrueba);
+			//console.log("connection.js: El otro jugador se va a mover a la derecha");
 			activate_WEB_goRight();
 			break;
  
@@ -60,19 +60,36 @@ socket.onmessage = function (event) {
 			break;
 
 		case (7): // Mover jugador arriba
-			console.log(aux.stringPrueba);
-			console.log("connection.js: El otro jugador se va a mover hacia arriba");
+			//console.log(aux.stringPrueba);
+			//console.log("connection.js: El otro jugador se va a mover hacia arriba");
 			activate_WEB_goUp();
 			break;
 
 		case (8): // Mover jugador abajo
-			console.log(aux.stringPrueba);
-			console.log("connection.js: El otro jugador se va a mover hacia abajo");
+			//console.log(aux.stringPrueba);
+			//console.log("connection.js: El otro jugador se va a mover hacia abajo");
 			activate_WEB_goDown();
+			break;
+
+
+		case (9):
+			deactivate_WEB_goLeft();
 			break;
 
 		case (10):
 			cambiarDesconexion();
+			break;
+
+		case (11):
+			deactivate_WEB_goRight();
+			break;
+
+		case (12):
+			deactivate_WEB_goUp();
+			break;
+
+		case (13):
+			deactivate_WEB_goDown();
 			break;
 
 		default:
@@ -124,7 +141,6 @@ function playerMoveLeft() {
 		idJugador: J1_id
 	}
 	socket.send(JSON.stringify(message));
-	console.log("connection.js: mensaje a server de mov.izq. enviado");
 }
 
 function playerMoveRight() {
@@ -134,7 +150,6 @@ function playerMoveRight() {
 		idJugador: J1_id
 	}
 	socket.send(JSON.stringify(message));
-	console.log("connection.js: mensaje a server de mov.der. enviado");
 }
 
 function playerMoveUp() {
@@ -144,7 +159,6 @@ function playerMoveUp() {
 		idJugador: J1_id
 	}
 	socket.send(JSON.stringify(message));
-	console.log("connection.js: mensaje a server de mov.arriba enviado");
 }
 
 function playerMoveDown(){
@@ -154,7 +168,42 @@ function playerMoveDown(){
 		idJugador: J1_id
 	}
 	socket.send(JSON.stringify(message));
-	console.log("connection.js: mensaje a server de mov.arriba enviado");
+}
+
+function playerStopMoveLeft(){
+	let message = {
+		idFuncion: 9,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
+function playerStopMoveRight(){
+	let message = {
+		idFuncion: 11,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
+function playerStopMoveUp(){
+	let message = {
+		idFuncion: 12,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
+function playerStopMoveDown(){
+	let message = {
+		idFuncion: 13,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
 }
 
 function jugadorPowerup() { //Mi función que recibe los datos que necesito del jugador 2
