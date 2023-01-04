@@ -343,6 +343,9 @@ public class Handler extends TextWebSocketHandler {
                 }
                 break;
 
+            case(14):
+                break;
+
         }
     }
 

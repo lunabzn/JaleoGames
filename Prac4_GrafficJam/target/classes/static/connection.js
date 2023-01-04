@@ -92,6 +92,9 @@ socket.onmessage = function (event) {
 			deactivate_WEB_goDown();
 			break;
 
+		case (14):
+			break;
+
 		default:
 			break;
 	}
@@ -200,6 +203,15 @@ function playerStopMoveUp(){
 function playerStopMoveDown(){
 	let message = {
 		idFuncion: 13,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
+function playerdead(){
+	let message = {
+		idFuncion: 14,
 		idPartida: ID_Partida,
 		idJugador: J1_id
 	}

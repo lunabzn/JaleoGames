@@ -87,7 +87,7 @@ class onlineLevel extends Phaser.Scene {
             LocalJ1 = false;
         }
 
-        this.quantEnemiesRound1 = 3;
+        this.quantEnemiesRound1 = 1;
         this.quantEnemiesRound2 = 4;
         this.quantEnemiesRound3 = 6;
         this.roundCont = 1;
@@ -167,7 +167,7 @@ class onlineLevel extends Phaser.Scene {
         this.punchSound = this.sound.add("punch");
 
         // Animaciones de movimiento de los jugadores
-        // ANIMACIONES JUGADOR 1
+        // ANIMACIONES VIVO
         this.anims.create({
             key: 'p1Left',
             frames: this.anims.generateFrameNumbers('vivo', { start: 8, end: 11 }),
@@ -175,7 +175,6 @@ class onlineLevel extends Phaser.Scene {
             repeat: -1
         });
 
-        // ANIMACIONES VIVO
         this.anims.create({
             key: 'p1TurnLeft',
             frames: [{ key: 'vivo', frame: 12 }],
@@ -625,9 +624,19 @@ class onlineLevel extends Phaser.Scene {
 
             if (WEB_goUp) {
                 this.player2.setVelocityY(-160);
+                if (Soy_J1) {
+                    this.player2.play('p2UpLeft', true);
+                } else {
+                    this.player2.play('p1UpLeft', true);
+                }
             }
             if (WEB_goDown) {
                 this.player2.setVelocityY(160);
+                if (Soy_J1) {
+                    this.player2.play('p2DownLeft', true);
+                } else {
+                    this.player2.play('p1DownLeft', true);
+                }
             }
 
             if (WEB_dontGoLeft) {
@@ -666,9 +675,19 @@ class onlineLevel extends Phaser.Scene {
 
             if (WEB_goUp) {
                 this.player2.setVelocityY(-160);
+                if (Soy_J1) {
+                    this.player2.play('p2UpRight', true);
+                } else {
+                    this.player2.play('p1UpRight', true);
+                }
             }
             if (WEB_goDown) {
                 this.player2.setVelocityY(160);
+                if (Soy_J1) {
+                    this.player2.play('p2DownRight', true);
+                } else {
+                    this.player2.play('p1DownRight', true);
+                }
             }
 
             if (WEB_dontGoRight) {
@@ -714,9 +733,19 @@ class onlineLevel extends Phaser.Scene {
 
             if (WEB_goLeft) {
                 this.player2.setVelocityX(-160);
+                if (Soy_J1) {
+                    this.player2.play('p2UpLeft', true);
+                } else {
+                    this.player2.play('p1UpLeft', true);
+                }
             }
             if (WEB_goRight) {
                 this.player2.setVelocityX(160);
+                if (Soy_J1) {
+                    this.player2.play('p2UpRight', true);
+                } else {
+                    this.player2.play('p1UpRight', true);
+                }
             }
 
             if (WEB_dontGoUp) {
@@ -762,9 +791,19 @@ class onlineLevel extends Phaser.Scene {
 
             if (WEB_goLeft) {
                 this.player2.setVelocityX(-160);
+                if (Soy_J1) {
+                    this.player2.play('p2DownLeft', true);
+                } else {
+                    this.player2.play('p1DownLeft', true);
+                }
             }
             if (WEB_goRight) {
                 this.player2.setVelocityX(160);
+                if (Soy_J1) {
+                    this.player2.play('p2DownRight', true);
+                } else {
+                    this.player2.play('p1DownRight', true);
+                }
             }
 
             if (WEB_dontGoDown) {
@@ -864,14 +903,12 @@ class onlineLevel extends Phaser.Scene {
                 playerMoveUp(); // Avisamos al otro cliente de que nos movemos hacia arriba
                 this.player.setVelocityY(-160);
                 if (this.player.turnedLeft) {
-                    //playerMoveLeft();
                     if(Soy_J1){
                         this.player.play('p1UpLeft', true);
                     } else {
                         this.player.play('p2UpLeft', true);
                     } 
                 } else {
-                    //playerMoveRight();
                     if(Soy_J1){
                         this.player.play('p1UpRight', true);
                     } else {
@@ -883,14 +920,12 @@ class onlineLevel extends Phaser.Scene {
                 playerMoveDown(); // Avisamos al otro cliente de que nos movemos hacia abajo
                 this.player.setVelocityY(160);
                 if (this.player.turnedLeft) {
-                    //playerMoveLeft();
                     if(Soy_J1){
                         this.player.play('p1DownLeft', true);
                     } else {
                         this.player.play('p2DownLeft', true);
                     } 
                 } else {
-                    //playerMoveRight();
                     if(Soy_J1){
                         this.player.play('p1DownRight', true);
                     } else {
@@ -973,18 +1008,18 @@ class onlineLevel extends Phaser.Scene {
         if (this.player2.life <= 0) {
             if (this.player2.turnedLeft) {
                 if(Soy_J1){
-                    this.player2.play('p1DefeatLeft', true); // Animacion Vivo
+                    this.player2.play('p2DefeatLeft', true); // Animacion Tuerto
                 } else {
-                    this.player2.play('p1DefeatLeft', true); // Animacion Tuerto
+                    this.player2.play('p1DefeatLeft', true); // Animacion Vivo
                 }
                 this.player2.setImmovable(true); 
                 this.player2.setVelocityX(0);
                 this.player2.setVelocityY(0);                
             } else {
                 if(Soy_J1){
-                    this.player2.play('p1DefeatRight', true); // Animacion Vivo
-                } else {
                     this.player2.play('p2DefeatRight', true); // Animacion Tuerto
+                } else {
+                    this.player2.play('p1DefeatRight', true); // Animacion Vivo
                 }
                 this.player2.setImmovable(true);
                 this.player2.setVelocityX(0);
@@ -1147,7 +1182,7 @@ class onlineLevel extends Phaser.Scene {
         //Cambiar escena a gameover
         if(this.player.life==0 && this.player2.life==0){
             this.scene.start('gameOver');
-            this.scene.stop('Level1');
+            this.scene.stop('onlineLevel');
             this.scene.stop('pauseScene');
         }
     }
