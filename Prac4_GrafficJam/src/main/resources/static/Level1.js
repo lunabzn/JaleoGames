@@ -377,72 +377,17 @@ class Level1 extends Phaser.Scene {
             enemies[i].turnedLeft = true;
             enemies[i].life = 3;
 
-            this.physics.add.overlap(this.player1, enemies[i], function (player, police) {
-                //console.log("colision");
-                console.log("overlap-colisionando")
-                if (player.atkP1.isDown) {
-                    police.life -= 1;
-                    console.log("pucch");
-                    if (police.life <= 0) {
-                        police.y = -100;
-                        police.body.moves = false;
-                    }
-                }
-                //numero con el que se ataca
-                var nAttack = 1;
-                //la probabilidad del ataque del enemigo es del 0.0001%
-                var probability = Math.floor(Math.random() * (70) + 1);
-
-                var playerCoords = player.getCenter();
-                var enemyCoords = police.getCenter();
-
-                if (nAttack == probability) {
-                    if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
-                    {
-                        police.play('eAttackLeft', true);
-                        player.life -= 1;
-                    } else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
-                    {
-                        police.play('eAttackRight', true);
-                        player.life -= 1;
-                    }
-                    console.log("pega jug1");
-                }
+            this.physics.add.collider(this.player1, enemies[i], function (player, police) {
+                console.log("colision p1");
+                
                 
             });
             //this.physics.add.collider(this.player2, enemies[i], function (player, police) {console.log("colision collider")});
             //this.physics.add.collider(this.player1, enemies[i], function (player, police) {console.log("colision collider")});
 
-            this.physics.add.overlap(this.player2, enemies[i], function (player, police) {
-                
-                if (player.atkP2.isDown) {
-                    police.life -= 1;
-                    if (police.life <= 0) {
-                        police.y = -100;
-                        police.body.moves = false;
-                    }
-                }
-                //numero con el que se ataca
-                var nAttack = 1;
-
-                //la probabilidad del ataque del enemigo es del 0.0001%
-                var probability = Math.floor(Math.random() * (70) + 1);
-
-                var playerCoords = player.getCenter();
-                var enemyCoords = police.getCenter();
-
-                if (nAttack == probability) {
-                    if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
-                    {
-                        police.play('eAttackLeft', true);
-                        player.life -= 1;
-                    } else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
-                    {
-                        police.play('eAttackRight', true);
-                        player.life -= 1;
-                    }
-                    console.log("pega jug2");
-                }
+            this.physics.add.collider(this.player2, enemies[i], function (player, police) {
+                console.log("colision p2");
+               
                 
             });
         }
@@ -495,7 +440,7 @@ class Level1 extends Phaser.Scene {
         var enemyPos = enemy.getCenter();
         var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
         //separacion de sprites
-        var separation = 60;
+        var separation = 66;
 
         var angleTopRight = this.angleBetweenPlayerThing(player, player.getTopRight().x, player.getTopRight().y);
         var angleBottomRight = this.angleBetweenPlayerThing(player, player.getBottomRight().x, player.getBottomRight().y);
@@ -616,54 +561,40 @@ class Level1 extends Phaser.Scene {
             }
         } else {
             // Eventos de controles del JUGADOR 1
-            
-            for (var i = 0; i < this.activeEnemies.length; i++) {
-                if (this.activeEnemies[i].alive) {
-
-                    
             var playerPos = this.player1.getCenter();
-            var enemyPos = this.activeEnemies[i].getCenter();
-            var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
-            var distx = Phaser.Math.Distance.Between(playerPos.x,0, enemyPos.x,0);
-            var disty = Phaser.Math.Distance.Between(0,playerPos.y,0,enemyPos.y);
-            var separation = 60;
-
-                    
-                    
-            this.player1.depth  = playerPos.y; //Para que no se superpongan
-            this.player2.depth  = playerPos.y; //Para que no se superpongan
-                    
-
-                    
-
-            if ((this.player1.keyA.isDown) && (dist >separation || disty >= separation || playerPos.x<=enemyPos.x)) {
+            
+            this.player1.depth  =this.player1.getCenter().y; //Para que no se superpongan
+            this.player2.depth  = this.player2.getCenter().y; //Para que no se superpongan
+                
+            if (this.player1.keyA.isDown) {
                 this.player1.setVelocityX(-160);
                 console.log("pulsando A")
                 this.player1.turnedLeft = true;
                 this.player1.play('p1Left', true);
+                
 
-                if ((this.player1.keyW.isDown) && (dist>separation || distx >= separation || playerPos.y>enemyPos.y)) {
+                if (this.player1.keyW.isDown) {
                     this.player1.setVelocityY(-160);
                 }
 
-                if ((this.player1.keyS.isDown) && (dist>separation || distx >= separation || playerPos.x<=enemyPos.x)) {
+                if (this.player1.keyS.isDown) {
                     this.player1.setVelocityY(160);
                 }
             }
-            else if ((this.player1.keyD.isDown) &&  (dist >separation || disty >= separation || playerPos.x>enemyPos.x)) {
+            else if (this.player1.keyD.isDown) {
                 this.player1.setVelocityX(160);
                 this.player1.turnedLeft = false;
                 this.player1.play('p1Right', true);
 
-                if ((this.player1.keyW.isDown) &&  (dist >separation || distx >= separation || playerPos.y>enemyPos.y)) {
+                if (this.player1.keyW.isDown) {
                     this.player1.setVelocityY(-160);
                 }
 
-                if ((this.player1.keyS.isDown) && (dist >separation || distx >= separation || playerPos.y<=enemyPos.y)) {
+                if (this.player1.keyS.isDown) {
                     this.player1.setVelocityY(160);
                 }
             }
-            else if ((this.player1.keyW.isDown) && (dist >separation || distx >= separation || playerPos.y>enemyPos.y)) {
+            else if (this.player1.keyW.isDown) {
                 this.player1.setVelocityY(-160);
                 if (this.player1.turnedLeft) {
                     this.player1.play('p1UpLeft', true);
@@ -671,7 +602,7 @@ class Level1 extends Phaser.Scene {
                     this.player1.play('p1UpRight', true);
                 }
             }
-            else if ((this.player1.keyS.isDown) && (dist >separation || distx >= separation || playerPos.y<=enemyPos.y)) {
+            else if (this.player1.keyS.isDown) {
                 this.player1.setVelocityY(160);
                 if (this.player1.turnedLeft) {
                     this.player1.play('p1DownLeft', true);
@@ -688,8 +619,8 @@ class Level1 extends Phaser.Scene {
                     this.player1.play('p1TurnRight');
                 }
             }
-        }
-    }
+        
+    
             // Ataque JUGADOR 1
             if (this.player1.atkP1.isDown) {
                 if (this.player1.turnedLeft) {
@@ -741,33 +672,33 @@ class Level1 extends Phaser.Scene {
             var separation = 60;
 
             // Eventos de controles del JUGADOR 2
-            if ((this.cursors.left.isDown) && (dist >separation || disty >= separation || playerPos.x<=enemyPos.x)) {
+            if (this.cursors.left.isDown) {
                 this.player2.setVelocityX(-160);
                 this.player2.turnedLeft = true;
                 this.player2.play('p2Left', true);
 
-                if ((this.cursors.up.isDown && (dist>separation || distx >= separation || playerPos.y>enemyPos.y))) {
+                if (this.cursors.up.isDown ) {
                     this.player2.setVelocityY(-160);
                 }
 
-                if ((this.cursors.down.isDown) && (dist>separation || distx >= separation || playerPos.x<=enemyPos.x)) {
+                if (this.cursors.down.isDown) {
                     this.player2.setVelocityY(160);
                 }
             }
-            else if ((this.cursors.right.isDown) && (dist >separation || disty >= separation || playerPos.x>enemyPos.x)) {
+            else if (this.cursors.right.isDown) {
                 this.player2.setVelocityX(160);
                 this.player2.turnedLeft = false;
                 this.player2.play('p2Right', true);
 
-                if ((this.cursors.up.isDown) && (dist>separation || distx >= separation || playerPos.y>enemyPos.y)) {
+                if (this.cursors.up.isDown) {
                     this.player2.setVelocityY(-160);
                 }
 
-                if ((this.cursors.down.isDown) && (dist>separation || distx >= separation || playerPos.x<=enemyPos.x)) {
+                if (this.cursors.down.isDown) {
                     this.player2.setVelocityY(160);
                 }
             }
-            else if ((this.cursors.up.isDown) && (dist>separation || distx >= separation || playerPos.y>enemyPos.y)) {
+            else if (this.cursors.up.isDown) {
                 this.player2.setVelocityY(-160);
                 if (this.player2.turnedLeft) {
                     this.player2.play('p2UpLeft', true);
@@ -775,7 +706,7 @@ class Level1 extends Phaser.Scene {
                     this.player2.play('p2UpRight', true);
                 }
             }
-            else if ((this.cursors.down.isDown) && (dist>separation || distx >= separation || playerPos.x<=enemyPos.x)) {
+            else if (this.cursors.down.isDown) {
                 this.player2.setVelocityY(160);
                 if (this.player2.turnedLeft) {
                     this.player2.play('p2DownLeft', true);
@@ -858,6 +789,99 @@ class Level1 extends Phaser.Scene {
                 }
             }
         }
+////////////////////////////ATAQUE ENEMIGOS///////////////////////////////
+for (var i = 0; i < this.activeEnemies.length; i++) {
+    if (this.activeEnemies[i].alive) {
+
+        
+        var playerPos = this.player1.getCenter();
+        var enemyPos = this.activeEnemies[i].getCenter();
+        var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
+        var distx = Phaser.Math.Distance.Between(playerPos.x,0, enemyPos.x,0);
+        var disty = Phaser.Math.Distance.Between(0,playerPos.y,0,enemyPos.y);
+        var separation = 60;
+
+        //numero con el que se ataca
+        var nAttack = 1;
+        //la probabilidad del ataque del enemigo es del 0.0001%
+        var probability = Math.floor(Math.random() * (70) + 1);
+
+        
+if(dist <=67){
+        if (nAttack == probability) {
+            if (playerPos.x < enemyPos.x)//si el enemigo va hacia la izquierda
+            {
+                this.activeEnemies[i].play('eAttackLeft', true);
+                this.player1.life -= 1;
+            } else if (enemyPos.x > enemyPos.x)//si el enemigo va hacia la derecha
+            {
+                this.activeEnemies[i].play('eAttackRight', true);
+                this.player1.life -= 1;
+            }
+            console.log("pega jug1");
+        }
+
+        if (this.player1.atkP1.isDown) {
+                    this.activeEnemies[i].life -= 1;
+                    console.log("pucch");
+                    if (this.activeEnemies[i].life <= 0) {
+                        this.activeEnemies[i].y = -100;
+                        this.activeEnemies[i].body.moves = false;
+                    }
+                }
+
+        
+    }
+
+
+    }
+
+}
+
+for (var i = 0; i < this.activeEnemies.length; i++) {
+    if (this.activeEnemies[i].alive) {
+
+        
+        var playerPos = this.player2.getCenter();
+        var enemyPos = this.activeEnemies[i].getCenter();
+        var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
+        
+
+        //numero con el que se ataca
+        var nAttack = 1;
+        //la probabilidad del ataque del enemigo es del 0.0001%
+        var probability = Math.floor(Math.random() * (70) + 1);
+
+        
+if(dist <=67){
+        if (nAttack == probability) {
+            if (playerPos.x < enemyPos.x)//si el enemigo va hacia la izquierda
+            {
+                this.activeEnemies[i].play('eAttackLeft', true);
+                this.player2.life -= 1;
+            } else if (enemyPos.x > enemyPos.x)//si el enemigo va hacia la derecha
+            {
+                this.activeEnemies[i].play('eAttackRight', true);
+                this.player2.life -= 1;
+            }
+            console.log("pega jug1");
+        }
+
+        if (this.player2.atkP2.isDown) {
+                    this.activeEnemies[i].life -= 1;
+                    console.log("pucch");
+                    if (this.activeEnemies[i].life <= 0) {
+                        this.activeEnemies[i].y = -100;
+                        this.activeEnemies[i].body.moves = false;
+                    }
+                }
+
+        
+    }
+}
+}
+
+
 
         // ACTUALIZAR ENEMIGOS
         for (var i = 0; i < this.activeEnemies.length; i++) {
@@ -897,4 +921,3 @@ class Level1 extends Phaser.Scene {
     }
 
 }
-    
