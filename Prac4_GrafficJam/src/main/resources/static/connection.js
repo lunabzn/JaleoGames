@@ -15,11 +15,11 @@ socket.onmessage = function (event) {
 	switch (ID_Funcion) {
 
 		//LO QUE RECIBO DEL SERVIDOR
-		case (0): //CrearPartida() (Pending)
+		case (0): 
 			ID_Partida = aux.idPartida;
 			Soy_J1 = aux.soyJ1;
 			console.log("aux " + aux.soyJ1);
-			console.log("la buena " + Soy_J1);
+			console.log("Soy Jugador 1?: " + Soy_J1);
 			console.log(aux.stringPrueba);
 			console.log(ID_Partida);
 			break;
@@ -93,6 +93,15 @@ socket.onmessage = function (event) {
 			break;
 
 		case (14):
+			makePauseGame();
+			break;
+
+		case (15):
+			makeResumeGame();
+			break;
+
+		case(16):
+			makePlayerLogOut();
 			break;
 
 		default:
@@ -102,16 +111,15 @@ socket.onmessage = function (event) {
 
 
 //LO QUE LE ENVIO AL SERVIDOR
-function crearPartida(){ //Mi función que envía los datos que necesito al server
+function createGame(){ //Mi función que envía los datos que necesito al server
 	let message = {
 		idFuncion: 0, //Cuando el server mire el mensaje, sabra que función llamar gracias a este nombre
 		idJugador: J1_id,
-		ayuda: "Partida llegue" //debug
 	}	
 	socket.send(JSON.stringify(message)); 
 }
 
-function borrarPartida() { 
+function deleteGame() { 
 	let message = {
 			idFuncion: 1,
 			idPartida: ID_Partida,
@@ -209,7 +217,7 @@ function playerStopMoveDown(){
 	socket.send(JSON.stringify(message));
 }
 
-function playerdead(){
+function pauseGame(){
 	let message = {
 		idFuncion: 14,
 		idPartida: ID_Partida,
@@ -217,6 +225,25 @@ function playerdead(){
 	}
 	socket.send(JSON.stringify(message));
 }
+
+function resumeGame(){
+	let message = {
+		idFuncion: 15,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
+function playerPauseLogOut(){
+	let message = {
+		idFuncion: 16,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
 
 function jugadorPowerup() { //Mi función que recibe los datos que necesito del jugador 2
 	let message = {

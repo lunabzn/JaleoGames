@@ -7,7 +7,7 @@ var config = {
     dom: {
         createContainer: true
     },
-    scene: [audioManager, mainScene, selectorModeScene, selectorLevelScene, Level1, pauseScene, gameOver, gameWin, Lobby, loadingServer, onlineLevel],
+    scene: [audioManager, mainScene, selectorModeScene, selectorLevelScene, Level1, pauseScene, gameOver, gameWin, Lobby, loadingServer, onlineLevel, pauseOnlineScene],
     physics: {
         default: 'arcade', 
         arcade: {

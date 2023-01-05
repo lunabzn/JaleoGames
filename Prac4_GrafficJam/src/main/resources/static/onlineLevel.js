@@ -8,6 +8,7 @@ var WEB_dontGoLeft = false;
 var WEB_dontGoRight = false;
 var WEB_dontGoUp = false;
 var WEB_dontGoDown = false;
+var WEB_pauseGame = false;
 
 
 class onlineLevel extends Phaser.Scene {
@@ -66,12 +67,13 @@ class onlineLevel extends Phaser.Scene {
         this.invisibleCollider = this.physics.add.sprite(400,-50,'invisibleCollider');
 
         // Boton de pausa
-        let pause = this.add.image(700, 520, "pause").setScale(0.07);
+        let pause = this.add.image(425, 50, "pause").setScale(0.07);
         pause.setInteractive();
         pause.on('pointerdown', () => {
+            pauseGame();
             this.scene.stop('gameWin');
             this.scene.stop('gameOver');
-            this.scene.switch('pauseScene');
+            this.scene.switch('pauseOnlineScene');
         })
 
         // Creación de los dos personajes
@@ -612,30 +614,33 @@ class onlineLevel extends Phaser.Scene {
 
         if (WEB_goLeft) { // Movimiento a la izquierda del otro jugador
             console.log("El OTRO jugador se va a mover a la izquierda");
+            this.player2.setVelocityX(-160);
+            this.player2.turnedLeft = true;
             
             if (Soy_J1) {
                 this.player2.play('p2Left', true); // si soy el J1, el player2 tiene el skin de Tuerto. Ejecutamos la animacion de mov a la izq de Tuerto 
             } else {
                 this.player2.play('p1Left', true); // si soy el J2, el player2 tiene el skin de Vivo. Ejecutamos la animacion de mov a la izq de Vivo
             }
-            
-            this.player2.setVelocityX(-160);
-            this.player2.turnedLeft = true;
 
             if (WEB_goUp) {
                 this.player2.setVelocityY(-160);
                 if (Soy_J1) {
-                    this.player2.play('p2UpLeft', true);
+                    this.player2.stop('p2Left', true);
+                    this.player2.play('p2Left', true);
                 } else {
-                    this.player2.play('p1UpLeft', true);
+                    this.player2.stop('p1Left', true);
+                    this.player2.play('p1Left', true);
                 }
             }
             if (WEB_goDown) {
                 this.player2.setVelocityY(160);
                 if (Soy_J1) {
-                    this.player2.play('p2DownLeft', true);
+                    this.player2.stop('p2Left', true);
+                    this.player2.play('p2Left', true);
                 } else {
-                    this.player2.play('p1DownLeft', true);
+                    this.player2.stop('p2Left', true);
+                    this.player2.play('p1Left', true);
                 }
             }
 
@@ -827,7 +832,14 @@ class onlineLevel extends Phaser.Scene {
                 WEB_dontGoDown = false;
             }
 
-        }        
+        }       
+        
+        if(WEB_pauseGame){
+            this.scene.stop('gameWin');
+            this.scene.stop('gameOver');
+            this.scene.switch('pauseOnlineScene');
+            WEB_pauseGame = false;
+        }
 
         //ACTUALIZA CORAZONES
         this.updateHearts();
@@ -1181,6 +1193,7 @@ class onlineLevel extends Phaser.Scene {
 
         //Cambiar escena a gameover
         if(this.player.life==0 && this.player2.life==0){
+            deleteGame();
             this.scene.start('gameOver');
             this.scene.stop('onlineLevel');
             this.scene.stop('pauseScene');
@@ -1225,4 +1238,7 @@ function deactivate_WEB_goUp(){
 function deactivate_WEB_goDown(){
     //console.log("El OTRO jugador ha soltado la tecla S");
     WEB_dontGoDown = true;
+}
+function makePauseGame(){
+    WEB_pauseGame = true;
 }
