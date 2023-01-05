@@ -440,7 +440,7 @@ class Level1 extends Phaser.Scene {
         var enemyPos = enemy.getCenter();
         var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
         //separacion de sprites
-        var separation = 66;
+        var separation = 69;
 
         var angleTopRight = this.angleBetweenPlayerThing(player, player.getTopRight().x, player.getTopRight().y);
         var angleBottomRight = this.angleBetweenPlayerThing(player, player.getBottomRight().x, player.getBottomRight().y);
@@ -797,9 +797,7 @@ for (var i = 0; i < this.activeEnemies.length; i++) {
         var playerPos = this.player1.getCenter();
         var enemyPos = this.activeEnemies[i].getCenter();
         var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
-        var distx = Phaser.Math.Distance.Between(playerPos.x,0, enemyPos.x,0);
-        var disty = Phaser.Math.Distance.Between(0,playerPos.y,0,enemyPos.y);
-        var separation = 60;
+        
 
         //numero con el que se ataca
         var nAttack = 1;
@@ -807,18 +805,19 @@ for (var i = 0; i < this.activeEnemies.length; i++) {
         var probability = Math.floor(Math.random() * (70) + 1);
 
         
-if(dist <=67){
+if(dist <=70){
         if (nAttack == probability) {
             if (playerPos.x < enemyPos.x)//si el enemigo va hacia la izquierda
             {
                 this.activeEnemies[i].play('eAttackLeft', true);
                 this.player1.life -= 1;
-            } else if (enemyPos.x > enemyPos.x)//si el enemigo va hacia la derecha
+            } else if (playerPos.x > enemyPos.x)//si el enemigo va hacia la derecha
             {
                 this.activeEnemies[i].play('eAttackRight', true);
                 this.player1.life -= 1;
+                console.log("pega jug1");
             }
-            console.log("pega jug1");
+            
         }
 
         if (this.player1.atkP1.isDown) {
@@ -853,18 +852,19 @@ for (var i = 0; i < this.activeEnemies.length; i++) {
         var probability = Math.floor(Math.random() * (70) + 1);
 
         
-if(dist <=67){
+if(dist <=70){
         if (nAttack == probability) {
             if (playerPos.x < enemyPos.x)//si el enemigo va hacia la izquierda
             {
                 this.activeEnemies[i].play('eAttackLeft', true);
                 this.player2.life -= 1;
-            } else if (enemyPos.x > enemyPos.x)//si el enemigo va hacia la derecha
+            } else if (playerPos.x > enemyPos.x)//si el enemigo va hacia la derecha
             {
                 this.activeEnemies[i].play('eAttackRight', true);
                 this.player2.life -= 1;
+                console.log("pega jug1");
             }
-            console.log("pega jug1");
+            
         }
 
         if (this.player2.atkP2.isDown) {
