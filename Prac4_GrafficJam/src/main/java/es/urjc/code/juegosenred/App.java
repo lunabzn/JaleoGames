@@ -17,7 +17,7 @@ public class App implements WebSocketConfigurer {
 	public static void main(String[] args) {
 		SpringApplication.run(App.class, args);
 	}
-
+	
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(gameHandler(), "/race51").setAllowedOrigins("*");
 	}

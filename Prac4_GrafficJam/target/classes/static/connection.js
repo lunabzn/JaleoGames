@@ -29,6 +29,7 @@ socket.onmessage = function (event) {
 			break;
 
 		case (2): //Ataque Jugador
+			activate_WEB_playerAttack();
 			break;
 
 		case (3)://crearJugador() 
@@ -104,6 +105,10 @@ socket.onmessage = function (event) {
 			makePlayerLogOut();
 			break;
 
+		case(17):
+			deactivate_WEB_dontPlayerAttack();
+			break;
+
 		default:
 			break;
 	}
@@ -132,6 +137,24 @@ function borrarJugador() {
 	let message = {
 			idFuncion: 9,
 			idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
+function playerAttack(){
+	let message = {
+		idFuncion: 2,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
+function playerStopAttack(){
+	let message = {
+		idFuncion: 17,
+		idPartida: ID_Partida,
+		idJugador: J1_id
 	}
 	socket.send(JSON.stringify(message));
 }

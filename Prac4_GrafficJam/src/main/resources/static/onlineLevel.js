@@ -9,6 +9,8 @@ var WEB_dontGoRight = false;
 var WEB_dontGoUp = false;
 var WEB_dontGoDown = false;
 var WEB_pauseGame = false;
+var WEB_playerAttack = false;
+var WEB_dontPlayerAttack = false;
 
 
 class onlineLevel extends Phaser.Scene {
@@ -58,8 +60,6 @@ class onlineLevel extends Phaser.Scene {
         this.load.image('tuertoLife', 'resources/tuertoLife.png');
         this.load.image('vivoLife', 'resources/vivoLife.png');
     }
-
-
 
     create() {
 
@@ -411,61 +411,61 @@ class onlineLevel extends Phaser.Scene {
             enemies[i].life = 3;
 
             this.physics.add.collider(this.player, enemies[i], function (player, police) {
-                if (player.atkP1.isDown) {
-                    police.life -= 1;
-                    if (police.life <= 0) {
-                        police.y = -100;
-                        police.body.moves = false;
-                    }
-                }
-                //numero con el que se ataca
-                var nAttack = 1;
-                //la probabilidad del ataque del enemigo es del 0.0001%
-                var probability = Math.floor(Math.random() * (100) + 1);
+                // if (player.atkP1.isDown) {
+                //     police.life -= 1;
+                //     if (police.life <= 0) {
+                //         police.y = -100;
+                //         police.body.moves = false;
+                //     }
+                // }
+                // //numero con el que se ataca
+                // var nAttack = 1;
+                // //la probabilidad del ataque del enemigo es del 0.0001%
+                // var probability = Math.floor(Math.random() * (100) + 1);
 
-                var playerCoords = player.getCenter();
-                var enemyCoords = police.getCenter();
+                // var playerCoords = player.getCenter();
+                // var enemyCoords = police.getCenter();
 
-                if (nAttack == probability) {
-                    if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
-                    {
-                        police.play('eAttackLeft', true);
-                        player.life -= 1;
-                    } else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
-                    {
-                        police.play('eAttackRight', true);
-                        player.life -= 1;
-                    }
-                }
+                // if (nAttack == probability) {
+                //     if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
+                //     {
+                //         police.play('eAttackLeft', true);
+                //         player.life -= 1;
+                //     } else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
+                //     {
+                //         police.play('eAttackRight', true);
+                //         player.life -= 1;
+                //     }
+                // }
             });
 
             this.physics.add.collider(this.player2, enemies[i], function (player, police) {
-                if (player.atkP2.isDown) {
-                    police.life -= 1;
-                    if (police.life <= 0) {
-                        police.y = -100;
-                        police.body.moves = false;
-                    }
-                }
-                //numero con el que se ataca
-                var nAttack = 1;
-                //la probabilidad del ataque del enemigo es del 0.0001%
-                var probability = Math.floor(Math.random() * (100) + 1);
+                // if (player.atkP2.isDown) {
+                //     police.life -= 1;
+                //     if (police.life <= 0) {
+                //         police.y = -100;
+                //         police.body.moves = false;
+                //     }
+                // }
+                // //numero con el que se ataca
+                // var nAttack = 1;
+                // //la probabilidad del ataque del enemigo es del 0.0001%
+                // var probability = Math.floor(Math.random() * (100) + 1);
 
-                var playerCoords = player.getCenter();
-                var enemyCoords = police.getCenter();
+                // var playerCoords = player.getCenter();
+                // var enemyCoords = police.getCenter();
 
-                if (nAttack == probability) {
-                    if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
-                    {
-                        police.play('eAttackLeft', true);
-                        player.life -= 1;
-                    } else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
-                    {
-                        police.play('eAttackRight', true);
-                        player.life -= 1;
-                    }
-                }
+                // if (nAttack == probability) {
+                //     if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
+                //     {
+                //         police.play('eAttackLeft', true);
+                //         player.life -= 1;
+                //     } else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
+                //     {
+                //         police.play('eAttackRight', true);
+                //         player.life -= 1;
+                //     }
+                // }
             });
         }
     }
@@ -841,8 +841,74 @@ class onlineLevel extends Phaser.Scene {
             WEB_pauseGame = false;
         }
 
+        if (WEB_playerAttack) {
+            if (this.player2.turnedLeft) { // ATAQUE A LA IZQ
+                this.player2.setVelocityX(0);
+                this.player2.setVelocityY(0);
+                if (!this.player2.attackLeft) {
+                    if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá sonar el sonido de pintura
+                        this.paintSound.play();
+                    } else { // si yo soy el J2 (el que se unió a la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá sonar el sonido de spray
+                        this.spraySound.play();
+                    }
+                }
+                this.player2.attackLeft = true;
+                if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá ejecutarse la animación de ataque de Tuerto
+                    this.player2.play('p2AttackLeft');
+                } else { // si yo soy el J2 (el que se unió a la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá ejecutarse la animación de ataque de Vivo
+                    this.player2.play('p1AttackLeft');
+                }
+            } else { // ATAQUE A LA DER
+                this.player2.setVelocityX(0);
+                this.player2.setVelocityY(0);
+                if (!this.player2.attackRight) {
+                    if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá sonar el sonido de pintura
+                        this.paintSound.play();
+                    } else { // si yo soy el J2 (el que se unió a la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá sonar el sonido de spray
+                        this.spraySound.play();
+                    }
+                }
+                this.player2.attackRight = true;
+                if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá ejecutarse la animación de ataque de Tuerto
+                    this.player2.play('p2AttackRight');
+                } else { // si yo soy el J2 (el que se unió a la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá ejecutarse la animación de ataque de Vivo
+                    this.player2.play('p1AttackRight');
+                }
+            }
+
+            if (WEB_dontPlayerAttack) {
+                WEB_playerAttack = false;
+                console.log("ha dejado de atacar");
+                this.player2.attackRight = false;
+                this.player2.attackLeft = false;
+                if (this.player2.turnedLeft) {
+                    if (Soy_J1) {
+                        this.player2.play('p2TurnLeft');
+                    } else {
+                        this.player2.play('p1TurnLeft');
+                    }
+                } else {
+                    if (Soy_J1) {
+                        this.player2.play('p2TurnRight');
+                    } else {
+                        this.player2.play('p1TurnRight');
+                    }
+                }
+                WEB_dontPlayerAttack = false;
+            }
+        }
+        
+
         //ACTUALIZA CORAZONES
         this.updateHearts();
+
+        //ACTUALIZA LA PROFUNDIDAD DE LOS ENEMIGOS
+        for (var i = 0; i < this.activeEnemies.length; i++) {
+            if (this.activeEnemies[i].alive) {
+                var enemyPos = this.activeEnemies[i].getCenter();
+                this.activeEnemies[i].depth = enemyPos.y;
+            }
+        }
 
         //////////// ACTUALIZAR JUGADORES
         // J1
@@ -984,6 +1050,7 @@ class onlineLevel extends Phaser.Scene {
 
             // Ataque JUGADOR 1
             if (this.player.atkP1.isDown) {
+                playerAttack();
                 if (this.player.turnedLeft) {
                     this.player.setVelocityX(0);
                     this.player.setVelocityY(0);
@@ -1011,6 +1078,7 @@ class onlineLevel extends Phaser.Scene {
                 }
             }
             if (this.player.atkP1.isUp) {
+                playerStopAttack();
                 this.player.attackRight = false;
                 this.player.attackLeft = false;
             }
@@ -1038,7 +1106,7 @@ class onlineLevel extends Phaser.Scene {
                 this.player2.setVelocityY(0); 
             }
         } else {
-            // Eventos de controles del JUGADOR 2
+            // Eventos de controles del JUGADOR 2 (para la versión en LOCAL, en online se eliminan)
             if (this.cursors.left.isDown) {
                 // this.player2.setVelocityX(-160);
                 // this.player2.turnedLeft = true;
@@ -1100,28 +1168,46 @@ class onlineLevel extends Phaser.Scene {
             }
 
             // Ataque JUGADOR 2
-            // if (this.player2.atkP2.isDown) {
-            //     if (this.player2.turnedLeft) {
+            // if (WEB_playerAttack) {
+            //     if (this.player2.turnedLeft) { // ATAQUE A LA IZQ
             //         this.player2.setVelocityX(0);
             //         this.player2.setVelocityY(0);
             //         if (!this.player2.attackLeft) {
-            //             this.paintSound.play();
+            //             if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá sonar el sonido de pintura
+            //                 this.paintSound.play();
+            //             } else { // si yo soy el J2 (el que se unió a la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá sonar el sonido de spray
+            //                 this.spraySound.play();
+            //             }
             //         }
             //         this.player2.attackLeft = true;
-            //         this.player2.play('p2AttackLeft');
-            //     } else {
+            //         if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá ejecutarse la animación de ataque de Tuerto
+            //             this.player2.play('p2AttackLeft');
+            //         } else { // si yo soy el J2 (el que se unió a la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá ejecutarse la animación de ataque de Vivo
+            //             this.player2.play('p1AttackLeft');
+            //         }
+            //     } else { // ATAQUE A LA DER
             //         this.player2.setVelocityX(0);
             //         this.player2.setVelocityY(0);
             //         if (!this.player2.attackRight) {
-            //             this.paintSound.play();
+            //             if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá sonar el sonido de pintura
+            //                 this.paintSound.play();
+            //             } else { // si yo soy el J2 (el que se unió a la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá sonar el sonido de spray
+            //                 this.spraySound.play();
+            //             }
             //         }
             //         this.player2.attackRight = true;
-            //         this.player2.play('p2AttackRight');
+            //         if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá ejecutarse la animación de ataque de Tuerto
+            //             this.player2.play('p2AttackRight');
+            //         } else { // si yo soy el J2 (el que se unió a la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá ejecutarse la animación de ataque de Vivo
+            //             this.player2.play('p1AttackRight');
+            //         }
             //     }
             // }
-            // if (this.player2.atkP2.isUp) {
+            // if (WEB_dontPlayerAttack) {
+            //     console.log("ha dejado de atacar");
             //     this.player2.attackRight = false;
             //     this.player2.attackLeft = false;
+            //     WEB_dontPlayerAttack = false;
             // }
         }
 
@@ -1156,6 +1242,82 @@ class onlineLevel extends Phaser.Scene {
                             this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
                         } else {
                             this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                        }
+                    }
+                }
+            }
+        }
+
+        ////////////////////////////ATAQUE ENEMIGOS///////////////////////////////
+        for (var i = 0; i < this.activeEnemies.length; i++) {
+            if (this.activeEnemies[i].alive) {
+                var playerPos = this.player.getCenter();
+                var enemyPos = this.activeEnemies[i].getCenter();
+                var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
+
+                //numero con el que se ataca
+                var nAttack = 1;
+                //la probabilidad del ataque del enemigo es del 0.0001%
+                var probability = Math.floor(Math.random() * (70) + 1);
+
+                if (dist <= 70) {
+                    if (nAttack == probability) {
+                        if (playerPos.x < enemyPos.x)//si el enemigo va hacia la izquierda
+                        {
+                            this.activeEnemies[i].play('eAttackLeft', true);
+                            this.player.life -= 1;
+                        } else if (playerPos.x > enemyPos.x)//si el enemigo va hacia la derecha
+                        {
+                            this.activeEnemies[i].play('eAttackRight', true);
+                            this.player.life -= 1;
+                            console.log("pega jug1");
+                        }
+
+                    }
+
+                    if (this.player.atkP1.isDown) {
+                        this.activeEnemies[i].life -= 1;
+                        console.log("pucch");
+                        if (this.activeEnemies[i].life <= 0) {
+                            this.activeEnemies[i].y = -100;
+                            this.activeEnemies[i].body.moves = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        for (var i = 0; i < this.activeEnemies.length; i++) {
+            if (this.activeEnemies[i].alive) {
+                var playerPos = this.player2.getCenter();
+                var enemyPos = this.activeEnemies[i].getCenter();
+                var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
+
+                //numero con el que se ataca
+                var nAttack = 1;
+                //la probabilidad del ataque del enemigo es del 0.0001%
+                var probability = Math.floor(Math.random() * (70) + 1);
+
+                if (dist <= 70) {
+                    if (nAttack == probability) {
+                        if (playerPos.x < enemyPos.x)//si el enemigo va hacia la izquierda
+                        {
+                            this.activeEnemies[i].play('eAttackLeft', true);
+                            this.player2.life -= 1;
+                        } else if (playerPos.x > enemyPos.x)//si el enemigo va hacia la derecha
+                        {
+                            this.activeEnemies[i].play('eAttackRight', true);
+                            this.player2.life -= 1;
+                            console.log("pega jug1");
+                        }
+                    }
+
+                    if (WEB_playerAttack) {
+                        this.activeEnemies[i].life -= 1;
+                        console.log("oucch");
+                        if (this.activeEnemies[i].life <= 0) {
+                            this.activeEnemies[i].y = -100;
+                            this.activeEnemies[i].body.moves = false;
                         }
                     }
                 }
@@ -1241,4 +1403,10 @@ function deactivate_WEB_goDown(){
 }
 function makePauseGame(){
     WEB_pauseGame = true;
+}
+function activate_WEB_playerAttack(){
+    WEB_playerAttack = true;
+}
+function deactivate_WEB_dontPlayerAttack(){
+    WEB_dontPlayerAttack = true;
 }

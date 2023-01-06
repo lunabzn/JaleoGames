@@ -119,9 +119,30 @@ public class Handler extends TextWebSocketHandler {
                 session.sendMessage(new TextMessage(msg.toString()));
                 break;
 
-            case (2): //Ataque jugador
+            case (2): // Ataque jugador
+                int gameId_c2 = node.get("idPartida").asInt();
+                int playerId_c2 = node.get("idJugador").asInt();
+                // String debug_c4 = "MENSAJE DE MOV.IZQ HA PASADO POR EL SERVER";
+                Partida gameAux_c2 = partidillas.get(gameId_c2);
+
+                msg.put("idFuncion", 2);
+                // msg.put("stringPrueba", debug_c4);
+
+                if (playerId_c2 == gameAux_c2.getJ1().getId()) {
+                    // Si el jugador que ha enviado el mensaje al servidor
+                    // es el J1, enviamos de vuelta un mensaje al J2 de su
+                    // misma partida
+                    // System.err.println("se va a enviar el mensaje al J2");
+                    WebSocketSession auxSession_c2 = gameAux_c2.getJ2().getSession();
+                    auxSession_c2.sendMessage(new TextMessage(msg.toString()));
+                } else { // Si el jugador que ha enviado el mensaje al servidor es el J2, enviamos de
+                         // vuelta un mensaje al J1 de su misma partida
+                    WebSocketSession auxSession2_c2 = gameAux_c2.getJ1().getSession();
+                    // System.err.println("se va a enviar el mensaje al J1");
+                    auxSession2_c2.sendMessage(new TextMessage(msg.toString()));
+                }
                 break;
-            
+
             case(3): //Crear jugador
                 if(primeravez) {
                     inicializar();
@@ -413,6 +434,30 @@ public class Handler extends TextWebSocketHandler {
                     WebSocketSession auxSession2_c16 = gameAux_c16.getJ1().getSession();
                     // System.err.println("se va a enviar el mensaje al J1");
                     auxSession2_c16.sendMessage(new TextMessage(msg.toString()));
+                }
+                break;
+
+            case(17): // Parar ataque jugador
+                int gameId_c17 = node.get("idPartida").asInt();
+                int playerId_c17 = node.get("idJugador").asInt();
+                // String debug_c4 = "MENSAJE DE MOV.IZQ HA PASADO POR EL SERVER";
+                Partida gameAux_c17 = partidillas.get(gameId_c17);
+
+                msg.put("idFuncion", 17);
+                // msg.put("stringPrueba", debug_c4);
+
+                if (playerId_c17 == gameAux_c17.getJ1().getId()) {
+                    // Si el jugador que ha enviado el mensaje al servidor
+                    // es el J1, enviamos de vuelta un mensaje al J2 de su
+                    // misma partida
+                    // System.err.println("se va a enviar el mensaje al J2");
+                    WebSocketSession auxSession_c17 = gameAux_c17.getJ2().getSession();
+                    auxSession_c17.sendMessage(new TextMessage(msg.toString()));
+                } else { // Si el jugador que ha enviado el mensaje al servidor es el J2, enviamos de
+                         // vuelta un mensaje al J1 de su misma partida
+                    WebSocketSession auxSession2_c17 = gameAux_c17.getJ1().getSession();
+                    // System.err.println("se va a enviar el mensaje al J1");
+                    auxSession2_c17.sendMessage(new TextMessage(msg.toString()));
                 }
                 break;
         }
