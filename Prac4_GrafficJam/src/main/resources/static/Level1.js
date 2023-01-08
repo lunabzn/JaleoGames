@@ -47,10 +47,6 @@ class Level1 extends Phaser.Scene {
         this.load.image('tuertoLife', 'resources/tuertoLife.png');
         this.load.image('vivoLife', 'resources/vivoLife.png');
 
-        //carga de cuenta atrás
-        this.load.image('num1', 'resources/num1.png');
-        this.load.image('num2', 'resources/num2.png');
-        this.load.image('num3', 'resources/num3.png');
     }
 
 
