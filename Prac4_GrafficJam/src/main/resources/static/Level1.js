@@ -1,3 +1,5 @@
+
+
 class Level1 extends Phaser.Scene {
 
     constructor() {
@@ -75,6 +77,8 @@ class Level1 extends Phaser.Scene {
         this.velocities = [100,80,60];
         this.countDead = 0;
 
+
+
         this.createEnemies(this.activeEnemies, this.quantEnemiesRound1);
 
         this.player1.body.setSize(this.player1.width*0.5, this.player1.height*0.1);
@@ -95,6 +99,7 @@ class Level1 extends Phaser.Scene {
         this.physics.add.collider(this.player1, this.player2);
         this.physics.add.collider(this.player1,this.invisibleCollider);
         this.physics.add.collider(this.player2,this.invisibleCollider);
+
         this.invisibleCollider.setImmovable(true);
 
         //Añadir vida vivo
@@ -371,7 +376,6 @@ class Level1 extends Phaser.Scene {
     }
 
     createEnemies(enemies, size) {
-
         for (var i = 0; i < size; i++) {
             enemies[i] = this.physics.add.sprite(this.randomNum(250, 700), this.randomNum(200, 500), 'girlPolice');
             enemies[i].body.setSize(enemies[i].width * 0.3, enemies[i].height * 0.85);
@@ -379,7 +383,8 @@ class Level1 extends Phaser.Scene {
             enemies[i].alive = true;
             enemies[i].turnedLeft = true;
             enemies[i].life = 3;
-
+            
+            
             this.physics.add.collider(this.player1, enemies[i], function (player, police) {
 
                 console.log("colision p1");
@@ -392,7 +397,8 @@ class Level1 extends Phaser.Scene {
                         police.y = -100;
                         police.body.moves = false;
                     }
-                }                
+
+
             });
             //this.physics.add.collider(this.player2, enemies[i], function (player, police) {console.log("colision collider")});
             //this.physics.add.collider(this.player1, enemies[i], function (player, police) {console.log("colision collider")});
@@ -415,6 +421,95 @@ class Level1 extends Phaser.Scene {
             });
         }
     }
+    
+    isColliding(enemy1,enemy2,size){
+    for(var i=0;i<size;i++){
+        for(var j=0;j<size;j++){
+            if(i!=j){
+                if((enemy1.x > (enemy2.x+enemy2.width)) && (enemy1.body.moves==false || enemy2.body.moves==false)){
+                    enemy1.body.moves=true;
+                    enemy2.body.moves=true;
+                    return false;
+
+                }
+                else if(((enemy1.x+enemy1.width) < enemy2.x )&& (enemy1.body.moves==false || enemy2.body.moves==false)){
+                    enemy1.body.moves=true;
+                    enemy2.body.moves=true;
+                    return false;
+                }
+                else if((enemy1.y > (enemy2.y+enemy2.height)) && (enemy1.body.moves==false || enemy2.body.moves==false)){
+                    enemy1.body.moves=true;
+                    enemy2.body.moves=true;
+                    return false;
+                }else if(((enemy1.y+enemy1.height) < enemy2.y) && (enemy1.body.moves==false || enemy2.body.moves==false)){
+                    enemy1.body.moves=true;
+                    enemy2.body.moves=true;
+                    return false;
+                }else{
+                    //this.collideEnemy(enemy1,enemy2,size);
+                    this.physics.add.collider(enemy1,enemy2,function(policia1,policia2){
+                        
+                        if((policia1.x > (policia2.x+policia2.width)) ){
+                            policia1.body.moves=true;
+                            policia2.body.moves=true;
+        
+                        }
+                        else if(((policia1.x+policia1.width) < policia2.x) ){
+                            policia1.body.moves=true;
+                            policia2.body.moves=true;
+                        }
+                        else if((policia1.y > (policia2.y+policia2.height)) ){
+                            policia1.body.moves=true;
+                            policia2.body.moves=true;
+                        }else if(((policia1.y+policia1.height) < policia2.y) ){
+                            policia1.body.moves=true;
+                            policia2.body.moves=true;
+                        }else{
+                            policia2.body.moves=false;
+                            policia1.body.moves=true;
+                        }
+                    });
+                    return true;
+                }
+                
+                }
+            }
+        }
+        
+
+    }
+
+    keepColliding(enemy1,enemy2,size){
+        for(var i=0;i<size;i++){
+            for(var j=0;j<size;j++){
+                if(i!=j){
+                    if(enemy1.x > (enemy2.x+enemy2.width)){
+                        enemy1.body.moves=true;
+                        enemy2.body.moves=true;
+                        return true;
+                    }
+                    else if((enemy1.x+enemy1.width) < enemy2.x){
+                        enemy1.body.moves=true;
+                        enemy2.body.moves=true;
+                        return true;
+                    }
+                    else if(enemy1.y > (enemy2.y+enemy2.height)){
+                        enemy1.body.moves=true;
+                        enemy2.body.moves=true;
+                        return true;
+                    }else if((enemy1.y+enemy1.height) < enemy2.y){
+                        enemy1.body.moves=true;
+                        enemy2.body.moves=true;
+                        return true;
+                    }else{
+                        return false;
+                    }
+                    }
+                }
+            }
+    }
+
+    
 
     enemyWalk(player, enemy) {
         var playerCoords = player.getCenter();
@@ -564,8 +659,17 @@ class Level1 extends Phaser.Scene {
         }
     }
 
-    update() {
-
+    continueMoving(enemy1,enemy2,size){
+        for (var i = 0; i < size; i++) {
+            for(var j=0;j< size;j++){
+                if((this.keepColliding(enemy1[i],enemy2[j],size)==true) 
+                && (enemy1[i].body.moves==false || enemy2[j].body.moves==false)){
+                    enemy1[i].body.moves=true;
+                    enemy2[j].body.moves=true;
+                }
+            }
+        }
+    }
 
         //ACTUALIZA LA PROFUNDIDAD DE LOS ENEMIGOS
         for (var i = 0; i < this.activeEnemies.length; i++) {
@@ -574,6 +678,7 @@ class Level1 extends Phaser.Scene {
                 this.activeEnemies[i].depth = enemyPos.y;
             }
         }
+
 
         // ACTUALIZAR JUGADORES
         if (this.player1.life <= 0) {
@@ -791,13 +896,13 @@ class Level1 extends Phaser.Scene {
             if (this.activeEnemies[i].alive) {
                 if(this.velocities[i]>=mediumVelocity){
                     if (i % 2 == 0) {
-                        if(this.player1.life > 0){
+                        if(this.player1.life > 0 ){
                             this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i]);
                         } else {
                             this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
                         }
                     } else {
-                        if(this.player2.life > 0){
+                        if(this.player2.life > 0 ){
                             this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
                         } else {
                             this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i]);
@@ -805,13 +910,13 @@ class Level1 extends Phaser.Scene {
                     }
                 } else {
                     if (i % 2 == 0) {
-                        if(this.player1.life > 0){
+                        if(this.player1.life > 0 && this.isColliding==false){
                             this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i] - 1);
                         } else {
                             this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
                         }
                     } else {
-                        if(this.player2.life > 0){
+                        if(this.player2.life > 0 && this.isColliding==false){
                             this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
                         } else {
                             this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i] - 1);
@@ -874,6 +979,20 @@ class Level1 extends Phaser.Scene {
                 }
             }
         }
+
+        if(this.roundCont==1){
+            this.isColliding(this.activeEnemies,this.activeEnemies,this.quantEnemiesRound1);
+        }
+        else if(this.roundCont==2){
+            this.isColliding(this.activeEnemies,this.activeEnemies,this.quantEnemiesRound2);
+
+        }else if(this.roundCont==3){
+            this.isColliding(this.activeEnemies,this.activeEnemies,this.quantEnemiesRound3);
+        }
+
+       this.continueMoving(this.activeEnemies,this.activeEnemies,this.activeEnemies.length);
+        
+        
 
         if (this.countDead == this.activeEnemies.length) {
             this.roundCont++;
