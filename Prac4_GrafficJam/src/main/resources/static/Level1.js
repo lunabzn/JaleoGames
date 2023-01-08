@@ -38,7 +38,7 @@ class Level1 extends Phaser.Scene {
         this.load.spritesheet('invisibleCollider','resources/invisible.png',{frameWidth: 800, frameHeigh:100 , endframe:1});
 
         //carga de enemigo: policia chica
-        this.load.spritesheet('girlPolice', 'resources/spritesPoliciaChicaDef.png', { frameWidth: fStandarWidth, frameHeight: fStandarHeight, endframe: endF });
+        this.load.spritesheet('girlPolice', 'resources/spritesPoliciaChicaDef.png', { frameWidth: fStandarWidth, frameHeight: fStandarHeight, endframe: 21 });
 
         //carga de vida: iconos de tuerto y vivo y corazones
         this.load.image('corazon', 'resources/cora.png');
@@ -316,39 +316,41 @@ class Level1 extends Phaser.Scene {
         //ANIMACIONES ENEMIGO
         this.anims.create({
             key: 'eLeft',
-            frames: this.anims.generateFrameNumbers('girlPolice', { start: 8, end: 11 }),
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 12, end: 15 }),
             frameRate: 10,
             repeat: -1
         });
 
         this.anims.create({
             key: 'eTurnLeft',
-            frames: [{ key: 'girlPolice', frame: 12 }],
+            frames: [{ key: 'girlPolice', frame: 16 }],
             frameRate: 10,
         });
 
         this.anims.create({
             key: 'eRight',
-            frames: this.anims.generateFrameNumbers('girlPolice', { start: 14, end: 17 }),
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 18, end: 21 }),
             frameRate: 10,
             repeat: -1
         });
 
         this.anims.create({
             key: 'eTurnRight',
-            frames: [{ key: 'girlPolice', frame: 13 }],
+            frames: [{ key: 'girlPolice', frame: 17 }],
             frameRate: 20
         });
 
         this.anims.create({
             key: 'eAttackLeft',
-            frames: this.anims.generateFrameNumbers('girlPolice', { start: 6, end: 6 }),
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 6, end: 8 }),
+            frameRate: 1,
             repeat: -1
         });
 
         this.anims.create({
             key: 'eAttackRight',
-            frames: this.anims.generateFrameNumbers('girlPolice', { start: 7, end: 7 }),
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 9, end: 11 }),
+            frameRate: 1,
             repeat: -1
         });
 
@@ -366,9 +368,13 @@ class Level1 extends Phaser.Scene {
             repeat: -1
         });
 
+        this.initialiceButtons();
     }
 
+   
+
     createEnemies(enemies, size) {
+
         for (var i = 0; i < size; i++) {
             enemies[i] = this.physics.add.sprite(this.randomNum(250, 700), this.randomNum(200, 500), 'girlPolice');
             enemies[i].body.setSize(enemies[i].width * 0.3, enemies[i].height * 0.85);
@@ -378,16 +384,36 @@ class Level1 extends Phaser.Scene {
             enemies[i].life = 3;
 
             this.physics.add.collider(this.player1, enemies[i], function (player, police) {
+
                 console.log("colision p1");
-                
-                
+                var playerCoords = player.getCenter();
+                var enemyCoords = police.getCenter();  
+
+                if (player.atkP1.isDown) {
+                    police.life -= 1;
+                    if (police.life <= 0) {
+                        police.y = -100;
+                        police.body.moves = false;
+                    }
+                }                
             });
             //this.physics.add.collider(this.player2, enemies[i], function (player, police) {console.log("colision collider")});
             //this.physics.add.collider(this.player1, enemies[i], function (player, police) {console.log("colision collider")});
 
             this.physics.add.collider(this.player2, enemies[i], function (player, police) {
+
                 console.log("colision p2");
-               
+                var playerCoords = player.getCenter();
+                var enemyCoords = police.getCenter();  
+                var dist = Phaser.Math.Distance.Between(playerCoords.x, playerCoords.y, enemyCoords.x, enemyCoords.y);
+
+                if (player.atkP2.isDown) {
+                    police.life -= 1;
+                    if (police.life <= 0) {
+                        police.y = -100;
+                        police.body.moves = false;
+                    }
+                }
                 
             });
         }
@@ -440,7 +466,7 @@ class Level1 extends Phaser.Scene {
         var enemyPos = enemy.getCenter();
         var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
         //separacion de sprites
-        var separation = 69;
+        var separation = 100;
 
         var angleTopRight = this.angleBetweenPlayerThing(player, player.getTopRight().x, player.getTopRight().y);
         var angleBottomRight = this.angleBetweenPlayerThing(player, player.getBottomRight().x, player.getBottomRight().y);
@@ -454,12 +480,13 @@ class Level1 extends Phaser.Scene {
             if ((anglePlayerEnemy >= angleTopRight && anglePlayerEnemy <= angleBottomRight)) {
                 this.enemyAttack(player, enemy);
             } else if ((anglePlayerEnemy >= -1 * pi && anglePlayerEnemy <= angleTopLeft) || (anglePlayerEnemy <= pi && anglePlayerEnemy >= angleBottomLeft)) {
-                this.enemyAttack(player, enemy);
+                this.enemyAttack(player,enemy);
             }
         }
     }
 
-    enemyAttack(player, enemy) {
+    enemyAttack(player,enemy) {
+     
         //numero con el que se ataca
         var nAttack = 1;
         //la probabilidad del ataque del enemigo es del 0.0001%
@@ -467,18 +494,26 @@ class Level1 extends Phaser.Scene {
 
         var playerCoords = player.getCenter();
         var enemyCoords = enemy.getCenter();
+        
+        var dist = Phaser.Math.Distance.Between(playerCoords.x, playerCoords.y, enemyCoords.x, enemyCoords.y);
 
-        if (nAttack == probabilitty) {
-            if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
-            {
-                this.punchSound.play();
-                enemy.play('eAttackLeft', true);
-            } else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
-            {
-                this.punchSound.play();
-                enemy.play('eAttackRight', true);
+        if(dist <=101){
+            if (nAttack == probabilitty) {
+                if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
+                {
+                    this.punchSound.play();
+                    enemy.play('eAttackLeft', true);
+                    player.life--;
+
+                } else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
+                {
+                    this.punchSound.play();
+                    enemy.play('eAttackRight', true);                 
+                    player.life--;
+                }
             }
         }
+        
     }
 
     updateHearts(){
@@ -532,10 +567,20 @@ class Level1 extends Phaser.Scene {
         }
     }
 
+    initialiceButtons(){
+        this.player1.attackRight = false;
+        this.player1.attackLeft = false;
+        this.player2.attackRight = false;
+        this.player2.attackLeft = false;
+        this.player1.setVelocityY(0);
+        this.player1.setVelocityX(0);
+        this.player2.setVelocityY(0);
+        this.player2.setVelocityX(0);
+
+    }
+
     update() {
 
-        //ACTUALIZA CORAZONES
-        this.updateHearts();
 
         //ACTUALIZA LA PROFUNDIDAD DE LOS ENEMIGOS
         for (var i = 0; i < this.activeEnemies.length; i++) {
@@ -664,67 +709,68 @@ class Level1 extends Phaser.Scene {
             for (var i = 0; i < this.activeEnemies.length; i++) {
                 if (this.activeEnemies[i].alive) {
 
-            var playerPos = this.player2.getCenter();
-            var enemyPos = this.activeEnemies[i].getCenter();
-            var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
-            var distx = Phaser.Math.Distance.Between(playerPos.x,0, enemyPos.x,0);
-            var disty = Phaser.Math.Distance.Between(0,playerPos.y,0,enemyPos.y);
-            var separation = 60;
+                    var playerPos = this.player2.getCenter();
+                    var enemyPos = this.activeEnemies[i].getCenter();
+                    var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
+                    var distx = Phaser.Math.Distance.Between(playerPos.x,0, enemyPos.x,0);
+                    var disty = Phaser.Math.Distance.Between(0,playerPos.y,0,enemyPos.y);
+                    var separation = 60;
 
-            // Eventos de controles del JUGADOR 2
-            if (this.cursors.left.isDown) {
-                this.player2.setVelocityX(-160);
-                this.player2.turnedLeft = true;
-                this.player2.play('p2Left', true);
+                    // Eventos de controles del JUGADOR 2
+                    if (this.cursors.left.isDown) {
+                        this.player2.setVelocityX(-160);
+                        this.player2.turnedLeft = true;
+                        this.player2.play('p2Left', true);
 
-                if (this.cursors.up.isDown ) {
-                    this.player2.setVelocityY(-160);
-                }
+                        if (this.cursors.up.isDown ) {
+                            this.player2.setVelocityY(-160);
+                        }
 
-                if (this.cursors.down.isDown) {
-                    this.player2.setVelocityY(160);
-                }
-            }
-            else if (this.cursors.right.isDown) {
-                this.player2.setVelocityX(160);
-                this.player2.turnedLeft = false;
-                this.player2.play('p2Right', true);
+                        if (this.cursors.down.isDown) {
+                            this.player2.setVelocityY(160);
+                        }
+                    }
+                    else if (this.cursors.right.isDown) {
+                        this.player2.setVelocityX(160);
+                        this.player2.turnedLeft = false;
+                        this.player2.play('p2Right', true);
 
-                if (this.cursors.up.isDown) {
-                    this.player2.setVelocityY(-160);
-                }
+                        if (this.cursors.up.isDown) {
+                            this.player2.setVelocityY(-160);
+                        }
 
-                if (this.cursors.down.isDown) {
-                    this.player2.setVelocityY(160);
-                }
+                        if (this.cursors.down.isDown) {
+                            this.player2.setVelocityY(160);
+                        }
+                    }
+                    else if (this.cursors.up.isDown) {
+                        this.player2.setVelocityY(-160);
+                        if (this.player2.turnedLeft) {
+                            this.player2.play('p2UpLeft', true);
+                        } else {
+                            this.player2.play('p2UpRight', true);
+                        }
+                    }
+                    else if (this.cursors.down.isDown) {
+                        this.player2.setVelocityY(160);
+                        if (this.player2.turnedLeft) {
+                            this.player2.play('p2DownLeft', true);
+                        } else {
+                            this.player2.play('p2DownRight', true);
+                        }
+                    }
+                    else {
+                        this.player2.setVelocityX(0);
+                        this.player2.setVelocityY(0);
+                        if (this.player2.turnedLeft) {
+                            this.player2.play('p2TurnLeft');
+                        } else {
+                            this.player2.play('p2TurnRight');
+                        }
+                    }
+                }        
+            
             }
-            else if (this.cursors.up.isDown) {
-                this.player2.setVelocityY(-160);
-                if (this.player2.turnedLeft) {
-                    this.player2.play('p2UpLeft', true);
-                } else {
-                    this.player2.play('p2UpRight', true);
-                }
-            }
-            else if (this.cursors.down.isDown) {
-                this.player2.setVelocityY(160);
-                if (this.player2.turnedLeft) {
-                    this.player2.play('p2DownLeft', true);
-                } else {
-                    this.player2.play('p2DownRight', true);
-                }
-            }
-            else {
-                this.player2.setVelocityX(0);
-                this.player2.setVelocityY(0);
-                if (this.player2.turnedLeft) {
-                    this.player2.play('p2TurnLeft');
-                } else {
-                    this.player2.play('p2TurnRight');
-                }
-            }
-        }
-    }
 
             // Ataque JUGADOR 2
             if (this.player2.atkP2.isDown) {
@@ -789,98 +835,48 @@ class Level1 extends Phaser.Scene {
                 }
             }
         }
-////////////////////////////ATAQUE ENEMIGOS///////////////////////////////
-for (var i = 0; i < this.activeEnemies.length; i++) {
-    if (this.activeEnemies[i].alive) {
 
-        
-        var playerPos = this.player1.getCenter();
-        var enemyPos = this.activeEnemies[i].getCenter();
-        var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
-        
+        ////////////////////////////ATAQUE ENEMIGOS///////////////////////////////
+        //BUCLE PARA QUE FUNCIONEN COLISIONES SI EL JUGADOR ATACA SIN MOVERSE
 
-        //numero con el que se ataca
-        var nAttack = 1;
-        //la probabilidad del ataque del enemigo es del 0.0001%
-        var probability = Math.floor(Math.random() * (70) + 1);
+        for (var i = 0; i < this.activeEnemies.length; i++) {
+            if (this.activeEnemies[i].alive) {
 
-        
-if(dist <=70){
-        if (nAttack == probability) {
-            if (playerPos.x < enemyPos.x)//si el enemigo va hacia la izquierda
-            {
-                this.activeEnemies[i].play('eAttackLeft', true);
-                this.player1.life -= 1;
-            } else if (playerPos.x > enemyPos.x)//si el enemigo va hacia la derecha
-            {
-                this.activeEnemies[i].play('eAttackRight', true);
-                this.player1.life -= 1;
-                console.log("pega jug1");
+                var playerPos = this.player1.getCenter();
+                var enemyPos = this.activeEnemies[i].getCenter();
+                var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
+                if(dist <=101){
+                    if (this.player1.atkP1.isDown) {
+                        this.activeEnemies[i].life -= 1;
+                        console.log("punch");
+                        if (this.activeEnemies[i].life <= 0) {
+                            this.activeEnemies[i].y = -100;
+                            this.activeEnemies[i].body.moves = false;
+                        }
+                    }                
+                }
             }
-            
         }
 
-        if (this.player1.atkP1.isDown) {
-                    this.activeEnemies[i].life -= 1;
-                    console.log("pucch");
-                    if (this.activeEnemies[i].life <= 0) {
-                        this.activeEnemies[i].y = -100;
-                        this.activeEnemies[i].body.moves = false;
-                    }
+        for (var i = 0; i < this.activeEnemies.length; i++) {
+            if (this.activeEnemies[i].alive) {
+                
+                var playerPos = this.player2.getCenter();
+                var enemyPos = this.activeEnemies[i].getCenter();
+                var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);                
+                if(dist <=101){
+                    
+                    if (this.player2.atkP2.isDown) {
+                        this.activeEnemies[i].life -= 1;
+                        console.log("pucch");
+                        if (this.activeEnemies[i].life <= 0) {
+                            this.activeEnemies[i].y = -100;
+                            this.activeEnemies[i].body.moves = false;
+                        }
+                    }                
                 }
-
-        
-    }
-
-
-    }
-
-}
-
-for (var i = 0; i < this.activeEnemies.length; i++) {
-    if (this.activeEnemies[i].alive) {
-
-        
-        var playerPos = this.player2.getCenter();
-        var enemyPos = this.activeEnemies[i].getCenter();
-        var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
-        
-
-        //numero con el que se ataca
-        var nAttack = 1;
-        //la probabilidad del ataque del enemigo es del 0.0001%
-        var probability = Math.floor(Math.random() * (70) + 1);
-
-        
-if(dist <=70){
-        if (nAttack == probability) {
-            if (playerPos.x < enemyPos.x)//si el enemigo va hacia la izquierda
-            {
-                this.activeEnemies[i].play('eAttackLeft', true);
-                this.player2.life -= 1;
-            } else if (playerPos.x > enemyPos.x)//si el enemigo va hacia la derecha
-            {
-                this.activeEnemies[i].play('eAttackRight', true);
-                this.player2.life -= 1;
-                console.log("pega jug1");
             }
-            
         }
-
-        if (this.player2.atkP2.isDown) {
-                    this.activeEnemies[i].life -= 1;
-                    console.log("pucch");
-                    if (this.activeEnemies[i].life <= 0) {
-                        this.activeEnemies[i].y = -100;
-                        this.activeEnemies[i].body.moves = false;
-                    }
-                }
-
-        
-    }
-}
-}
-
 
 
         // ACTUALIZAR ENEMIGOS
@@ -906,18 +902,27 @@ if(dist <=70){
                 this.createEnemies(this.activeEnemies, this.quantEnemiesRound3);
                 this.updateVelocities(velocitiesSize);
             }else if(this.roundCont > 3){
+                this.initialiceButtons();
                 this.scene.start('gameWin');
                 this.scene.stop('Level1');
                 this.scene.stop('pauseScene');
+                
             }
         }
 
         //cambiar escena a gameover
         if(this.player1.life<=0 && this.player2.life<=0){
+            this.initialiceButtons();
             this.scene.start('gameOver');
             this.scene.stop('Level1');
             this.scene.stop('pauseScene');
+            
+            
         }
+
+        //ACTUALIZA CORAZONES
+        this.updateHearts();
+       
     }
 
 }
