@@ -38,7 +38,7 @@ class Level1 extends Phaser.Scene {
         this.load.spritesheet('invisibleCollider','resources/invisible.png',{frameWidth: 800, frameHeigh:100 , endframe:1});
 
         //carga de enemigo: policia chica
-        this.load.spritesheet('girlPolice', 'resources/spritesPoliciaChicaDef.png', { frameWidth: fStandarWidth, frameHeight: fStandarHeight, endframe: endF });
+        this.load.spritesheet('girlPolice', 'resources/spritesPoliciaChicaDef.png', { frameWidth: fStandarWidth, frameHeight: fStandarHeight, endframe: 21 });
 
         //carga de vida: iconos de tuerto y vivo y corazones
         this.load.image('corazon', 'resources/cora.png');
@@ -316,42 +316,42 @@ class Level1 extends Phaser.Scene {
         //ANIMACIONES ENEMIGO
         this.anims.create({
             key: 'eLeft',
-            frames: this.anims.generateFrameNumbers('girlPolice', { start: 8, end: 11 }),
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 12, end: 15 }),
             frameRate: 10,
             repeat: -1
         });
 
         this.anims.create({
             key: 'eTurnLeft',
-            frames: [{ key: 'girlPolice', frame: 12 }],
+            frames: [{ key: 'girlPolice', frame: 16 }],
             frameRate: 10,
         });
 
         this.anims.create({
             key: 'eRight',
-            frames: this.anims.generateFrameNumbers('girlPolice', { start: 14, end: 17 }),
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 18, end: 21 }),
             frameRate: 10,
             repeat: -1
         });
 
         this.anims.create({
             key: 'eTurnRight',
-            frames: [{ key: 'girlPolice', frame: 13 }],
+            frames: [{ key: 'girlPolice', frame: 17 }],
             frameRate: 20
         });
 
         this.anims.create({
             key: 'eAttackLeft',
-            frames: this.anims.generateFrameNumbers('girlPolice', { start: 6, end: 6 }),
-            duration: 1000,
-            repeat: 300
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 6, end: 8 }),
+            frameRate: 1,
+            repeat: -1
         });
 
         this.anims.create({
             key: 'eAttackRight',
-            frames: this.anims.generateFrameNumbers('girlPolice', { start: 7, end: 7 }),
-            duration: 1000,
-            repeat: 300
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 9, end: 11 }),
+            frameRate: 1,
+            repeat: -1
         });
 
         this.anims.create({
