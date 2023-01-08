@@ -1,3 +1,5 @@
+
+
 class Level1 extends Phaser.Scene {
 
     constructor() {
@@ -35,7 +37,7 @@ class Level1 extends Phaser.Scene {
         this.load.spritesheet('tuerto', 'resources/spritesTuertoDef.png', { frameWidth: fStandarWidth, frameHeight: fStandarHeight, endframe: endF });
 
         //collider pared
-        this.load.spritesheet('invisibleCollider','resources/invisible.png',{frameWidth: 800, frameHeigh:100 , endframe:1});
+        this.load.spritesheet('invisibleCollider', 'resources/invisible.png', { frameWidth: 800, frameHeigh: 100, endframe: 1 });
 
         //carga de enemigo: policia chica
         this.load.spritesheet('girlPolice', 'resources/spritesPoliciaChicaDef.png', { frameWidth: fStandarWidth, frameHeight: fStandarHeight, endframe: endF });
@@ -44,6 +46,7 @@ class Level1 extends Phaser.Scene {
         this.load.image('corazon', 'resources/cora.png');
         this.load.image('tuertoLife', 'resources/tuertoLife.png');
         this.load.image('vivoLife', 'resources/vivoLife.png');
+
     }
 
 
@@ -51,7 +54,7 @@ class Level1 extends Phaser.Scene {
     create() {
 
         this.background = this.add.image(400, 300, 'background');
-        this.invisibleCollider = this.physics.add.sprite(400,-50,'invisibleCollider');
+        this.invisibleCollider = this.physics.add.sprite(400, -50, 'invisibleCollider');
 
         //boton de pausa
         let pause = this.add.image(700, 520, "pause").setScale(0.07);
@@ -72,13 +75,13 @@ class Level1 extends Phaser.Scene {
         this.roundCont = 1;
 
         this.activeEnemies = [this.quantEnemiesRound1];
-        this.velocities = [100,80,60];
+        this.velocities = [100, 80, 60];
         this.countDead = 0;
 
         this.createEnemies(this.activeEnemies, this.quantEnemiesRound1);
 
-        this.player1.body.setSize(this.player1.width*0.5, this.player1.height*0.85);
-        this.player2.body.setSize(this.player2.width*0.5, this.player2.height*0.85);
+        this.player1.body.setSize(this.player1.width * 0.5, this.player1.height * 0.85);
+        this.player2.body.setSize(this.player2.width * 0.5, this.player2.height * 0.85);
         this.invisibleCollider.body.setSize(800, 385);
 
         this.player1.turnedLeft = false;
@@ -93,8 +96,8 @@ class Level1 extends Phaser.Scene {
         this.player2.attackRight = false;
 
         this.physics.add.collider(this.player1, this.player2);
-        this.physics.add.collider(this.player1,this.invisibleCollider);
-        this.physics.add.collider(this.player2,this.invisibleCollider);
+        this.physics.add.collider(this.player1, this.invisibleCollider);
+        this.physics.add.collider(this.player2, this.invisibleCollider);
         this.invisibleCollider.setImmovable(true);
 
         //Añadir vida vivo
@@ -104,15 +107,15 @@ class Level1 extends Phaser.Scene {
         this.cora3 = this.add.image(180, 55, 'corazon');
         this.cora4 = this.add.image(215, 55, 'corazon');
         this.cora5 = this.add.image(250, 55, 'corazon');
-  
+
         this.vivoLife.setScrollFactor(0);
         this.cora1.setScrollFactor(0);
         this.cora2.setScrollFactor(0);
         this.cora3.setScrollFactor(0);
         this.cora4.setScrollFactor(0);
         this.cora5.setScrollFactor(0);
-  
-  
+
+
         //Añadir vida tuerto
         this.tuertoLife = this.add.image(745, 50, 'tuertoLife');
         this.cora6 = this.add.image(685, 55, 'corazon');
@@ -120,7 +123,7 @@ class Level1 extends Phaser.Scene {
         this.cora8 = this.add.image(615, 55, 'corazon');
         this.cora9 = this.add.image(580, 55, 'corazon');
         this.cora10 = this.add.image(545, 55, 'corazon');
-  
+
         this.tuertoLife.setScrollFactor(0);
         this.cora6.setScrollFactor(0);
         this.cora7.setScrollFactor(0);
@@ -144,6 +147,28 @@ class Level1 extends Phaser.Scene {
         this.spraySound = this.sound.add("spray");
         this.paintSound = this.sound.add("paint");
         this.punchSound = this.sound.add("punch");
+
+        //función del contador
+        var start = false;
+        var countdownText = this.add.text(350, 200, '', { font: '180px Arial', fill: '#ffffff', stroke: '#000', strokeThickness:'8'});
+        var countdownTime = 4;
+
+        function updateCountdown() {
+            countdownTime--;
+            countdownText.setText(countdownTime);
+            if (countdownTime <= 0) {
+                //this.time.removeAllEvents();
+                start = true;
+                countdownText.setText("START");
+                countdownText.setVisible(false);
+            }
+        }
+
+        this.time.addEvent({
+            delay: 1000,
+            callback: updateCountdown,
+            loop: true
+        });
 
         // Animaciones de movimiento de los jugadores
         // ANIMACIONES JUGADOR 1
@@ -367,7 +392,6 @@ class Level1 extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
-
     }
 
     createEnemies(enemies, size) {
@@ -527,52 +551,52 @@ class Level1 extends Phaser.Scene {
         }
     }
 
-    updateHearts(){
-        if(this.player1.life==4){
+    updateHearts() {
+        if (this.player1.life == 4) {
             this.cora5.destroy();
-         }
-         else if(this.player1.life==3){
+        }
+        else if (this.player1.life == 3) {
             this.cora4.destroy();
-         }
-         else if(this.player1.life==2){
+        }
+        else if (this.player1.life == 2) {
             this.cora3.destroy();
-         }
-         else if(this.player1.life==1){
+        }
+        else if (this.player1.life == 1) {
             this.cora2.destroy();
-         }
-         else if(this.player1.life==0){
+        }
+        else if (this.player1.life == 0) {
             this.cora1.destroy();
-         }
+        }
 
-        if(this.player2.life==4){
-           this.cora10.destroy();
+        if (this.player2.life == 4) {
+            this.cora10.destroy();
         }
-        else if(this.player2.life==3){
-           this.cora9.destroy();
+        else if (this.player2.life == 3) {
+            this.cora9.destroy();
         }
-        else if(this.player2.life==2){
-           this.cora8.destroy();
+        else if (this.player2.life == 2) {
+            this.cora8.destroy();
         }
-        else if(this.player2.life==1){
-           this.cora7.destroy();
+        else if (this.player2.life == 1) {
+            this.cora7.destroy();
         }
-        else if(this.player2.life==0){
-           this.cora6.destroy();
+        else if (this.player2.life == 0) {
+            this.cora6.destroy();
         }
     }
 
-    updateVelocities(velocitiesSize){
+    updateVelocities(velocitiesSize) {
         var newVelocities = this.velocities;
-        for(var i=0; i<2;i++){
-            newVelocities.push(this.velocities[velocitiesSize-1+i]-20);
+        for (var i = 0; i < 2; i++) {
+            newVelocities.push(this.velocities[velocitiesSize - 1 + i] - 20);
         }
-        this.velocities=newVelocities;
+        this.velocities = newVelocities;
     }
 
-    isMoving(enemy){
-        if(enemy.body.velocity.x==0 && enemy.body.velocity.y==0){
+    isMoving(enemy) {
+        if (enemy.body.velocity.x == 0 && enemy.body.velocity.y == 0) {
             return true;
-        } else{
+        } else {
             return false;
         }
     }
@@ -588,13 +612,13 @@ class Level1 extends Phaser.Scene {
                 this.player1.play('p1DefeatLeft', true);
                 this.player1.setImmovable(true);
                 this.player1.setVelocityX(0);
-                this.player1.setVelocityY(0); 
+                this.player1.setVelocityY(0);
 
             } else {
                 this.player1.play('p1DefeatRight', true);
                 this.player1.setImmovable(true);
                 this.player1.setVelocityX(0);
-                this.player1.setVelocityY(0); 
+                this.player1.setVelocityY(0);
             }
         } else {
             // Eventos de controles del JUGADOR 1
@@ -650,6 +674,7 @@ class Level1 extends Phaser.Scene {
                 }
             }
 
+
             // Ataque JUGADOR 1
             if (this.player1.atkP1.isDown) {
                 if (this.player1.turnedLeft) {
@@ -679,131 +704,137 @@ class Level1 extends Phaser.Scene {
         if (this.player2.life <= 0) {
             if (this.player2.turnedLeft) {
                 this.player2.play('p2DefeatLeft', true);
-                this.player2.setImmovable(true); 
+                this.player2.setImmovable(true);
                 this.player2.setVelocityX(0);
-                this.player2.setVelocityY(0);                
+                this.player2.setVelocityY(0);
             } else {
                 this.player2.play('p2DefeatRight', true);
                 this.player2.setImmovable(true);
                 this.player2.setVelocityX(0);
-                this.player2.setVelocityY(0); 
+                this.player2.setVelocityY(0);
             }
         } else {
-            // Eventos de controles del JUGADOR 2
-            if (this.cursors.left.isDown) {
-                this.player2.setVelocityX(-160);
-                this.player2.turnedLeft = true;
-                this.player2.play('p2Left', true);
+            setTimeout(() => {
+                // Eventos de controles del JUGADOR 2
+                if (this.cursors.left.isDown) {
+                    this.player2.setVelocityX(-160);
+                    this.player2.turnedLeft = true;
+                    this.player2.play('p2Left', true);
 
-                if (this.cursors.up.isDown) {
+                    if (this.cursors.up.isDown) {
+                        this.player2.setVelocityY(-160);
+                    }
+
+                    if (this.cursors.down.isDown) {
+                        this.player2.setVelocityY(160);
+                    }
+                }
+                else if (this.cursors.right.isDown) {
+                    this.player2.setVelocityX(160);
+                    this.player2.turnedLeft = false;
+                    this.player2.play('p2Right', true);
+
+                    if (this.cursors.up.isDown) {
+                        this.player2.setVelocityY(-160);
+                    }
+
+                    if (this.cursors.down.isDown) {
+                        this.player2.setVelocityY(160);
+                    }
+                }
+                else if (this.cursors.up.isDown) {
                     this.player2.setVelocityY(-160);
+                    if (this.player2.turnedLeft) {
+                        this.player2.play('p2UpLeft', true);
+                    } else {
+                        this.player2.play('p2UpRight', true);
+                    }
                 }
-
-                if (this.cursors.down.isDown) {
+                else if (this.cursors.down.isDown) {
                     this.player2.setVelocityY(160);
+                    if (this.player2.turnedLeft) {
+                        this.player2.play('p2DownLeft', true);
+                    } else {
+                        this.player2.play('p2DownRight', true);
+                    }
                 }
-            }
-            else if (this.cursors.right.isDown) {
-                this.player2.setVelocityX(160);
-                this.player2.turnedLeft = false;
-                this.player2.play('p2Right', true);
-
-                if (this.cursors.up.isDown) {
-                    this.player2.setVelocityY(-160);
-                }
-
-                if (this.cursors.down.isDown) {
-                    this.player2.setVelocityY(160);
-                }
-            }
-            else if (this.cursors.up.isDown) {
-                this.player2.setVelocityY(-160);
-                if (this.player2.turnedLeft) {
-                    this.player2.play('p2UpLeft', true);
-                } else {
-                    this.player2.play('p2UpRight', true);
-                }
-            }
-            else if (this.cursors.down.isDown) {
-                this.player2.setVelocityY(160);
-                if (this.player2.turnedLeft) {
-                    this.player2.play('p2DownLeft', true);
-                } else {
-                    this.player2.play('p2DownRight', true);
-                }
-            }
-            else {
-                this.player2.setVelocityX(0);
-                this.player2.setVelocityY(0);
-                if (this.player2.turnedLeft) {
-                    this.player2.play('p2TurnLeft');
-                } else {
-                    this.player2.play('p2TurnRight');
-                }
-            }
-
-            // Ataque JUGADOR 2
-            if (this.player2.atkP2.isDown) {
-                if (this.player2.turnedLeft) {
+                else {
                     this.player2.setVelocityX(0);
                     this.player2.setVelocityY(0);
-                    if (!this.player2.attackLeft) {
-                        this.paintSound.play();
-                    }
-                    this.player2.attackLeft = true;
-                    this.player2.play('p2AttackLeft');
-                } else {
-                    this.player2.setVelocityX(0);
-                    this.player2.setVelocityY(0);
-                    if (!this.player2.attackRight) {
-                        this.paintSound.play();
-                    }
-                    this.player2.attackRight = true;
-                    this.player2.play('p2AttackRight');
-                }
-            }
-            if (this.player2.atkP2.isUp) {
-                this.player2.attackRight = false;
-                this.player2.attackLeft = false;
-            }
-        }
-
-        var velocitiesSize = this.velocities.length;
-        var mediumVelocity = this.velocities[Math.floor(velocitiesSize/2)];
-
-        for (var i = 0; i < this.activeEnemies.length; i++) {
-            if (this.activeEnemies[i].alive) {
-                if(this.velocities[i]>=mediumVelocity){
-                    if (i % 2 == 0) {
-                        if(this.player1.life > 0){
-                            this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i]);
-                        } else {
-                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
-                        }
+                    if (this.player2.turnedLeft) {
+                        this.player2.play('p2TurnLeft');
                     } else {
-                        if(this.player2.life > 0){
-                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
-                        } else {
-                            this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i]);
-                        }
-                    }
-                } else {
-                    if (i % 2 == 0) {
-                        if(this.player1.life > 0){
-                            this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i] - 1);
-                        } else {
-                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
-                        }
-                    } else {
-                        if(this.player2.life > 0){
-                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
-                        } else {
-                            this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i] - 1);
-                        }
+                        this.player2.play('p2TurnRight');
                     }
                 }
-            }
+
+                // Ataque JUGADOR 2
+                if (this.player2.atkP2.isDown) {
+                    if (this.player2.turnedLeft) {
+                        this.player2.setVelocityX(0);
+                        this.player2.setVelocityY(0);
+                        if (!this.player2.attackLeft) {
+                            this.paintSound.play();
+                        }
+                        this.player2.attackLeft = true;
+                        this.player2.play('p2AttackLeft');
+                    } else {
+                        this.player2.setVelocityX(0);
+                        this.player2.setVelocityY(0);
+                        if (!this.player2.attackRight) {
+                            this.paintSound.play();
+                        }
+                        this.player2.attackRight = true;
+                        this.player2.play('p2AttackRight');
+                    }
+                }
+                if (this.player2.atkP2.isUp) {
+                    this.player2.attackRight = false;
+                    this.player2.attackLeft = false;
+                }
+            }, 4000);
         }
+
+        //Juego pausado hasta que pasan 4 segundos
+        setTimeout(() => {
+
+            var velocitiesSize = this.velocities.length;
+            var mediumVelocity = this.velocities[Math.floor(velocitiesSize / 2)];
+
+            for (var i = 0; i < this.activeEnemies.length; i++) {
+                if (this.activeEnemies[i].alive) {
+                    if (this.velocities[i] >= mediumVelocity) {
+                        if (i % 2 == 0) {
+                            if (this.player1.life > 0) {
+                                this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i]);
+                            } else {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                            }
+                        } else {
+                            if (this.player2.life > 0) {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                            } else {
+                                this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i]);
+                            }
+                        }
+                    } else {
+                        if (i % 2 == 0) {
+                            if (this.player1.life > 0) {
+                                this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i] - 1);
+                            } else {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                            }
+                        } else {
+                            if (this.player2.life > 0) {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                            } else {
+                                this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i] - 1);
+                            }
+                        }
+                    }
+                }
+            }
+        }, 4000);
 
         // ACTUALIZAR ENEMIGOS
         for (var i = 0; i < this.activeEnemies.length; i++) {
@@ -827,7 +858,7 @@ class Level1 extends Phaser.Scene {
                 this.countDead = 0;
                 this.createEnemies(this.activeEnemies, this.quantEnemiesRound3);
                 this.updateVelocities(velocitiesSize);
-            }else if(this.roundCont > 3){
+            } else if (this.roundCont > 3) {
                 this.scene.start('gameWin');
                 this.scene.stop('Level1');
                 this.scene.stop('pauseScene');
@@ -835,11 +866,10 @@ class Level1 extends Phaser.Scene {
         }
 
         //cambiar escena a gameover
-        if(this.player1.life==0 && this.player2.life==0){
+        if (this.player1.life == 0 && this.player2.life == 0) {
             this.scene.start('gameOver');
             this.scene.stop('Level1');
             this.scene.stop('pauseScene');
         }
     }
-
 }
