@@ -154,7 +154,7 @@ class Level1 extends Phaser.Scene {
 
         //función del contador
         var start = false;
-        var countdownText = this.add.text(400, 300, '', { font: '85px Arial', fill: '#ffffff' });
+        var countdownText = this.add.text(350, 200, '', { font: '180px Arial', fill: '#ffffff', stroke: '#000', strokeThickness:'8'});
         var countdownTime = 4;
 
         function updateCountdown() {
