@@ -392,6 +392,9 @@ class Level1 extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
+
+        this.player1.play("p1TurnRight");
+        this.player2.play("p2TurnRight");
     }
 
     createEnemies(enemies, size) {
