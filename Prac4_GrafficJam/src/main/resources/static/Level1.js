@@ -421,7 +421,7 @@ class Level1 extends Phaser.Scene {
                 }
             });
 
-            
+
             //this.physics.add.collider(this.player2, enemies[i], function (player, police) {console.log("colision collider")});
             //this.physics.add.collider(this.player1, enemies[i], function (player, police) {console.log("colision collider")});
 
@@ -837,14 +837,14 @@ class Level1 extends Phaser.Scene {
             }, 4000);
         }
 
+        var velocitiesSize = this.velocities.length;
+        var mediumVelocity = this.velocities[Math.floor(velocitiesSize / 5)];
+
+
+        var velocitiesSize = this.velocities.length;
+        var mediumVelocity = this.velocities[Math.floor(velocitiesSize / 2)];
+
         setTimeout(() => {
-
-            var velocitiesSize = this.velocities.length;
-            var mediumVelocity = this.velocities[Math.floor(velocitiesSize / 5)];
-
-
-            var velocitiesSize = this.velocities.length;
-            var mediumVelocity = this.velocities[Math.floor(velocitiesSize / 2)];
 
             for (var i = 0; i < this.activeEnemies.length; i++) {
                 if (this.activeEnemies[i].alive) {
