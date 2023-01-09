@@ -80,15 +80,9 @@ class Level1 extends Phaser.Scene {
 
         this.createEnemies(this.activeEnemies, this.quantEnemiesRound1);
 
-<<<<<<< HEAD
         this.player1.body.setSize(this.player1.width*0.5, this.player1.height*0.1);
         this.player2.body.setSize(this.player2.width*0.5, this.player2.height*0.1);
         this.invisibleCollider.body.setSize(800, 500);
-=======
-        this.player1.body.setSize(this.player1.width * 0.5, this.player1.height * 0.85);
-        this.player2.body.setSize(this.player2.width * 0.5, this.player2.height * 0.85);
-        this.invisibleCollider.body.setSize(800, 385);
->>>>>>> parent of ef43d3b (Merge pull request #11 from lunsbzn/SuperposicionEnemigos)
 
         this.player1.turnedLeft = false;
         this.player2.turnedLeft = false;
@@ -153,28 +147,6 @@ class Level1 extends Phaser.Scene {
         this.spraySound = this.sound.add("spray");
         this.paintSound = this.sound.add("paint");
         this.punchSound = this.sound.add("punch");
-
-        //función del contador
-        var start = false;
-        var countdownText = this.add.text(350, 200, '', { font: '180px Arial', fill: '#ffffff', stroke: '#000', strokeThickness:'8'});
-        var countdownTime = 4;
-
-        function updateCountdown() {
-            countdownTime--;
-            countdownText.setText(countdownTime);
-            if (countdownTime <= 0) {
-                //this.time.removeAllEvents();
-                start = true;
-                countdownText.setText("START");
-                countdownText.setVisible(false);
-            }
-        }
-
-        this.time.addEvent({
-            delay: 1000,
-            callback: updateCountdown,
-            loop: true
-        });
 
         // Animaciones de movimiento de los jugadores
         // ANIMACIONES JUGADOR 1
@@ -398,6 +370,7 @@ class Level1 extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
+        
     }
 
     createEnemies(enemies, size) {
@@ -421,15 +394,7 @@ class Level1 extends Phaser.Scene {
                         police.y = -100;
                         police.body.moves = false;
                     }
-<<<<<<< HEAD
-
-=======
                 }
-                //numero con el que se ataca
-                var nAttack = 1;
-                //la probabilidad del ataque del enemigo es del 0.0001%
-                var probability = Math.floor(Math.random() * (100) + 1);
->>>>>>> parent of ef43d3b (Merge pull request #11 from lunsbzn/SuperposicionEnemigos)
 
             });
             //this.physics.add.collider(this.player2, enemies[i], function (player, police) {console.log("colision collider")});
@@ -588,13 +553,8 @@ class Level1 extends Phaser.Scene {
 
     updateVelocities(velocitiesSize) {
         var newVelocities = this.velocities;
-<<<<<<< HEAD
         for(var i=0; i<2;i++){
             newVelocities.push(this.velocities[velocitiesSize-1+i]);
-=======
-        for (var i = 0; i < 2; i++) {
-            newVelocities.push(this.velocities[velocitiesSize - 1 + i] - 20);
->>>>>>> parent of ef43d3b (Merge pull request #11 from lunsbzn/SuperposicionEnemigos)
         }
         this.velocities = newVelocities;
     }
@@ -607,7 +567,6 @@ class Level1 extends Phaser.Scene {
         }
     }
 
-<<<<<<< HEAD
     continueMoving(enemy1,enemy2,size){
         for (var i = 0; i < size; i++) {
             for(var j=0;j< size;j++){
@@ -620,6 +579,8 @@ class Level1 extends Phaser.Scene {
         }
     }
 
+    update(){
+
         //ACTUALIZA LA PROFUNDIDAD DE LOS ENEMIGOS
         for (var i = 0; i < this.activeEnemies.length; i++) {
             if (this.activeEnemies[i].alive) {
@@ -627,12 +588,6 @@ class Level1 extends Phaser.Scene {
                 this.activeEnemies[i].depth = enemyPos.y;
             }
         }
-=======
-    update() {
-
-        //ACTUALIZA CORAZONES
-        this.updateHearts();
->>>>>>> parent of ef43d3b (Merge pull request #11 from lunsbzn/SuperposicionEnemigos)
 
         // ACTUALIZAR JUGADORES
         if (this.player1.life <= 0) {
@@ -708,13 +663,8 @@ class Level1 extends Phaser.Scene {
                     this.player1.play('p1TurnRight');
                 }
             }
-<<<<<<< HEAD
         
     
-=======
-
-
->>>>>>> parent of ef43d3b (Merge pull request #11 from lunsbzn/SuperposicionEnemigos)
             // Ataque JUGADOR 1
             if (this.player1.atkP1.isDown) {
                 if (this.player1.turnedLeft) {
@@ -754,7 +704,6 @@ class Level1 extends Phaser.Scene {
                 this.player2.setVelocityY(0);
             }
         } else {
-<<<<<<< HEAD
 
             for (var i = 0; i < this.activeEnemies.length; i++) {
                 if (this.activeEnemies[i].alive) {
@@ -825,53 +774,6 @@ class Level1 extends Phaser.Scene {
             // Ataque JUGADOR 2
             if (this.player2.atkP2.isDown) {
                 if (this.player2.turnedLeft) {
-=======
-            setTimeout(() => {
-                // Eventos de controles del JUGADOR 2
-                if (this.cursors.left.isDown) {
-                    this.player2.setVelocityX(-160);
-                    this.player2.turnedLeft = true;
-                    this.player2.play('p2Left', true);
-
-                    if (this.cursors.up.isDown) {
-                        this.player2.setVelocityY(-160);
-                    }
-
-                    if (this.cursors.down.isDown) {
-                        this.player2.setVelocityY(160);
-                    }
-                }
-                else if (this.cursors.right.isDown) {
-                    this.player2.setVelocityX(160);
-                    this.player2.turnedLeft = false;
-                    this.player2.play('p2Right', true);
-
-                    if (this.cursors.up.isDown) {
-                        this.player2.setVelocityY(-160);
-                    }
-
-                    if (this.cursors.down.isDown) {
-                        this.player2.setVelocityY(160);
-                    }
-                }
-                else if (this.cursors.up.isDown) {
-                    this.player2.setVelocityY(-160);
-                    if (this.player2.turnedLeft) {
-                        this.player2.play('p2UpLeft', true);
-                    } else {
-                        this.player2.play('p2UpRight', true);
-                    }
-                }
-                else if (this.cursors.down.isDown) {
-                    this.player2.setVelocityY(160);
-                    if (this.player2.turnedLeft) {
-                        this.player2.play('p2DownLeft', true);
-                    } else {
-                        this.player2.play('p2DownRight', true);
-                    }
-                }
-                else {
->>>>>>> parent of ef43d3b (Merge pull request #11 from lunsbzn/SuperposicionEnemigos)
                     this.player2.setVelocityX(0);
                     this.player2.setVelocityY(0);
                     if (this.player2.turnedLeft) {
@@ -905,55 +807,44 @@ class Level1 extends Phaser.Scene {
                     this.player2.attackRight = false;
                     this.player2.attackLeft = false;
                 }
-            }, 4000);
         }
 
-<<<<<<< HEAD
         var velocitiesSize = this.velocities.length;
-        var mediumVelocity = this.velocities[Math.floor(velocitiesSize/5)];
+        var mediumVelocity = this.velocities[Math.floor(velocitiesSize / 2)];
 
-=======
-        //Juego pausado hasta que pasan 4 segundos
-        setTimeout(() => {
->>>>>>> parent of ef43d3b (Merge pull request #11 from lunsbzn/SuperposicionEnemigos)
-
-            var velocitiesSize = this.velocities.length;
-            var mediumVelocity = this.velocities[Math.floor(velocitiesSize / 2)];
-
-            for (var i = 0; i < this.activeEnemies.length; i++) {
-                if (this.activeEnemies[i].alive) {
-                    if (this.velocities[i] >= mediumVelocity) {
-                        if (i % 2 == 0) {
-                            if (this.player1.life > 0) {
-                                this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i]);
-                            } else {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
-                            }
+        for (var i = 0; i < this.activeEnemies.length; i++) {
+            if (this.activeEnemies[i].alive) {
+                if (this.velocities[i] >= mediumVelocity) {
+                    if (i % 2 == 0) {
+                        if (this.player1.life > 0) {
+                            this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i]);
                         } else {
-                            if (this.player2.life > 0) {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
-                            } else {
-                                this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i]);
-                            }
+                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
                         }
                     } else {
-                        if (i % 2 == 0) {
-                            if (this.player1.life > 0) {
-                                this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i] - 1);
-                            } else {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
-                            }
+                        if (this.player2.life > 0) {
+                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
                         } else {
-                            if (this.player2.life > 0) {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
-                            } else {
-                                this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i] - 1);
-                            }
+                            this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i]);
+                        }
+                    }
+                } else {
+                    if (i % 2 == 0) {
+                        if (this.player1.life > 0) {
+                            this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i] - 1);
+                        } else {
+                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                        }
+                    } else {
+                        if (this.player2.life > 0) {
+                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                        } else {
+                            this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i] - 1);
                         }
                     }
                 }
             }
-        }, 4000);
+        }
 
         ////////////////////////////ATAQUE ENEMIGOS///////////////////////////////
         //BUCLE PARA QUE FUNCIONEN COLISIONES SI EL JUGADOR ATACA SIN MOVERSE
@@ -1029,11 +920,7 @@ class Level1 extends Phaser.Scene {
         }
 
         //cambiar escena a gameover
-<<<<<<< HEAD
         if(this.player1.life<=0 && this.player2.life<=0){
-=======
-        if (this.player1.life == 0 && this.player2.life == 0) {
->>>>>>> parent of ef43d3b (Merge pull request #11 from lunsbzn/SuperposicionEnemigos)
             this.scene.start('gameOver');
             this.scene.stop('Level1');
             this.scene.stop('pauseScene');
@@ -1043,8 +930,5 @@ class Level1 extends Phaser.Scene {
         this.updateHearts();
        
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of ef43d3b (Merge pull request #11 from lunsbzn/SuperposicionEnemigos)
+}
 }
