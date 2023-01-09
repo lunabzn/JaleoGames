@@ -863,7 +863,7 @@ class Level1 extends Phaser.Scene {
 
                 }
 
-                }        
+                       
             
             }
 
