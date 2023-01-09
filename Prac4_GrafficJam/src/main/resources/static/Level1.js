@@ -660,6 +660,7 @@ class Level1 extends Phaser.Scene {
                         this.player1.setVelocityY(0);
                         if (!this.player1.attackLeft) {
                             this.spraySound.play();
+
                         }
                         this.player1.attackLeft = true;
                         this.player1.play('p1AttackLeft');
@@ -714,6 +715,7 @@ class Level1 extends Phaser.Scene {
 
                         if (this.cursors.up.isDown ) {
                             this.player2.setVelocityY(-160);
+
                         }
 
                         if (this.cursors.down.isDown) {
@@ -725,7 +727,63 @@ class Level1 extends Phaser.Scene {
                         this.player2.turnedLeft = false;
                         this.player2.play('p2Right', true);
 
+
                         if (this.cursors.up.isDown) {
+
+                if (this.player2.life <= 0) {
+                    if (this.player2.turnedLeft) {
+                        this.player2.play('p2DefeatLeft', true);
+                        this.player2.setImmovable(true); 
+                        this.player2.setVelocityX(0);
+                        this.player2.setVelocityY(0);                
+                    } else {
+                        this.player2.play('p2DefeatRight', true);
+                        this.player2.setImmovable(true);
+                        this.player2.setVelocityX(0);
+                        this.player2.setVelocityY(0); 
+                    }
+                } else {            
+
+                for (var i = 0; i < this.activeEnemies.length; i++) {
+                    if (this.activeEnemies[i].alive) {
+    
+                        var playerPos = this.player2.getCenter();
+                        this.player2.depth  = this.player2.getCenter().y; //Para que no se superpongan
+                        var enemyPos = this.activeEnemies[i].getCenter();
+                        var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
+                        var distx = Phaser.Math.Distance.Between(playerPos.x,0, enemyPos.x,0);
+                        var disty = Phaser.Math.Distance.Between(0,playerPos.y,0,enemyPos.y);
+                        var separation = 60;
+
+                        // Eventos de controles del JUGADOR 2
+                        if (this.cursors.left.isDown) {
+                            this.player2.setVelocityX(-160);
+                            this.player2.turnedLeft = true;
+                            this.player2.play('p2Left', true);
+
+                            if (this.cursors.up.isDown ) {
+                                this.player2.setVelocityY(-160);
+                            }
+
+                            if (this.cursors.down.isDown) {
+                                this.player2.setVelocityY(160);
+                            }
+                        }
+                        else if (this.cursors.right.isDown) {
+                            this.player2.setVelocityX(160);
+                            this.player2.turnedLeft = false;
+                            this.player2.play('p2Right', true);
+
+                            if (this.cursors.up.isDown) {
+                                this.player2.setVelocityY(-160);
+                            }
+
+                            if (this.cursors.down.isDown) {
+                                this.player2.setVelocityY(160);
+                            }
+                        }
+                        else if (this.cursors.up.isDown) {
+
                             this.player2.setVelocityY(-160);
                         }
 
@@ -758,6 +816,7 @@ class Level1 extends Phaser.Scene {
                             this.player2.play('p2TurnRight');
                         }
                     }
+
                 }        
             
             }
@@ -787,6 +846,15 @@ class Level1 extends Phaser.Scene {
                 this.player2.attackLeft = false;
             }
         
+
+                }
+                if (this.player2.atkP2.isUp) {
+                    this.player2.attackRight = false;
+                    this.player2.attackLeft = false;
+                }
+            
+            }
+
         }
         
             
