@@ -43,7 +43,7 @@ class selectorModeScene extends Phaser.Scene {
         playButtonOnline.on('pointerdown', () => {
             this.clickSound.play();
             this.scene.start('loadingServer')
-            crearJugador();
+            createPlayer();
         })
 
     }

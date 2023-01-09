@@ -44,7 +44,7 @@ public class Handler extends TextWebSocketHandler {
             case (0): // Crear una partida
                 int idLocal = 0;
                 Game gameAux_c0 = new Game();
-                String debug = "Me he unido a una partida";
+                String debug = "Me he unido a la partida";
                 if (currentGames < MAX_GAMES) {
                     int idJug = node.get("idJugador").asInt();
                     for (Game p : gameList) {// Recorro mi lista por cada elemento partida
@@ -66,6 +66,7 @@ public class Handler extends TextWebSocketHandler {
                     debug = "No se ha podido crear la partida (se ha alcanzado el NUM MAX de partidas)";
                 }
 
+                debug += " Id Partida: " + idLocal;
                 msg.put("idPartida", idLocal);
                 msgaux.put("idPartida", idLocal);
 
@@ -76,6 +77,8 @@ public class Handler extends TextWebSocketHandler {
                 if (!gameAux_c0.getNeedsMorePlayers()) { // cuando ya están los dos jugadores metidos en la partida
                     WebSocketSession localSesJ1 = gameAux_c0.getJ1().getSession();
                     WebSocketSession localSesJ2 = gameAux_c0.getJ2().getSession();
+                    
+                    System.err.println("Iniciar la partida");
 
                     msg.put("idFuncion", 6);
                     msgaux.put("idFuncion", 6);
@@ -107,12 +110,7 @@ public class Handler extends TextWebSocketHandler {
                     Game newAux = new Game();
                     gameList.set(idGameToDelete, newAux); // añado una partida vacía en la posicion de la que vamos a borrar
                     currentGames--;
-
-                    // Borramos los jugadores
-                    Player pAux1 = new Player();
-                    Player pAux2 = new Player();
-                    playerList.set(idP1ToDelete, pAux1);
-                    playerList.set(idP2ToDelete, pAux2);
+                    System.err.println(currentGames);
                 }
 
                 String texto = "Se ha borrado la partida";
@@ -148,7 +146,7 @@ public class Handler extends TextWebSocketHandler {
                 }
                 int localId_auxc3 = 0;
                 
-                if (currentPlayers < MAX_PLAYERS) { //Si hay menos de 8 jugadores (indices de 0 a 7)
+                if (currentPlayers < MAX_PLAYERS) { 
                     for (Player x : playerList) {
                         if (!x.getInGame()) {
                             Player j = new Player (localId_auxc3,session); // Creo al jugador con la sesion del WebSocket
@@ -463,6 +461,7 @@ public class Handler extends TextWebSocketHandler {
     }
 
     public void fillGame(Game p, Player J, ObjectNode msg) {
+        System.err.println("He entrado a llenar con el J2");
         J.setinGame(true);
         p.setPlayer2(J); // Añado a la partida el jugador 2
         p.setNeedsMorePlayers(false); // cuando añado el segundo jugador, se completa la partida

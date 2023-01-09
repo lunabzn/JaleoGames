@@ -1559,10 +1559,10 @@ class onlineLevel extends Phaser.Scene {
 
         //Cambiar escena L gameover
         if(this.player.life==0 && this.player2.life==0){
-            deleteGame();
             this.scene.start('gameOver');
             this.scene.stop('onlineLevel');
             this.scene.stop('pauseScene');
+            deleteGame();
         }
     }
 

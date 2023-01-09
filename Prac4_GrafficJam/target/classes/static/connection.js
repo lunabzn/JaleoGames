@@ -166,7 +166,7 @@ function randomNumber(){
 	socket.send(JSON.stringify(message));
 }
 
-function crearJugador(){ //Mi función que recibe los datos que necesito del jugador 2
+function createPlayer(){ //Mi función que recibe los datos que necesito del jugador 2
 	let message ={
 		idFuncion: 3,
 		mensaje: hola
