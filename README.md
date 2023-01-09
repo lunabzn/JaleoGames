@@ -109,25 +109,25 @@ ___
 **PRODUCTO FINAL**
 Los siguientes errores han sido solucionados:
 
--Daño de los enemigos. (Actualmente los enemigos solo quitan un corazón cuando te atacan)
+- Daño de los enemigos. (Actualmente los enemigos solo quitan un corazón cuando te atacan).
 
--Superposición (Añadimos la capacidad de cambiar de la profundidad, creando la sensación de que los enemigos estan unos detrás de otros)
+- Superposición (Añadimos la capacidad de cambiar de la profundidad, creando la sensación de que los enemigos estan unos detrás de otros).
 
--Enemy collider (El jugador ya no necesita estar corriendo hacia los enemigos para hacerles daño al atacar)
+- Enemy collider (El jugador ya no necesita estar corriendo hacia los enemigos para hacerles daño al atacar).
 
--World collider (Los enemigos ya no te empujan fuera del mapa)
+- World collider (Los enemigos ya no te empujan fuera del mapa).
 
--Misma resolución de los personajes (Los personajes tienen ahora la misma resolución de imagen)
+- Misma resolución de los personajes (Los personajes tienen ahora la misma resolución de imagen).
 
--Correcta gestión de escenas de pausa, gameover y gamewin.
+- Correcta gestión de escenas de pausa, gameover y gamewin.
     
 Nuevas implementaciones:
 
--Cuenta atrás antes de comenzar el nivel
+- Cuenta atrás antes de comenzar el nivel.
 
--Nuevos niveles
+- Nuevos niveles.
 
--Juego Online
+- Juego Online.
     
     
 
