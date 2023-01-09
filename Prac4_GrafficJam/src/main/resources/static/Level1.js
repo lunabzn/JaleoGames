@@ -148,27 +148,7 @@ class Level1 extends Phaser.Scene {
         this.paintSound = this.sound.add("paint");
         this.punchSound = this.sound.add("punch");
 
-        //función del contador
-        var start = false;
-        var countdownText = this.add.text(350, 200, '', { font: '180px Arial', fill: '#ffffff', stroke: '#000', strokeThickness:'8'});
-        var countdownTime = 4;
-
-        function updateCountdown() {
-            countdownTime--;
-            countdownText.setText(countdownTime);
-            if (countdownTime <= 0) {
-                //this.time.removeAllEvents();
-                start = true;
-                countdownText.setText("START");
-                countdownText.setVisible(false);
-            }
-        }
-
-        this.time.addEvent({
-            delay: 1000,
-            callback: updateCountdown,
-            loop: true
-        });
+        
 
         // Animaciones de movimiento de los jugadores
         // ANIMACIONES JUGADOR 1
