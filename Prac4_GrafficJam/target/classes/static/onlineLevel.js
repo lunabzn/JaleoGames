@@ -583,12 +583,16 @@ class onlineLevel extends Phaser.Scene {
         // Numero con el que se ataca
         var nAttack = 1;
         
-        if(Soy_J1){//para que ambos clientes tengan la misma probabilidad de ataque
-            probability = this.randomNum(1, 100);
-            randomNumber();
-        } else {
-            probability = Random_Num;
-        }
+        getRandomNumberFromServer(); // Actualiza Random_Num solicitando un numero aleatorio que genera el server
+        probability = Random_Num;
+        console.log(probability);
+
+        // if(Soy_J1){//para que ambos clientes tengan la misma probabilidad de ataque
+        //     probability = this.randomNum(1, 100);
+        //     randomNumber();
+        // } else {
+        //     probability = Random_Num;
+        // }
 
         // La probabilidad del ataque del enemigo es del 0.0001%
         var playerCoords = player.getCenter();
@@ -1369,98 +1373,68 @@ class onlineLevel extends Phaser.Scene {
 
         // ACTUALIZACIÓN PARA QUE LOS ENEMIGOS SIGAN A LOS PERSONAJES
         if(Soy_J1){
-            console.log("cliente 1");
             for (var i = 0; i < this.activeEnemies.length; i++) {
                 if (this.activeEnemies[i].alive) {
                     if(this.velocities[i]>=mediumVelocity){
-                        console.log("mayor igual a la velocidad mitad");
                         if (i % 2 == 0) {
-                            console.log("enemigo par");
                             if(this.player.life > 0){
                                 this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
-                                console.log("sigue a j1");
                             } else {
                                 this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
-                                console.log("sigue a j2");
                             }
                         } else {
-                            console.log("enemigo impar");
                             if(this.player2.life > 0){
                                 this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
-                                console.log("sigue a j2");
                             } else {
                                 this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
-                                console.log("sigue a j1");
                             }
                         }
                     } else {
-                        console.log("menor a la velocidad mitad");
                         if (i % 2 == 0) {
-                            console.log("enemigo par");
                             if(this.player.life > 0){
-                                console.log("sigue a j1");
                                 this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
                             } else {
                                 this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
-                                console.log("sigue a j2");
                             }
                         } else {
-                            console.log("enemigo impar");
                             if(this.player2.life > 0){
                                 this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
-                                console.log("sigue a j2");
                             } else {
                                 this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
-                                console.log("sigue a j1");
                             }
                         }
                     }
                 }
             }
         } else {
-            console.log("cliente 2");
             for (var i = 0; i < this.activeEnemies.length; i++) {
                 if (this.activeEnemies[i].alive) {
                     if(this.velocities[i]>=mediumVelocity){
-                        console.log("mayor igual a la velocidad mitad");
                         if (i % 2 == 0) {
-                            console.log("enemigo par");
                             if(this.player2.life > 0){
                                 this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
-                                console.log("sigue a j2");
                             } else {
                                 this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
-                                console.log("sigue a j1");
                             }
                         } else {
-                            console.log("enemigo impar");
                             if(this.player.life > 0){
                                 this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
-                                console.log("sigue a j1");
                             } else {
                                 this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
-                                console.log("sigue a j2");
                             }
                         }
                     } else {
-                        console.log("menor a la velocidad mitad");
                         if (i % 2 == 0) {
-                            console.log("enemigo par");
                             if(this.player2.life > 0){
                                 this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
-                                console.log("sigue a j2");
                             } else {
                                 this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
-                                console.log("sigue a j1");
                             }
                         } else {
-                            console.log("enemigo impar");
                             if(this.player.life > 0){
                                 this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
-                                console.log("sigue a j1");
                             } else {
                                 this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
-                                console.log("sigue a j2");
                             }
                         }
                     }
@@ -1474,10 +1448,6 @@ class onlineLevel extends Phaser.Scene {
                 var playerPos = this.player.getCenter();
                 var enemyPos = this.activeEnemies[i].getCenter();
                 var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
-
-                //numero con el que se ataca
-                //la probabilidad del ataque del enemigo es del 0.0001%
-                //Math.floor(Math.random() * (70) + 1);
                 
                 if (dist <= 101) {
                     if (this.player.atkP1.isDown) {
@@ -1497,25 +1467,8 @@ class onlineLevel extends Phaser.Scene {
                 var playerPos = this.player2.getCenter();
                 var enemyPos = this.activeEnemies[i].getCenter();
                 var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
-
-                //numero con el que se ataca
-
-                //la probabilidad del ataque del enemigo es del 0.0001%
                 
                 if (dist <= 101) {
-                    /*if (nAttack == probability) {
-                        if (playerPos.x < enemyPos.x)//si el enemigo va hacia la izquierda
-                        {
-                            this.activeEnemies[i].play('eAttackLeft', true);
-                            this.player2.life -= 1;
-                        } else if (playerPos.x > enemyPos.x)//si el enemigo va hacia la derecha
-                        {
-                            this.activeEnemies[i].play('eAttackRight', true);
-                            this.player2.life -= 1;
-                            console.log("pega jug1");
-                        }
-                    }*/
-
                     if (WEB_playerAttack) {
                         this.activeEnemies[i].life -= 1;
                         console.log("oucch");

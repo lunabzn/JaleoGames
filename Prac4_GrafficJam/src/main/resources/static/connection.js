@@ -156,12 +156,11 @@ function playerStopAttack(){
 	socket.send(JSON.stringify(message));
 }
 
-function randomNumber(){
+function getRandomNumberFromServer(){
 	let message = {
 		idFuncion: 18,
 		idPartida: ID_Partida,
 		idJugador: J1_id,
-		randomNum: probability
 	}
 	socket.send(JSON.stringify(message));
 }
