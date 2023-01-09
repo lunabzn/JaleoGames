@@ -344,41 +344,41 @@ class onlineLevel extends Phaser.Scene {
         //ANIMACIONES ENEMIGO
         this.anims.create({
             key: 'eLeft',
-            frames: this.anims.generateFrameNumbers('girlPolice', { start: 8, end: 11 }),
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 12, end: 15 }),
             frameRate: 10,
             repeat: -1
         });
 
         this.anims.create({
             key: 'eTurnLeft',
-            frames: [{ key: 'girlPolice', frame: 12 }],
-            frameRate: 20,
+            frames: [{ key: 'girlPolice', frame: 16 }],
+            frameRate: 10,
         });
 
         this.anims.create({
             key: 'eRight',
-            frames: this.anims.generateFrameNumbers('girlPolice', { start: 14, end: 17 }),
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 18, end: 21 }),
             frameRate: 10,
             repeat: -1
         });
 
         this.anims.create({
             key: 'eTurnRight',
-            frames: [{ key: 'girlPolice', frame: 13 }],
+            frames: [{ key: 'girlPolice', frame: 17 }],
             frameRate: 20
         });
 
         this.anims.create({
             key: 'eAttackLeft',
-            frames: this.anims.generateFrameNumbers('girlPolice', { start: 6, end: 6 }),
-            frameRate: 10,
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 6, end: 8 }),
+            frameRate: 1,
             repeat: -1
         });
 
         this.anims.create({
             key: 'eAttackRight',
-            frames: this.anims.generateFrameNumbers('girlPolice', { start: 7, end: 7 }),
-            frameRate: 10,
+            frames: this.anims.generateFrameNumbers('girlPolice', { start: 9, end: 11 }),
+            frameRate: 1,
             repeat: -1
         });
 
@@ -395,7 +395,7 @@ class onlineLevel extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
-
+        
         // Preparamos los dos personajes orientados hacia la derecha
         if(Soy_J1){
             this.player2.play('p2TurnRight');
@@ -1529,8 +1529,8 @@ class onlineLevel extends Phaser.Scene {
                 this.createEnemies(this.activeEnemies, this.quantEnemiesRound3);
                 this.updateVelocities(velocitiesSize);
             }else if(this.roundCont > 3){
-                this.scene.start('gameWin');
-                this.scene.stop('Level1');
+                this.scene.start('gameWinOnline');
+                this.scene.stop('onlineLevel');
                 this.scene.stop('pauseScene');
             }
         }

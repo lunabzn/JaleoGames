@@ -4,34 +4,38 @@ class pauseScene extends Phaser.Scene{
         super("pauseScene");
     }
 
+    initialize(){
+        Phaser.Scene.call(this,{"key": "pauseScene"})
+    }
+
     preload() {
         this.load.image('menup', 'resources/Fondopause.png');
-        this.load.image('restart', 'resources/volveraempezar.png');
+        this.load.image('restart', 'resources/volverM.png');
         this.load.image('resume', 'resources/reanudar.png');
 
     }
     
     create(){
-        this.background = this.add.image(0,0,"menup").setOrigin(0).setScale(1);
+        this.add.image(0,0,'menup').setOrigin(0).setScale(1);
 
-        let restart = this.add.image(600,450,"restart").setScale(0.5);
+        var restart = this.add.image(600,450,"restart").setScale(0.1165);
         restart.setInteractive();
-        restart.on('pointerdown',()=>{       
+        restart.on('pointerdown', function(){       
             this.scene.stop('gameWin');
             this.scene.stop('gameOver');
             this.scene.stop('Level1');
-            this.scene.start('Level1');
+            this.scene.start('selectorLevelScene');
             
-        })
+        }, this);
 
-        let resume = this.add.image(200,450,"resume").setScale(0.5);
+        let resume = this.add.image(200,450,'resume').setScale(0.5);
         resume.setInteractive();
-        resume.on('pointerdown',()=>{    
+        resume.on('pointerdown',function(){    
             this.scene.stop('gameWin');
-            this.scene.stop('gameOver');        
+            this.scene.stop('gameOver'); 
+            this.scene.stop('pauseScene');       
             this.scene.wake('Level1');
-            this.scene.stop('pauseScene');
-        })
+        }, this);
 
     }
 };
