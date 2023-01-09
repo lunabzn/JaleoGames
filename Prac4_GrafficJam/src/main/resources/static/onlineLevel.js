@@ -1115,40 +1115,106 @@ class onlineLevel extends Phaser.Scene {
 
         var velocitiesSize = this.velocities.length;
         var mediumVelocity = this.velocities[Math.floor(velocitiesSize/2)];
-
-        for (var i = 0; i < this.activeEnemies.length; i++) {
-            if (this.activeEnemies[i].alive) {
-                if(this.velocities[i]>=mediumVelocity){
-                    if (i % 2 == 0) {
-                        if(this.player.life > 0){
-                            this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
+        if(Soy_J1){
+            console.log("cliente 1");
+            for (var i = 0; i < this.activeEnemies.length; i++) {
+                if (this.activeEnemies[i].alive) {
+                    if(this.velocities[i]>=mediumVelocity){
+                        console.log("mayor igual a la velocidad mitad");
+                        if (i % 2 == 0) {
+                            console.log("enemigo par");
+                            if(this.player.life > 0){
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
+                                console.log("sigue a j1");
+                            } else {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                                console.log("sigue a j2");
+                            }
                         } else {
-                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                            console.log("enemigo impar");
+                            if(this.player2.life > 0){
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                                console.log("sigue a j2");
+                            } else {
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
+                                console.log("sigue a j1");
+                            }
                         }
                     } else {
-                        if(this.player2.life > 0){
-                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                        console.log("menor a la velocidad mitad");
+                        if (i % 2 == 0) {
+                            console.log("enemigo par");
+                            if(this.player.life > 0){
+                                console.log("sigue a j1");
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                            } else {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                                console.log("sigue a j2");
+                            }
                         } else {
-                            this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
+                            console.log("enemigo impar");
+                            if(this.player2.life > 0){
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                                console.log("sigue a j2");
+                            } else {
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                                console.log("sigue a j1");
+                            }
                         }
                     }
-                } else {
-                    if (i % 2 == 0) {
-                        if(this.player.life > 0){
-                            this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                }
+            }
+        } else {
+            console.log("cliente 2");
+            for (var i = 0; i < this.activeEnemies.length; i++) {
+                if (this.activeEnemies[i].alive) {
+                    if(this.velocities[i]>=mediumVelocity){
+                        console.log("mayor igual a la velocidad mitad");
+                        if (i % 2 == 0) {
+                            console.log("enemigo par");
+                            if(this.player.life > 0){
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                                console.log("sigue a j2");
+                            } else {
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
+                                console.log("sigue a j1");
+                            }
                         } else {
-                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                            console.log("enemigo impar");
+                            if(this.player2.life > 0){
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
+                                console.log("sigue a j1");
+                            } else {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                                console.log("sigue a j2");
+                            }
                         }
                     } else {
-                        if(this.player2.life > 0){
-                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                        console.log("menor a la velocidad mitad");
+                        if (i % 2 == 0) {
+                            console.log("enemigo par");
+                            if(this.player.life > 0){
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                                console.log("sigue a j2");
+                            } else {
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                                console.log("sigue a j1");
+                            }
                         } else {
-                            this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                            console.log("enemigo impar");
+                            if(this.player2.life > 0){
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                                console.log("sigue a j1");
+                            } else {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                                console.log("sigue a j2");
+                            }
                         }
                     }
                 }
             }
         }
+        
 
         // ACTUALIZAR ENEMIGOS
         for (var i = 0; i < this.activeEnemies.length; i++) {
