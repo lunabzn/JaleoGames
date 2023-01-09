@@ -19,7 +19,7 @@ public class App implements WebSocketConfigurer {
 	}
 	
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(gameHandler(), "/race51").setAllowedOrigins("*");
+		registry.addHandler(gameHandler(), "/grafficjam").setAllowedOrigins("*");
 	}
 
 	@Bean

@@ -1,4 +1,4 @@
-var socket = new WebSocket("ws://localhost:8080/race51");
+var socket = new WebSocket("ws://localhost:8080/grafficjam");
 
 socket.onopen = function () {
 	console.log("Conexion establecida");
@@ -40,39 +40,28 @@ socket.onmessage = function (event) {
 			break;
 
 		case (4): // Mover jugador a la izquierda
-			//console.log(aux.stringPrueba);
-			//console.log("connection.js: El otro jugador se va a mover a la izquierda");
 			activate_WEB_goLeft();
 			break;
 
 		case (5): // Mover jugador a la derecha
-			//console.log(aux.stringPrueba);
-			//console.log("connection.js: El otro jugador se va a mover a la derecha");
 			activate_WEB_goRight();
 			break;
  
 		case (6): // Cuando se completa una partida
-			J2_skin = aux.idSkin;
 			StartGame = aux.estadoPartida;
 			console.log(aux.estadoPartida);
-
-			console.log("El id jugador del server es:" + aux.idJugador);
-			console.log("La skin del jugador 2 es:" + aux.idSkin);
+			console.log("El ID jugador del server es:" + aux.idJugador);
 			break;
 
 		case (7): // Mover jugador arriba
-			//console.log(aux.stringPrueba);
-			//console.log("connection.js: El otro jugador se va a mover hacia arriba");
 			activate_WEB_goUp();
 			break;
 
 		case (8): // Mover jugador abajo
-			//console.log(aux.stringPrueba);
-			//console.log("connection.js: El otro jugador se va a mover hacia abajo");
 			activate_WEB_goDown();
 			break;
 
-		case (9):
+		case (9): // Parar movimiento hacia la izquierda
 			deactivate_WEB_goLeft();
 			break;
 
@@ -80,35 +69,35 @@ socket.onmessage = function (event) {
 			cambiarDesconexion();
 			break;
 
-		case (11):
+		case (11): // Parar movimiento hacia la izquierda
 			deactivate_WEB_goRight();
 			break;
 
-		case (12):
+		case (12): // Parar movimiento hacia arriba
 			deactivate_WEB_goUp();
 			break;
 
-		case (13):
+		case (13): // Parar movimiento hacia abajo
 			deactivate_WEB_goDown();
 			break;
 
-		case (14):
+		case (14): // Pausar la partida
 			makePauseGame();
 			break;
 
-		case (15):
+		case (15): // Resumir la partida
 			makeResumeGame();
 			break;
 
-		case(16):
+		case(16): // Jugador se sale de la partida online desde el menú de Pausa
 			makePlayerLogOut();
 			break;
 
-		case (17):
+		case (17): // Parar ataque jugador
 			deactivate_WEB_dontPlayerAttack();
 			break;
 
-		case (18):
+		case (18): // Funcion random
 			Random_Num = aux.randomNum;
 			break;
 
@@ -135,7 +124,8 @@ function deleteGame() {
 	let message = {
 			idFuncion: 1,
 			idPartida: ID_Partida,
-			idJugador: J1_id
+			idJugador1: J1_id,
+			idJugador2: J2_id
 	}
 	socket.send(JSON.stringify(message));
 }
