@@ -11,6 +11,8 @@ var WEB_dontGoDown = false;
 var WEB_pauseGame = false;
 var WEB_playerAttack = false;
 var WEB_dontPlayerAttack = false;
+var WEB_playerStop = false;
+var WEB_randomNum = 0;
 
 
 class onlineLevel extends Phaser.Scene {
@@ -89,9 +91,11 @@ class onlineLevel extends Phaser.Scene {
             LocalJ1 = false;
         }
 
-        this.quantEnemiesRound1 = 1;
+        this.probabilities=[];
+
+        this.quantEnemiesRound1 = 3;
         this.quantEnemiesRound2 = 4;
-        this.quantEnemiesRound3 = 6;
+        this.quantEnemiesRound3 = 5;
         this.roundCont = 1;
 
         this.activeEnemies = [this.quantEnemiesRound1];
@@ -399,11 +403,44 @@ class onlineLevel extends Phaser.Scene {
         }
 
     }
+
     /////////// FIN FUNCION CREATE //////////
 
     createEnemies(enemies, size) {
+
+        var enemyPosX = [];
+        var enemyPosY = [];
+        var equaldistX = 400/size;
+        var equaldistY = 250/size;
+        var auxX=equaldistX;
+        var auxY=equaldistY;
+
+        for(var i=0;i<size;i++){
+            enemyPosX[i]= 750 - equaldistX;
+            equaldistX=auxX*(i+2);
+            console.log(enemyPosX[i]);
+        }
+
+        for(var i=0;i<size;i++){
+            enemyPosY[i]= 500 - equaldistY;
+            equaldistY=auxY*(i+2);
+            console.log(enemyPosY[i]);
+        }
+
+        var posbol=true;//boleano para alternar la creacion de las posiciones de los enemigos
+
         for (var i = 0; i < size; i++) {
-            enemies[i] = this.physics.add.sprite(this.randomNum(250, 700), this.randomNum(200, 500), 'girlPolice');
+
+            console.log("se ha creado n " + i);
+
+            if(posbol==true){
+                enemies[i] = this.physics.add.sprite(enemyPosX[i], enemyPosY[i], 'girlPolice');
+            }else{
+                enemies[i] = this.physics.add.sprite(enemyPosX[i], enemyPosY[size-i], 'girlPolice');
+            }
+            
+            enemies[i].name =i.toString();
+
             enemies[i].body.setSize(enemies[i].width * 0.3, enemies[i].height * 0.85);
             enemies[i].setImmovable(true);
             enemies[i].alive = true;
@@ -467,21 +504,27 @@ class onlineLevel extends Phaser.Scene {
                 //     }
                 // }
             });
+
+            if(posbol==true){
+                posbol=false;
+            } else if(posbol==false){
+                posbol=true;
+            }
         }
     }
 
     enemyWalk(player, enemy) {
-        // var playerCoords = player.getCenter();
-        // var enemyCoords = enemy.getCenter();
+        var playerCoords = player.getCenter();
+        var enemyCoords = enemy.getCenter();
 
-        // if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
-        // {
-        //     enemy.play('eLeft', true);
-        // }
-        // else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
-        // {
-        //     enemy.play('eRight', true);
-        // }
+        if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
+        {
+            enemy.play('eLeft', true);
+        }
+        else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
+        {
+            enemy.play('eRight', true);
+        }
     }
 
     enemyStop(player, enemy) {
@@ -506,89 +549,153 @@ class onlineLevel extends Phaser.Scene {
     }
 
     enemyFollow(player, enemy, v) {
-        // //velocidad del enemigo
-        // var vEnemy = v;
+        //velocidad del enemigo
+        var vEnemy = v;
 
-        // this.physics.moveToObject(enemy, player, vEnemy);
-        // //posicion del centro del sprite jugador
-        // var playerPos = player.getCenter();
+        this.physics.moveToObject(enemy, player, vEnemy);
+        //posicion del centro del sprite jugador
+        var playerPos = player.getCenter();
 
-        // //posicion del centro del sprite enemigo
-        // var enemyPos = enemy.getCenter();
-        // var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
-        // //separacion de sprites
-        // var separation = 80;
+        //posicion del centro del sprite enemigo
+        var enemyPos = enemy.getCenter();
+        var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
+        //separacion de sprites
+        var separation = 80;
 
-        // var angleTopRight = this.angleBetweenPlayerThing(player, player.getTopRight().x, player.getTopRight().y);
-        // var angleBottomRight = this.angleBetweenPlayerThing(player, player.getBottomRight().x, player.getBottomRight().y);
-        // var angleTopLeft = this.angleBetweenPlayerThing(player, player.getTopLeft().x, player.getTopLeft().y);
-        // var angleBottomLeft = this.angleBetweenPlayerThing(player, player.getBottomLeft().x, player.getBottomLeft().y);
-        // var anglePlayerEnemy = this.angleBetweenPlayerThing(player, enemyPos.x, enemyPos.y);
-        // var pi = Math.PI;
-        // this.enemyWalk(player, enemy);
-        // if (dist <= separation) {
-        //     this.enemyStop(player, enemy);
-        //     if ((anglePlayerEnemy >= angleTopRight && anglePlayerEnemy <= angleBottomRight)) {
-        //         this.enemyAttack(player, enemy);
-        //     } else if ((anglePlayerEnemy >= -1 * pi && anglePlayerEnemy <= angleTopLeft) || (anglePlayerEnemy <= pi && anglePlayerEnemy >= angleBottomLeft)) {
-        //         this.enemyAttack(player, enemy);
-        //     }
-        // }
-    }
-
-    enemyAttack(player, enemy) {
-        //numero con el que se ataca
-        var nAttack = 1;
-        //la probabilidad del ataque del enemigo es del 0.0001%
-        var probabilitty = this.randomNum(1, 100);
-
-        var playerCoords = player.getCenter();
-        var enemyCoords = enemy.getCenter();
-
-        if (nAttack == probabilitty) {
-            if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
-            {
-                this.punchSound.play();
-                enemy.play('eAttackLeft', true);
-            } else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
-            {
-                this.punchSound.play();
-                enemy.play('eAttackRight', true);
+        var angleTopRight = this.angleBetweenPlayerThing(player, player.getTopRight().x, player.getTopRight().y);
+        var angleBottomRight = this.angleBetweenPlayerThing(player, player.getBottomRight().x, player.getBottomRight().y);
+        var angleTopLeft = this.angleBetweenPlayerThing(player, player.getTopLeft().x, player.getTopLeft().y);
+        var angleBottomLeft = this.angleBetweenPlayerThing(player, player.getBottomLeft().x, player.getBottomLeft().y);
+        var anglePlayerEnemy = this.angleBetweenPlayerThing(player, enemyPos.x, enemyPos.y);
+        var pi = Math.PI;
+        this.enemyWalk(player, enemy);
+        if (dist <= separation) {
+            this.enemyStop(player, enemy);
+            if ((anglePlayerEnemy >= angleTopRight && anglePlayerEnemy <= angleBottomRight)) {
+                this.enemyAttack(player, enemy);
+            } else if ((anglePlayerEnemy >= -1 * pi && anglePlayerEnemy <= angleTopLeft) || (anglePlayerEnemy <= pi && anglePlayerEnemy >= angleBottomLeft)) {
+                this.enemyAttack(player, enemy);
             }
         }
     }
 
-    updateHearts(){
-        if(this.player.life==4){
-            this.cora5.destroy();
-         }
-         else if(this.player.life==3){
-            this.cora4.destroy();
-         }
-         else if(this.player.life==2){
-            this.cora3.destroy();
-         }
-         else if(this.player.life==1){
-            this.cora2.destroy();
-         }
-         else if(this.player.life==0){
-            this.cora1.destroy();
-         }
+    enemyAttack(player, enemy) {
+        // Numero con el que se ataca
+        var nAttack = 1;
+        
+        if(Soy_J1){//para que ambos clientes tengan la misma probabilidad de ataque
+            probability = this.randomNum(1, 100);
+            randomNumber();
+        } else {
+            probability = Random_Num;
+        }
 
-        if(this.player2.life==4){
-           this.cora10.destroy();
+        // La probabilidad del ataque del enemigo es del 0.0001%
+        var playerCoords = player.getCenter();
+        var enemyCoords = enemy.getCenter();
+
+        if (nAttack == probability) {
+            if (playerCoords.x < enemyCoords.x) { //si el enemigo va hacia la izquierda
+                this.punchSound.play();
+                enemy.play('eAttackLeft', true);
+                player.life -= 1;
+                this.updateHearts();
+            } else if (playerCoords.x > enemyCoords.x) { //si el enemigo va hacia la derecha
+                this.punchSound.play();
+                enemy.play('eAttackRight', true);
+                player.life -= 1;
+                this.updateHearts();
+            }
         }
-        else if(this.player2.life==3){
-           this.cora9.destroy();
-        }
-        else if(this.player2.life==2){
-           this.cora8.destroy();
-        }
-        else if(this.player2.life==1){
-           this.cora7.destroy();
-        }
-        else if(this.player2.life==0){
-           this.cora6.destroy();
+    }
+
+    updateHearts() {
+        if (Soy_J1) {
+            console.log("Cliente 1 ");
+            if (this.player.life == 4) {
+                this.cora5.destroy();
+                console.log("cora5 destruido");
+            }
+            if (this.player.life == 3) {
+                this.cora4.destroy();
+                console.log("cora4 destruido");
+            }
+            if (this.player.life == 2) {
+                this.cora3.destroy();
+                console.log("cora3 destruido");
+            }
+            if (this.player.life == 1) {
+                this.cora2.destroy();
+                console.log("cora2 destruido");
+            }
+            if (this.player.life == 0) {
+                this.cora1.destroy();
+                console.log("cora1 destruido");
+            }
+
+            if (this.player2.life == 4) {
+                this.cora10.destroy();
+                console.log("cora10 destruido");
+            }
+            if (this.player2.life == 3) {
+                this.cora9.destroy();
+                console.log("cora9 destruido");
+            }
+            if (this.player2.life == 2) {
+                this.cora8.destroy();
+                console.log("cora8 destruido");
+            }
+            if (this.player2.life == 1) {
+                this.cora7.destroy();
+                console.log("cora7 destruido");
+            }
+            if (this.player2.life == 0) {
+                this.cora6.destroy();
+                console.log("cora6 destruido");
+            }
+        } else {
+            console.log("cliente 2");
+            if (this.player2.life == 4) {
+                this.cora5.destroy();
+                console.log("cora5 destruido");
+            }
+            if (this.player2.life == 3) {
+                this.cora4.destroy();
+                console.log("cora4 destruido");
+            }
+            if (this.player2.life == 2) {
+                this.cora3.destroy();
+                console.log("cora3 destruido");
+            }
+            if (this.player2.life == 1) {
+                this.cora2.destroy();
+                console.log("cora2 destruido");
+            }
+            if (this.player2.life == 0) {
+                this.cora1.destroy();
+                console.log("cora1 destruido");
+            }
+
+            if (this.player.life == 4) {
+                this.cora10.destroy();
+                console.log("cora10 destruido");
+            }
+            if (this.player.life == 3) {
+                this.cora9.destroy();
+                console.log("cora9 destruido");
+            }
+            if (this.player.life == 2) {
+                this.cora8.destroy();
+                console.log("cora8 destruido");
+            }
+            if (this.player.life == 1) {
+                this.cora7.destroy();
+                console.log("cora7 destruido");
+            }
+            if (this.player.life == 0) {
+                this.cora6.destroy();
+                console.log("cora6 destruido");
+            }
         }
     }
 
@@ -612,16 +719,16 @@ class onlineLevel extends Phaser.Scene {
 
         ////////////////////////////////// APARTADO ONLINE (WEBSOCKETS)
 
-        if (WEB_goLeft && !WEB_goRight) { // Movimiento a la izquierda del otro jugador
+        if (WEB_goLeft && !WEB_goRight) { // Movimiento L la izquierda del otro jugador
             console.log("Mov. Izq");
             this.player2.setVelocityX(-160);
             this.player2.turnedLeft = true;
             WEB_goRight = false;
             
             if (Soy_J1) {
-                this.player2.play('p2Left', true); // si soy el J1, el player2 tiene el skin de Tuerto. Ejecutamos la animacion de mov a la izq de Tuerto 
+                this.player2.play('p2Left', true); // si soy el J1, el player2 tiene el skin de Tuerto. Ejecutamos la animacion de mov L la izq de Tuerto 
             } else {
-                this.player2.play('p1Left', true); // si soy el J2, el player2 tiene el skin de Vivo. Ejecutamos la animacion de mov a la izq de Vivo
+                this.player2.play('p1Left', true); // si soy el J2, el player2 tiene el skin de Vivo. Ejecutamos la animacion de mov L la izq de Vivo
             }
 
             if (WEB_goUp) {
@@ -656,7 +763,6 @@ class onlineLevel extends Phaser.Scene {
                 console.log("WEB_dontGoLeft  " + WEB_dontGoLeft);
                 WEB_goLeft = false;
                 this.player2.setVelocityX(0);
-                //this.player2.setVelocityY(0);
                 if (this.player2.turnedLeft) {
                     if (Soy_J1) {
                         this.player2.play('p2TurnLeft');
@@ -682,9 +788,9 @@ class onlineLevel extends Phaser.Scene {
             WEB_goLeft = false;
 
             if (Soy_J1) {
-                this.player2.play('p2Right', true); // si soy el J1, el player2 tiene el skin de Tuerto. Ejecutamos la animacion de mov a la der de Tuerto 
+                this.player2.play('p2Right', true); // si soy el J1, el player2 tiene el skin de Tuerto. Ejecutamos la animacion de mov L la der de Tuerto 
             } else {
-                this.player2.play('p1Right', true); // si soy el J2, el player2 tiene el skin de Vivo. Ejecutamos la animacion de mov a la der de Vivo
+                this.player2.play('p1Right', true); // si soy el J2, el player2 tiene el skin de Vivo. Ejecutamos la animacion de mov L la der de Vivo
             }
 
             if (WEB_goUp) {
@@ -715,7 +821,6 @@ class onlineLevel extends Phaser.Scene {
                 console.log("WEB_dontGoRight  " + WEB_dontGoRight);
                 WEB_goRight = false;
                 this.player2.setVelocityX(0);
-                //this.player2.setVelocityY(0);
                 if (this.player2.turnedLeft) {
                     if (Soy_J1) {
                         this.player2.play('p2TurnLeft');
@@ -779,8 +884,7 @@ class onlineLevel extends Phaser.Scene {
             if (WEB_dontGoUp) {
                 console.log("WEB_dontGoUp  " + WEB_dontGoUp);
                 WEB_goUp = false;
-                //this.player2.setVelocityX(0);
-                this.player2.setVelocityY(0);
+                //this.player2.setVelocityY(0);
                 if (this.player2.turnedLeft) {
                     if (Soy_J1) {
                         this.player2.play('p2TurnLeft');
@@ -826,7 +930,7 @@ class onlineLevel extends Phaser.Scene {
                     this.player2.play('p1DownLeft', true);
                 }
                 this.player2.setVelocityX(-160);
-                WEB_goRight = false; // Si va a la izq ahora, aseguramos que no pueda ir hacia la derecha
+                WEB_goRight = false; // Si va L la izq ahora, aseguramos que no pueda ir hacia la derecha
             }
 
             if (WEB_goRight) {
@@ -838,14 +942,14 @@ class onlineLevel extends Phaser.Scene {
                     this.player2.play('p1DownRight', true);
                 }
                 this.player2.setVelocityX(160);
-                WEB_goLeft = false; // Si va a la der ahora, aseguramos que no pueda ir hacia la izquierda
+                WEB_goLeft = false; // Si va L la der ahora, aseguramos que no pueda ir hacia la izquierda
             }
 
             if (WEB_dontGoDown) {
                 console.log("WEB_dontGoDown  " + WEB_dontGoDown);
                 WEB_goDown = false;
                 //this.player2.setVelocityX(0);
-                this.player2.setVelocityY(0);
+                // this.player2.setVelocityY(0);
                 if (this.player2.turnedLeft) {
                     if (Soy_J1) {
                         this.player2.play('p2TurnLeft');
@@ -861,7 +965,27 @@ class onlineLevel extends Phaser.Scene {
                 }
                 WEB_dontGoDown = false;
             }
-        }       
+        }     
+
+        if (WEB_playerStop) {
+            this.player2.setVelocityX(0);
+            this.player2.setVelocityY(0);
+
+            if (this.player2.turnedLeft) {
+                if (Soy_J1) {
+                    this.player2.play('p2TurnLeft');
+                } else {
+                    this.player2.play('p1TurnLeft');
+                }
+            } else {
+                if (Soy_J1) {
+                    this.player2.play('p2TurnRight');
+                } else {
+                    this.player2.play('p1TurnRight');
+                }
+            }
+            WEB_playerStop = false;
+        }
         
         if(WEB_pauseGame){
             this.scene.stop('gameWin');
@@ -877,14 +1001,14 @@ class onlineLevel extends Phaser.Scene {
                 if (!this.player2.attackLeft) {
                     if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá sonar el sonido de pintura
                         this.paintSound.play();
-                    } else { // si yo soy el J2 (el que se unió a la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá sonar el sonido de spray
+                    } else { // si yo soy el J2 (el que se unió L la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá sonar el sonido de spray
                         this.spraySound.play();
                     }
                 }
                 this.player2.attackLeft = true;
                 if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá ejecutarse la animación de ataque de Tuerto
                     this.player2.play('p2AttackLeft');
-                } else { // si yo soy el J2 (el que se unió a la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá ejecutarse la animación de ataque de Vivo
+                } else { // si yo soy el J2 (el que se unió L la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá ejecutarse la animación de ataque de Vivo
                     this.player2.play('p1AttackLeft');
                 }
             } else { // ATAQUE A LA DER
@@ -893,14 +1017,14 @@ class onlineLevel extends Phaser.Scene {
                 if (!this.player2.attackRight) {
                     if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá sonar el sonido de pintura
                         this.paintSound.play();
-                    } else { // si yo soy el J2 (el que se unió a la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá sonar el sonido de spray
+                    } else { // si yo soy el J2 (el que se unió L la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá sonar el sonido de spray
                         this.spraySound.play();
                     }
                 }
                 this.player2.attackRight = true;
                 if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá ejecutarse la animación de ataque de Tuerto
                     this.player2.play('p2AttackRight');
-                } else { // si yo soy el J2 (el que se unió a la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá ejecutarse la animación de ataque de Vivo
+                } else { // si yo soy el J2 (el que se unió L la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá ejecutarse la animación de ataque de Vivo
                     this.player2.play('p1AttackRight');
                 }
             }
@@ -928,10 +1052,7 @@ class onlineLevel extends Phaser.Scene {
         }
         
 
-        //ACTUALIZA CORAZONES
-        this.updateHearts();
-
-        //ACTUALIZA LA PROFUNDIDAD DE LOS ENEMIGOS
+        // ACTUALIZA LA PROFUNDIDAD DE LOS ENEMIGOS
         for (var i = 0; i < this.activeEnemies.length; i++) {
             if (this.activeEnemies[i].alive) {
                 var enemyPos = this.activeEnemies[i].getCenter();
@@ -965,7 +1086,7 @@ class onlineLevel extends Phaser.Scene {
         } else {
             // Eventos de controles del JUGADOR 1
             if (this.player.keyA.isDown) { // Si el Jugador 1 pulsa la A, se mueve hacia la izq
-                playerMoveLeft(); // Avisamos al otro cliente de que nos movemos a la izquierda
+                playerMoveLeft(); // Avisamos al otro cliente de que nos movemos L la izquierda
                 this.player.setVelocityX(-160);
                 this.player.turnedLeft = true;
                 
@@ -987,7 +1108,7 @@ class onlineLevel extends Phaser.Scene {
                 }
             }
             else if (this.player.keyD.isDown) { // Si el Jugador 1 pulsa la D, se mueve hacia la der
-                playerMoveRight(); // Avisamos al otro cliente de que nos movemos a la derecha
+                playerMoveRight(); // Avisamos al otro cliente de que nos movemos L la derecha
                 this.player.setVelocityX(160);
                 this.player.turnedLeft = false;
                 
@@ -1023,6 +1144,7 @@ class onlineLevel extends Phaser.Scene {
                         this.player.play('p2UpRight', true);
                     } 
                 }
+                console.log("Entra en Mov.Arriba");
             }
             else if (this.player.keyS.isDown) { // Si el Jugador 1 pulsa la S, se mueve hacia abajo
                 playerMoveDown(); // Avisamos al otro cliente de que nos movemos hacia abajo
@@ -1042,7 +1164,8 @@ class onlineLevel extends Phaser.Scene {
                 }
             }
             else { // Si el Jugador 1 no pulsa ninguna tecla, se queda quieto mirando hacia la última dirección que estaba
-                
+
+                playerStop();
                 this.player.setVelocityX(0);
                 this.player.setVelocityY(0);
 
@@ -1205,14 +1328,14 @@ class onlineLevel extends Phaser.Scene {
             //         if (!this.player2.attackLeft) {
             //             if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá sonar el sonido de pintura
             //                 this.paintSound.play();
-            //             } else { // si yo soy el J2 (el que se unió a la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá sonar el sonido de spray
+            //             } else { // si yo soy el J2 (el que se unió L la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá sonar el sonido de spray
             //                 this.spraySound.play();
             //             }
             //         }
             //         this.player2.attackLeft = true;
             //         if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá ejecutarse la animación de ataque de Tuerto
             //             this.player2.play('p2AttackLeft');
-            //         } else { // si yo soy el J2 (el que se unió a la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá ejecutarse la animación de ataque de Vivo
+            //         } else { // si yo soy el J2 (el que se unió L la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá ejecutarse la animación de ataque de Vivo
             //             this.player2.play('p1AttackLeft');
             //         }
             //     } else { // ATAQUE A LA DER
@@ -1221,14 +1344,14 @@ class onlineLevel extends Phaser.Scene {
             //         if (!this.player2.attackRight) {
             //             if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá sonar el sonido de pintura
             //                 this.paintSound.play();
-            //             } else { // si yo soy el J2 (el que se unió a la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá sonar el sonido de spray
+            //             } else { // si yo soy el J2 (el que se unió L la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá sonar el sonido de spray
             //                 this.spraySound.play();
             //             }
             //         }
             //         this.player2.attackRight = true;
             //         if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá ejecutarse la animación de ataque de Tuerto
             //             this.player2.play('p2AttackRight');
-            //         } else { // si yo soy el J2 (el que se unió a la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá ejecutarse la animación de ataque de Vivo
+            //         } else { // si yo soy el J2 (el que se unió L la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá ejecutarse la animación de ataque de Vivo
             //             this.player2.play('p1AttackRight');
             //         }
             //     }
@@ -1244,41 +1367,108 @@ class onlineLevel extends Phaser.Scene {
         var velocitiesSize = this.velocities.length;
         var mediumVelocity = this.velocities[Math.floor(velocitiesSize/2)];
 
-        for (var i = 0; i < this.activeEnemies.length; i++) {
-            if (this.activeEnemies[i].alive) {
-                if(this.velocities[i]>=mediumVelocity){
-                    if (i % 2 == 0) {
-                        if(this.player.life > 0){
-                            this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
+        // ACTUALIZACIÓN PARA QUE LOS ENEMIGOS SIGAN A LOS PERSONAJES
+        if(Soy_J1){
+            console.log("cliente 1");
+            for (var i = 0; i < this.activeEnemies.length; i++) {
+                if (this.activeEnemies[i].alive) {
+                    if(this.velocities[i]>=mediumVelocity){
+                        console.log("mayor igual a la velocidad mitad");
+                        if (i % 2 == 0) {
+                            console.log("enemigo par");
+                            if(this.player.life > 0){
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
+                                console.log("sigue a j1");
+                            } else {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                                console.log("sigue a j2");
+                            }
                         } else {
-                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                            console.log("enemigo impar");
+                            if(this.player2.life > 0){
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                                console.log("sigue a j2");
+                            } else {
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
+                                console.log("sigue a j1");
+                            }
                         }
                     } else {
-                        if(this.player2.life > 0){
-                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                        console.log("menor a la velocidad mitad");
+                        if (i % 2 == 0) {
+                            console.log("enemigo par");
+                            if(this.player.life > 0){
+                                console.log("sigue a j1");
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                            } else {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                                console.log("sigue a j2");
+                            }
                         } else {
-                            this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
+                            console.log("enemigo impar");
+                            if(this.player2.life > 0){
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                                console.log("sigue a j2");
+                            } else {
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                                console.log("sigue a j1");
+                            }
                         }
                     }
-                } else {
-                    if (i % 2 == 0) {
-                        if(this.player.life > 0){
-                            this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                }
+            }
+        } else {
+            console.log("cliente 2");
+            for (var i = 0; i < this.activeEnemies.length; i++) {
+                if (this.activeEnemies[i].alive) {
+                    if(this.velocities[i]>=mediumVelocity){
+                        console.log("mayor igual a la velocidad mitad");
+                        if (i % 2 == 0) {
+                            console.log("enemigo par");
+                            if(this.player2.life > 0){
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                                console.log("sigue a j2");
+                            } else {
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
+                                console.log("sigue a j1");
+                            }
                         } else {
-                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                            console.log("enemigo impar");
+                            if(this.player.life > 0){
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
+                                console.log("sigue a j1");
+                            } else {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                                console.log("sigue a j2");
+                            }
                         }
                     } else {
-                        if(this.player2.life > 0){
-                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                        console.log("menor a la velocidad mitad");
+                        if (i % 2 == 0) {
+                            console.log("enemigo par");
+                            if(this.player2.life > 0){
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                                console.log("sigue a j2");
+                            } else {
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                                console.log("sigue a j1");
+                            }
                         } else {
-                            this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                            console.log("enemigo impar");
+                            if(this.player.life > 0){
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                                console.log("sigue a j1");
+                            } else {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                                console.log("sigue a j2");
+                            }
                         }
                     }
                 }
             }
         }
 
-        ////////////////////////////ATAQUE ENEMIGOS///////////////////////////////
+        ////////////////////////////ATAQUE JUGADORES///////////////////////////////
         for (var i = 0; i < this.activeEnemies.length; i++) {
             if (this.activeEnemies[i].alive) {
                 var playerPos = this.player.getCenter();
@@ -1286,25 +1476,10 @@ class onlineLevel extends Phaser.Scene {
                 var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
 
                 //numero con el que se ataca
-                var nAttack = 1;
                 //la probabilidad del ataque del enemigo es del 0.0001%
-                var probability = Math.floor(Math.random() * (70) + 1);
-
-                if (dist <= 70) {
-                    if (nAttack == probability) {
-                        if (playerPos.x < enemyPos.x)//si el enemigo va hacia la izquierda
-                        {
-                            this.activeEnemies[i].play('eAttackLeft', true);
-                            this.player.life -= 1;
-                        } else if (playerPos.x > enemyPos.x)//si el enemigo va hacia la derecha
-                        {
-                            this.activeEnemies[i].play('eAttackRight', true);
-                            this.player.life -= 1;
-                            console.log("pega jug1");
-                        }
-
-                    }
-
+                //Math.floor(Math.random() * (70) + 1);
+                
+                if (dist <= 101) {
                     if (this.player.atkP1.isDown) {
                         this.activeEnemies[i].life -= 1;
                         console.log("pucch");
@@ -1324,12 +1499,11 @@ class onlineLevel extends Phaser.Scene {
                 var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
 
                 //numero con el que se ataca
-                var nAttack = 1;
-                //la probabilidad del ataque del enemigo es del 0.0001%
-                var probability = Math.floor(Math.random() * (70) + 1);
 
-                if (dist <= 70) {
-                    if (nAttack == probability) {
+                //la probabilidad del ataque del enemigo es del 0.0001%
+                
+                if (dist <= 101) {
+                    /*if (nAttack == probability) {
                         if (playerPos.x < enemyPos.x)//si el enemigo va hacia la izquierda
                         {
                             this.activeEnemies[i].play('eAttackLeft', true);
@@ -1340,7 +1514,7 @@ class onlineLevel extends Phaser.Scene {
                             this.player2.life -= 1;
                             console.log("pega jug1");
                         }
-                    }
+                    }*/
 
                     if (WEB_playerAttack) {
                         this.activeEnemies[i].life -= 1;
@@ -1383,7 +1557,7 @@ class onlineLevel extends Phaser.Scene {
             }
         }
 
-        //Cambiar escena a gameover
+        //Cambiar escena L gameover
         if(this.player.life==0 && this.player2.life==0){
             deleteGame();
             this.scene.start('gameOver');
@@ -1396,22 +1570,22 @@ class onlineLevel extends Phaser.Scene {
 
 // FUNCIONES A EJECUTAR CUANDO connection.js LO SOLICITE
 function activate_WEB_goLeft(){
-    //console.log("El OTRO jugador se va a mover a la izquierda");
+    //console.log("El OTRO jugador se va L mover L la izquierda");
     WEB_goLeft = true;
 }
 
 function activate_WEB_goRight(){
-    //console.log("El OTRO jugador se va a mover a la derecha");
+    //console.log("El OTRO jugador se va L mover L la derecha");
     WEB_goRight = true;
 }
 
 function activate_WEB_goUp(){
-    //console.log("El OTRO jugador se va a mover hacia arriba");
+    //console.log("El OTRO jugador se va L mover hacia arriba");
     WEB_goUp = true;
 }
 
 function activate_WEB_goDown(){
-    //console.log("El OTRO jugador se va a mover hacia abajo");
+    //console.log("El OTRO jugador se va L mover hacia abajo");
     WEB_goDown = true;
 }
 
@@ -1439,4 +1613,7 @@ function activate_WEB_playerAttack(){
 }
 function deactivate_WEB_dontPlayerAttack(){
     WEB_dontPlayerAttack = true;
+}
+function activate_WEB_playerStop(){
+    WEB_playerStop = true;
 }

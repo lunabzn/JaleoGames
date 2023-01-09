@@ -16,7 +16,7 @@ class gameOver extends Phaser.Scene{
         let inicio = this.add.image(400,450,"inicio").setScale(0.1);
         inicio.setInteractive();
         inicio.on('pointerdown',()=>{
-            this.scene.start('selectorLevelScene');
+            this.scene.start('selectorModeScene');
             this.scene.stop('pauseScene');
             this.scene.stop();
         })

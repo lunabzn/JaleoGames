@@ -72,7 +72,6 @@ socket.onmessage = function (event) {
 			activate_WEB_goDown();
 			break;
 
-
 		case (9):
 			deactivate_WEB_goLeft();
 			break;
@@ -105,8 +104,16 @@ socket.onmessage = function (event) {
 			makePlayerLogOut();
 			break;
 
-		case(17):
+		case (17):
 			deactivate_WEB_dontPlayerAttack();
+			break;
+
+		case (18):
+			Random_Num = aux.randomNum;
+			break;
+
+		case (20):
+			activate_WEB_playerStop();
 			break;
 
 		default:
@@ -155,6 +162,16 @@ function playerStopAttack(){
 		idFuncion: 17,
 		idPartida: ID_Partida,
 		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
+function randomNumber(){
+	let message = {
+		idFuncion: 18,
+		idPartida: ID_Partida,
+		idJugador: J1_id,
+		randomNum: probability
 	}
 	socket.send(JSON.stringify(message));
 }
@@ -240,6 +257,15 @@ function playerStopMoveDown(){
 	socket.send(JSON.stringify(message));
 }
 
+function playerStop(){
+	let message = {
+		idFuncion: 20,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
 function pauseGame(){
 	let message = {
 		idFuncion: 14,
@@ -265,46 +291,6 @@ function playerPauseLogOut(){
 		idJugador: J1_id
 	}
 	socket.send(JSON.stringify(message));
-}
-
-
-function jugadorPowerup() { //Mi función que recibe los datos que necesito del jugador 2
-	let message = {
-			idFuncion: 2,
-			idPartida: ID_Partida,
-			idJugador: J1_id,
-			decision: decisionPowerup
-	}
-	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
-}
-
-function jugadorDano(){ //Mi función que recibe los datos que necesito del jugador 2
-	let message ={
-			idFuncion: 7,
-			idPartida: ID_Partida,
-			idJugador: J1_id
-	}
-	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
-}
-
-function jugadorGenerarObstaculo(){ //Mi función que recibe los datos que necesito del jugador 2
-	let message ={
-			idFuncion: 8,
-			idPartida: ID_Partida,
-			idJugador: J1_id,
-			randObstaculo: J1_randObstaculo,
-			randObstaculo2: J2_randObstaculo
-	}
-	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
-}
-
-function jugadorGenerarPowerup(){ //Mi función que recibe los datos que necesito del jugador 2
-	let message ={
-			idFuncion: 6,
-			idPartida: ID_Partida,
-			idJugador: J1_id
-	}
-	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
 }
 
 function cerrarVentana(){ //Mi función que recibe los datos que necesito del jugador 2

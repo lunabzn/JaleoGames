@@ -16,7 +16,7 @@ class gameWin extends Phaser.Scene{
         let inicio = this.add.image(400,550,"inicio").setScale(0.07);
         inicio.setInteractive();
         inicio.on('pointerdown',()=>{
-            this.scene.start('selectorLevelScene');
+            this.scene.start('selectorModeScene');
             this.scene.stop('Level1');
             this.scene.stop('pauseScene');
         })

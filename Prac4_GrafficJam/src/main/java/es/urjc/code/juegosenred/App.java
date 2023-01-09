@@ -21,7 +21,7 @@ public class App implements WebSocketConfigurer {
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(gameHandler(), "/race51").setAllowedOrigins("*");
 	}
-	
+
 	@Bean
 	public Handler gameHandler() {
 		return new Handler();
