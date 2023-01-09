@@ -36,7 +36,7 @@ class selectorLevelScene extends Phaser.Scene {
             this.clickSound.play();
             //this.scene.start('selectorCharacterScene',level)
             this.scene.stop('Level1');
-            this.scene.start('Level1');
+            this.scene.start('countdown');
         })
         //playButtonLvl2.setInteractive();
         //playButtonLvl2.on('pointerdown',()=>{
