@@ -624,31 +624,35 @@ class onlineLevel extends Phaser.Scene {
             }
 
             if (WEB_goUp) {
-                this.player2.setVelocityY(-160);
                 if (Soy_J1) {
+                    console.log("Falla anim Izq-Up");
                     this.player2.stop('p2Left', true);
                     this.player2.play('p2Left', true);
                 } else {
+                    console.log("Falla anim Izq-Up");
                     this.player2.stop('p1Left', true);
                     this.player2.play('p1Left', true);
                 }
+                this.player2.setVelocityY(-160);
             }
             if (WEB_goDown) {
-                this.player2.setVelocityY(160);
                 if (Soy_J1) {
+                    console.log("Falla anim Izq-Down");
                     this.player2.stop('p2Left', true);
                     this.player2.play('p2Left', true);
                 } else {
+                    console.log("Falla anim Izq-Down");
                     this.player2.stop('p2Left', true);
                     this.player2.play('p1Left', true);
                 }
+                this.player2.setVelocityY(160);
             }
 
             if (WEB_dontGoLeft) {
                 console.log("WEB_dontGoLeft  " + WEB_dontGoLeft);
                 WEB_goLeft = false;
                 this.player2.setVelocityX(0);
-                this.player2.setVelocityY(0);
+                //this.player2.setVelocityY(0);
                 if (this.player2.turnedLeft) {
                     if (Soy_J1) {
                         this.player2.play('p2TurnLeft');
@@ -679,27 +683,31 @@ class onlineLevel extends Phaser.Scene {
             }
 
             if (WEB_goUp) {
-                this.player2.setVelocityY(-160);
                 if (Soy_J1) {
+                    console.log("Falla anim Der-Up");
                     this.player2.play('p2UpRight', true);
                 } else {
+                    console.log("Falla anim Der-Up");
                     this.player2.play('p1UpRight', true);
-                }
+                } 
+                this.player2.setVelocityY(-160);
             }
             if (WEB_goDown) {
-                this.player2.setVelocityY(160);
                 if (Soy_J1) {
+                    console.log("Falla anim Der-Down");
                     this.player2.play('p2DownRight', true);
                 } else {
+                    console.log("Falla anim Der-Down");
                     this.player2.play('p1DownRight', true);
                 }
+                this.player2.setVelocityY(160);
             }
 
             if (WEB_dontGoRight) {
                 console.log("WEB_dontGoRight  " + WEB_dontGoRight);
                 WEB_goRight = false;
                 this.player2.setVelocityX(0);
-                this.player2.setVelocityY(0);
+                //this.player2.setVelocityY(0);
                 if (this.player2.turnedLeft) {
                     if (Soy_J1) {
                         this.player2.play('p2TurnLeft');
@@ -756,7 +764,7 @@ class onlineLevel extends Phaser.Scene {
             if (WEB_dontGoUp) {
                 console.log("WEB_dontGoUp  " + WEB_dontGoUp);
                 WEB_goUp = false;
-                this.player2.setVelocityX(0);
+                //this.player2.setVelocityX(0);
                 this.player2.setVelocityY(0);
                 if (this.player2.turnedLeft) {
                     if (Soy_J1) {
@@ -814,7 +822,7 @@ class onlineLevel extends Phaser.Scene {
             if (WEB_dontGoDown) {
                 console.log("WEB_dontGoDown  " + WEB_dontGoDown);
                 WEB_goDown = false;
-                this.player2.setVelocityX(0);
+                //this.player2.setVelocityX(0);
                 this.player2.setVelocityY(0);
                 if (this.player2.turnedLeft) {
                     if (Soy_J1) {
