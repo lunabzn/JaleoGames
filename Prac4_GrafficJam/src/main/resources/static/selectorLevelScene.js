@@ -38,15 +38,23 @@ class selectorLevelScene extends Phaser.Scene {
             this.scene.stop('Level1');
             this.scene.start('countdown');
         })
-        //playButtonLvl2.setInteractive();
-        //playButtonLvl2.on('pointerdown',()=>{
-        //    this.clickSound.play();
-        //    this.scene.start('selectorCharacterScene',level)
-        //})
-        //playButtonLvl3.setInteractive();
-        //playButtonLvl3.on('pointerdown',()=>{
-        //    this.clickSound.play();
-        //    this.scene.start('selectorCharacterScene',level)
-        //})
+
+        playButtonLvl2.setInteractive();
+        playButtonLvl2.on('pointerdown',()=>{
+            this.clickSound.play();
+            this.scene.stop('Level1');
+            this.scene.stop('Level3');            
+            this.scene.stop('Level2');
+            this.scene.start('countdown2');
+        })
+
+        playButtonLvl3.setInteractive();
+        playButtonLvl3.on('pointerdown',()=>{
+            this.clickSound.play();
+            this.scene.stop('Level1');
+            this.scene.stop('Level2');            
+            this.scene.stop('Level3');
+            this.scene.start('countdown3')
+        })
     }
 };
