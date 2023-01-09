@@ -394,9 +394,10 @@ class Level1 extends Phaser.Scene {
                         police.y = -100;
                         police.body.moves = false;
                     }
-                }
 
+                }
             });
+
             //this.physics.add.collider(this.player2, enemies[i], function (player, police) {console.log("colision collider")});
             //this.physics.add.collider(this.player1, enemies[i], function (player, police) {console.log("colision collider")});
 
@@ -553,8 +554,8 @@ class Level1 extends Phaser.Scene {
 
     updateVelocities(velocitiesSize) {
         var newVelocities = this.velocities;
-        for(var i=0; i<2;i++){
-            newVelocities.push(this.velocities[velocitiesSize-1+i]);
+        for (var i = 0; i < 2; i++) {
+            newVelocities.push(this.velocities[velocitiesSize - 1 + i] - 20);
         }
         this.velocities = newVelocities;
     }
@@ -567,27 +568,8 @@ class Level1 extends Phaser.Scene {
         }
     }
 
-    continueMoving(enemy1,enemy2,size){
-        for (var i = 0; i < size; i++) {
-            for(var j=0;j< size;j++){
-                if((this.keepColliding(enemy1[i],enemy2[j],size)==true) 
-                && (enemy1[i].body.moves==false || enemy2[j].body.moves==false)){
-                    enemy1[i].body.moves=true;
-                    enemy2[j].body.moves=true;
-                }
-            }
-        }
-    }
 
-    update(){
-
-        //ACTUALIZA LA PROFUNDIDAD DE LOS ENEMIGOS
-        for (var i = 0; i < this.activeEnemies.length; i++) {
-            if (this.activeEnemies[i].alive) {
-                var enemyPos = this.activeEnemies[i].getCenter();
-                this.activeEnemies[i].depth = enemyPos.y;
-            }
-        }
+    update() {
 
         // ACTUALIZAR JUGADORES
         if (this.player1.life <= 0) {
@@ -663,8 +645,7 @@ class Level1 extends Phaser.Scene {
                     this.player1.play('p1TurnRight');
                 }
             }
-        
-    
+
             // Ataque JUGADOR 1
             if (this.player1.atkP1.isDown) {
                 if (this.player1.turnedLeft) {
@@ -774,6 +755,7 @@ class Level1 extends Phaser.Scene {
             // Ataque JUGADOR 2
             if (this.player2.atkP2.isDown) {
                 if (this.player2.turnedLeft) {
+
                     this.player2.setVelocityX(0);
                     this.player2.setVelocityY(0);
                     if (this.player2.turnedLeft) {
@@ -782,6 +764,60 @@ class Level1 extends Phaser.Scene {
                         this.player2.play('p2TurnRight');
                     }
                 }
+
+                // Eventos de controles del JUGADOR 2
+                if (this.cursors.left.isDown) {
+                    this.player2.setVelocityX(-160);
+                    this.player2.turnedLeft = true;
+                    this.player2.play('p2Left', true);
+
+                    if (this.cursors.up.isDown) {
+                        this.player2.setVelocityY(-160);
+                    }
+
+                    if (this.cursors.down.isDown) {
+                        this.player2.setVelocityY(160);
+                    }
+                }
+                else if (this.cursors.right.isDown) {
+                    this.player2.setVelocityX(160);
+                    this.player2.turnedLeft = false;
+                    this.player2.play('p2Right', true);
+
+                    if (this.cursors.up.isDown) {
+                        this.player2.setVelocityY(-160);
+                    }
+
+                    if (this.cursors.down.isDown) {
+                        this.player2.setVelocityY(160);
+                    }
+                }
+                else if (this.cursors.up.isDown) {
+                    this.player2.setVelocityY(-160);
+                    if (this.player2.turnedLeft) {
+                        this.player2.play('p2UpLeft', true);
+                    } else {
+                        this.player2.play('p2UpRight', true);
+                    }
+                }
+                else if (this.cursors.down.isDown) {
+                    this.player2.setVelocityY(160);
+                    if (this.player2.turnedLeft) {
+                        this.player2.play('p2DownLeft', true);
+                    } else {
+                        this.player2.play('p2DownRight', true);
+                    }
+                }
+                else {
+                    this.player2.setVelocityX(0);
+                    this.player2.setVelocityY(0);
+                    if (this.player2.turnedLeft) {
+                        this.player2.play('p2TurnLeft');
+                    } else {
+                        this.player2.play('p2TurnRight');
+                    }
+                }
+
 
                 // Ataque JUGADOR 2
                 if (this.player2.atkP2.isDown) {
@@ -807,21 +843,33 @@ class Level1 extends Phaser.Scene {
                     this.player2.attackRight = false;
                     this.player2.attackLeft = false;
                 }
-        }
 
-        var velocitiesSize = this.velocities.length;
-        var mediumVelocity = this.velocities[Math.floor(velocitiesSize / 2)];
+            }
 
-        for (var i = 0; i < this.activeEnemies.length; i++) {
-            if (this.activeEnemies[i].alive) {
-                if (this.velocities[i] >= mediumVelocity) {
-                    if (i % 2 == 0) {
-                        if (this.player1.life > 0) {
-                            this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i]);
+
+
+            var velocitiesSize = this.velocities.length;
+            var mediumVelocity = this.velocities[Math.floor(velocitiesSize / 2)];
+
+            for (var i = 0; i < this.activeEnemies.length; i++) {
+                if (this.activeEnemies[i].alive) {
+                    if (this.velocities[i] >= mediumVelocity) {
+                        if (i % 2 == 0) {
+                            if (this.player1.life > 0) {
+                                this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i]);
+                            } else {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                            }
+
                         } else {
-                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                            if (this.player2.life > 0) {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                            } else {
+                                this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i]);
+                            }
                         }
                     } else {
+
                         if (this.player2.life > 0) {
                             this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
                         } else {
@@ -840,11 +888,26 @@ class Level1 extends Phaser.Scene {
                             this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
                         } else {
                             this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i] - 1);
+
+                        if (i % 2 == 0) {
+                            if (this.player1.life > 0) {
+                                this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i] - 1);
+                            } else {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                            }
+                        } else {
+                            if (this.player2.life > 0) {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                            } else {
+                                this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i] - 1);
+                            }
+
                         }
                     }
                 }
             }
         }
+      
 
         ////////////////////////////ATAQUE ENEMIGOS///////////////////////////////
         //BUCLE PARA QUE FUNCIONEN COLISIONES SI EL JUGADOR ATACA SIN MOVERSE
@@ -920,7 +983,7 @@ class Level1 extends Phaser.Scene {
         }
 
         //cambiar escena a gameover
-        if(this.player1.life<=0 && this.player2.life<=0){
+        if (this.player1.life == 0 && this.player2.life == 0) {
             this.scene.start('gameOver');
             this.scene.stop('Level1');
             this.scene.stop('pauseScene');
@@ -930,5 +993,6 @@ class Level1 extends Phaser.Scene {
         this.updateHearts();
        
     }
+
 }
 }
