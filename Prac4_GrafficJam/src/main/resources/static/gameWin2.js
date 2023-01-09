@@ -1,11 +1,11 @@
-class gameWin extends Phaser.Scene{
+class gameWin2 extends Phaser.Scene{
    
     constructor(){
-        super("gameWin");
+        super("gameWin2");
     }
 
     initialize(){
-        Phaser.Scene.call(this,{"key": "gameWin"})
+        Phaser.Scene.call(this,{"key": "gameWin2"})
     }
 
     preload() {
@@ -21,7 +21,7 @@ class gameWin extends Phaser.Scene{
         let inicio = this.add.image(300,550,'inicio').setScale(0.07);
         inicio.setInteractive();
         inicio.on('pointerdown',function(){
-            this.scene.stop('Level1');
+            this.scene.stop('Level2');
             this.scene.stop('pauseScene');
             this.scene.start('selectorLevelScene');
         }, this);
@@ -29,9 +29,9 @@ class gameWin extends Phaser.Scene{
         let signiv = this.add.image(500,550,'signiv').setScale(0.07);
         signiv.setInteractive();
         signiv.on('pointerdown',function(){
-            this.scene.stop('Level1');
+            this.scene.stop('Level2');
             this.scene.stop('pauseScene');
-            this.scene.start('countdown2');
+            this.scene.start('countdown3');
         }, this);
     }
 };

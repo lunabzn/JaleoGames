@@ -1,7 +1,7 @@
-class Level1 extends Phaser.Scene {
+class Level2 extends Phaser.Scene {
 
     constructor() {
-        super("Level1");
+        super("Level2");
     }
 
     //funcion que genera un numero aletorio comprendido entre un minimo y un maximo (ambos incluidos)
@@ -38,7 +38,7 @@ class Level1 extends Phaser.Scene {
         this.load.spritesheet('invisibleCollider','resources/invisible.png',{frameWidth: 800, frameHeigh:100 , endframe:1});
 
         //carga de enemigo: policia chica
-        this.load.spritesheet('girlPolice', 'resources/spritesPoliciaChicaDef.png', { frameWidth: fStandarWidth, frameHeight: fStandarHeight, endframe: 21 });
+        this.load.spritesheet('boyPolice', 'resources/spritesapolis2.png', { frameWidth: fStandarWidth, frameHeight: fStandarHeight, endframe: 21});
 
         //carga de vida: iconos de tuerto y vivo y corazones
         this.load.image('corazon', 'resources/cora.png');
@@ -66,16 +66,16 @@ class Level1 extends Phaser.Scene {
         this.player1 = this.physics.add.sprite(100, 300, 'vivo').setCollideWorldBounds(true);
         this.player2 = this.physics.add.sprite(100, 500, 'tuerto').setCollideWorldBounds(true);
 
-        this.quantEnemiesRound1 = 3;
-        this.quantEnemiesRound2 = 4;
-        this.quantEnemiesRound3 = 6;
+        this.quantEnemies2Round1 = 3;
+        this.quantEnemies2Round2 = 4;
+        this.quantEnemies2Round3 = 6;
         this.roundCont = 1;
 
-        this.activeEnemies = [this.quantEnemiesRound1];
-        this.velocities = [100,80,60];
+        this.activeEnemies = [this.quantEnemies2Round1];
+        this.velocities = [120,100,80];
         this.countDead = 0;
 
-        this.createEnemies(this.activeEnemies, this.quantEnemiesRound1);
+        this.createEnemies(this.activeEnemies, this.quantEnemies2Round1);
 
         this.player1.body.setSize(this.player1.width*0.5, this.player1.height*0.1);
         this.player2.body.setSize(this.player2.width*0.5, this.player2.height*0.1);
@@ -315,55 +315,55 @@ class Level1 extends Phaser.Scene {
 
         //ANIMACIONES ENEMIGO
         this.anims.create({
-            key: 'eLeft',
-            frames: this.anims.generateFrameNumbers('girlPolice', { start: 12, end: 15 }),
+            key: 'e2Left',
+            frames: this.anims.generateFrameNumbers('boyPolice', {start: 12, end: 15  }),
             frameRate: 10,
             repeat: -1
         });
 
         this.anims.create({
-            key: 'eTurnLeft',
-            frames: [{ key: 'girlPolice', frame: 16 }],
-            frameRate: 10,
+            key: 'e2TurnLeft',
+            frames: [{ key: 'boyPolice', frame: 16 }],
+            frameRate: 20,
         });
 
         this.anims.create({
-            key: 'eRight',
-            frames: this.anims.generateFrameNumbers('girlPolice', { start: 18, end: 21 }),
+            key: 'e2Right',
+            frames: this.anims.generateFrameNumbers('boyPolice', { start: 18, end: 21 }),
             frameRate: 10,
             repeat: -1
         });
 
         this.anims.create({
-            key: 'eTurnRight',
-            frames: [{ key: 'girlPolice', frame: 17 }],
+            key: 'e2TurnRight',
+            frames: [{ key: 'boyPolice', frame: 17 }],
             frameRate: 20
         });
 
         this.anims.create({
-            key: 'eAttackLeft',
-            frames: this.anims.generateFrameNumbers('girlPolice', { start: 6, end: 8 }),
+            key: 'e2AttackLeft',
+            frames: this.anims.generateFrameNumbers('boyPolice', { start: 6, end: 8 }),
             frameRate: 1,
             repeat: -1
         });
 
         this.anims.create({
-            key: 'eAttackRight',
-            frames: this.anims.generateFrameNumbers('girlPolice', { start: 9, end: 11 }),
+            key: 'e2AttackRight',
+            frames: this.anims.generateFrameNumbers('boyPolice', {  start: 9, end: 11 }),
             frameRate: 1,
             repeat: -1
         });
 
         this.anims.create({
-            key: 'eGotAttackedLeft',
-            frames: this.anims.generateFrameNumbers('girlPolice', { start: 0, end: 2 }),
+            key: 'e2GotAttackedLeft',
+            frames: this.anims.generateFrameNumbers('boyPolice', { start: 0, end: 2 }),
             frameRate: 10,
             repeat: -1
         });
 
         this.anims.create({
-            key: 'eGotAttackedRight',
-            frames: this.anims.generateFrameNumbers('girlPolice', { start: 3, end: 5 }),
+            key: 'e2GotAttackedRight',
+            frames: this.anims.generateFrameNumbers('boyPolice', { start: 3, end: 5 }),
             frameRate: 10,
             repeat: -1
         });
@@ -374,7 +374,7 @@ class Level1 extends Phaser.Scene {
     createEnemies(enemies, size) {
 
         for (var i = 0; i < size; i++) {
-            enemies[i] = this.physics.add.sprite(this.randomNum(250, 700), this.randomNum(200, 500), 'girlPolice');
+            enemies[i] = this.physics.add.sprite(this.randomNum(250, 700), this.randomNum(200, 500), 'boyPolice');
             enemies[i].body.setSize(enemies[i].width * 0.3, enemies[i].height * 0.85);
             enemies[i].setImmovable(true);
             enemies[i].alive = true;
@@ -424,11 +424,11 @@ class Level1 extends Phaser.Scene {
 
         if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
         {
-            enemy.play('eLeft', true);
+            enemy.play('e2Left', true);
         }
         else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
         {
-            enemy.play('eRight', true);
+            enemy.play('e2Right', true);
         }
     }
 
@@ -439,11 +439,11 @@ class Level1 extends Phaser.Scene {
         enemy.setVelocityY(0);
         if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
         {
-            enemy.play('eTurnLeft', true);
+            enemy.play('e2TurnLeft', true);
         }
         else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
         {
-            enemy.play('eTurnRight', true);
+            enemy.play('e2TurnRight', true);
         }
     }
 
@@ -502,14 +502,14 @@ class Level1 extends Phaser.Scene {
                 if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
                 {
                     this.punchSound.play();
-                    enemy.play('eAttackLeft', true);
-                    player.life--;
+                    enemy.play('e2AttackLeft', true);
+                    player.life-=2;
 
                 } else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
                 {
                     this.punchSound.play();
-                    enemy.play('eAttackRight', true);                 
-                    player.life--;
+                    enemy.play('e2AttackRight', true);                 
+                    player.life-=2;
                 }
             }
         }
@@ -517,35 +517,27 @@ class Level1 extends Phaser.Scene {
     }
 
     updateHearts(){
-        if(this.player1.life==4){
+        if(this.player1.life==3){
             this.cora5.destroy();
-         }
-         else if(this.player1.life==3){
             this.cora4.destroy();
          }
-         else if(this.player1.life==2){
-            this.cora3.destroy();
-         }
          else if(this.player1.life==1){
+            this.cora3.destroy();
             this.cora2.destroy();
          }
-         else if(this.player1.life==0){
+         else if(this.player1.life<0){
             this.cora1.destroy();
          }
 
-        if(this.player2.life==4){
+        if(this.player2.life==3){
            this.cora10.destroy();
-        }
-        else if(this.player2.life==3){
            this.cora9.destroy();
-        }
-        else if(this.player2.life==2){
-           this.cora8.destroy();
-        }
+        }        
         else if(this.player2.life==1){
+           this.cora8.destroy()
            this.cora7.destroy();
         }
-        else if(this.player2.life==0){
+        else if(this.player2.life<0){
            this.cora6.destroy();
         }
     }
@@ -660,7 +652,6 @@ class Level1 extends Phaser.Scene {
                         this.player1.setVelocityY(0);
                         if (!this.player1.attackLeft) {
                             this.spraySound.play();
-
                         }
                         this.player1.attackLeft = true;
                         this.player1.play('p1AttackLeft');
@@ -715,7 +706,6 @@ class Level1 extends Phaser.Scene {
 
                         if (this.cursors.up.isDown ) {
                             this.player2.setVelocityY(-160);
-
                         }
 
                         if (this.cursors.down.isDown) {
@@ -727,63 +717,7 @@ class Level1 extends Phaser.Scene {
                         this.player2.turnedLeft = false;
                         this.player2.play('p2Right', true);
 
-
                         if (this.cursors.up.isDown) {
-
-                if (this.player2.life <= 0) {
-                    if (this.player2.turnedLeft) {
-                        this.player2.play('p2DefeatLeft', true);
-                        this.player2.setImmovable(true); 
-                        this.player2.setVelocityX(0);
-                        this.player2.setVelocityY(0);                
-                    } else {
-                        this.player2.play('p2DefeatRight', true);
-                        this.player2.setImmovable(true);
-                        this.player2.setVelocityX(0);
-                        this.player2.setVelocityY(0); 
-                    }
-                } else {            
-
-                for (var i = 0; i < this.activeEnemies.length; i++) {
-                    if (this.activeEnemies[i].alive) {
-    
-                        var playerPos = this.player2.getCenter();
-                        this.player2.depth  = this.player2.getCenter().y; //Para que no se superpongan
-                        var enemyPos = this.activeEnemies[i].getCenter();
-                        var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
-                        var distx = Phaser.Math.Distance.Between(playerPos.x,0, enemyPos.x,0);
-                        var disty = Phaser.Math.Distance.Between(0,playerPos.y,0,enemyPos.y);
-                        var separation = 60;
-
-                        // Eventos de controles del JUGADOR 2
-                        if (this.cursors.left.isDown) {
-                            this.player2.setVelocityX(-160);
-                            this.player2.turnedLeft = true;
-                            this.player2.play('p2Left', true);
-
-                            if (this.cursors.up.isDown ) {
-                                this.player2.setVelocityY(-160);
-                            }
-
-                            if (this.cursors.down.isDown) {
-                                this.player2.setVelocityY(160);
-                            }
-                        }
-                        else if (this.cursors.right.isDown) {
-                            this.player2.setVelocityX(160);
-                            this.player2.turnedLeft = false;
-                            this.player2.play('p2Right', true);
-
-                            if (this.cursors.up.isDown) {
-                                this.player2.setVelocityY(-160);
-                            }
-
-                            if (this.cursors.down.isDown) {
-                                this.player2.setVelocityY(160);
-                            }
-                        }
-                        else if (this.cursors.up.isDown) {
-
                             this.player2.setVelocityY(-160);
                         }
 
@@ -816,7 +750,6 @@ class Level1 extends Phaser.Scene {
                             this.player2.play('p2TurnRight');
                         }
                     }
-
                 }        
             
             }
@@ -846,15 +779,6 @@ class Level1 extends Phaser.Scene {
                 this.player2.attackLeft = false;
             }
         
-
-                }
-                if (this.player2.atkP2.isUp) {
-                    this.player2.attackRight = false;
-                    this.player2.attackLeft = false;
-                }
-            
-            }
-
         }
         
             
@@ -944,6 +868,7 @@ class Level1 extends Phaser.Scene {
         for (var i = 0; i < this.activeEnemies.length; i++) {
             if (this.activeEnemies[i].alive) {
                 if (this.activeEnemies[i].life <= 0) {
+                    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
                     this.activeEnemies[i].alive = false;
                     this.countDead++;
                 }
@@ -952,23 +877,24 @@ class Level1 extends Phaser.Scene {
 
         
         if (this.countDead == this.activeEnemies.length) {
+            console.log('niv 1');
             this.roundCont++;
             if (this.roundCont == 2) {
-                this.activeEnemies.length = this.quantEnemiesRound2;
+                this.activeEnemies.length = this.quantEnemies2Round2;
                 this.countDead = 0;
-                this.createEnemies(this.activeEnemies, this.quantEnemiesRound2);
+                this.createEnemies(this.activeEnemies, this.quantEnemies2Round2);
                 this.updateVelocities(velocitiesSize);
             } else if (this.roundCont == 3) {
-                this.activeEnemies.length = this.quantEnemiesRound3;
+                this.activeEnemies.length = this.quantEnemies2Round3;
                 this.countDead = 0;
-                this.createEnemies(this.activeEnemies, this.quantEnemiesRound3);
+                this.createEnemies(this.activeEnemies, this.quantEnemies2Round3);
                 this.updateVelocities(velocitiesSize);
             
             }
         }
 
         if(this.roundCont > 3){
-            this.scene.start('gameWin');
+            this.scene.start('gameWin2');
             this.scene.stop('Level1');
             this.scene.stop('pauseScene');
             
