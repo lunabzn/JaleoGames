@@ -105,6 +105,10 @@ socket.onmessage = function (event) {
 			activate_WEB_playerStop();
 			break;
 
+		case (21):
+			activate_WEB_playerHasDied();
+			break;
+
 		default:
 			break;
 	}
@@ -277,6 +281,15 @@ function resumeGame(){
 function playerPauseLogOut(){
 	let message = {
 		idFuncion: 16,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
+function killPlayer(){
+	let message = {
+		idFuncion: 21,
 		idPartida: ID_Partida,
 		idJugador: J1_id
 	}

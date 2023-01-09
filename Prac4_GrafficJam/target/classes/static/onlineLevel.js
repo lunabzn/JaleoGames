@@ -13,6 +13,7 @@ var WEB_playerAttack = false;
 var WEB_dontPlayerAttack = false;
 var WEB_playerStop = false;
 var WEB_randomNum = 0;
+var WEB_playerHasDied = false;
 
 
 class onlineLevel extends Phaser.Scene {
@@ -606,6 +607,10 @@ class onlineLevel extends Phaser.Scene {
                 player.life -= 1;
                 this.updateHearts();
             }
+            if(player == this.player && player.life <= 0){
+                console.log("MATO A JUGADOR");
+                killPlayer();
+            }
         }
     }
 
@@ -1049,6 +1054,30 @@ class onlineLevel extends Phaser.Scene {
                 }
                 WEB_dontPlayerAttack = false;
             }
+        }
+
+        if(WEB_playerHasDied){
+            console.log("Mato al player2")
+            if (this.player2.turnedLeft) {
+                if(Soy_J1){
+                    this.player2.play('p2DefeatLeft', true); // Animacion Tuerto
+                } else {
+                    this.player2.play('p1DefeatLeft', true); // Animacion Vivo
+                }
+                this.player2.setImmovable(true); 
+                this.player2.setVelocityX(0);
+                this.player2.setVelocityY(0);                
+            } else {
+                if(Soy_J1){
+                    this.player2.play('p2DefeatRight', true); // Animacion Tuerto
+                } else {
+                    this.player2.play('p1DefeatRight', true); // Animacion Vivo
+                }
+                this.player2.setImmovable(true);
+                this.player2.setVelocityX(0);
+                this.player2.setVelocityY(0); 
+            }
+            WEB_playerHasDied = false;
         }
         
 
@@ -1565,4 +1594,7 @@ function deactivate_WEB_dontPlayerAttack(){
 }
 function activate_WEB_playerStop(){
     WEB_playerStop = true;
+}
+function activate_WEB_playerHasDied(){
+    WEB_playerHasDied = true;
 }
