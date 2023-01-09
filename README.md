@@ -127,6 +127,8 @@ Nuevas implementaciones:
 
 - Nuevos niveles.
 
+- Nuevos enemigos.
+
 - Juego Online.
     
     
