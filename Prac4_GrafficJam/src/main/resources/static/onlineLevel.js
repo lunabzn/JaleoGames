@@ -582,17 +582,13 @@ class onlineLevel extends Phaser.Scene {
     enemyAttack(player, enemy) {
         // Numero con el que se ataca
         var nAttack = 1;
-        
-        getRandomNumberFromServer(); // Actualiza Random_Num solicitando un numero aleatorio que genera el server
-        probability = Random_Num;
-        console.log(probability);
 
-        // if(Soy_J1){//para que ambos clientes tengan la misma probabilidad de ataque
-        //     probability = this.randomNum(1, 100);
-        //     randomNumber();
-        // } else {
-        //     probability = Random_Num;
-        // }
+        if(Soy_J1){//para que ambos clientes tengan la misma probabilidad de ataque
+            probability = this.randomNum(1, 100);
+            randomNumber();
+        } else {
+            probability = Random_Num;
+        }
 
         // La probabilidad del ataque del enemigo es del 0.0001%
         var playerCoords = player.getCenter();

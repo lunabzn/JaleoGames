@@ -389,7 +389,7 @@ public class Handler extends TextWebSocketHandler {
                 }
                 break;
 
-            case(17): // Parar ataque jugador
+            case (17): // Parar ataque jugador
                 int gameId_c17 = node.get("idPartida").asInt();
                 int playerId_c17 = node.get("idJugador").asInt();
                 Game gameAux_c17 = gameList.get(gameId_c17);
@@ -411,30 +411,24 @@ public class Handler extends TextWebSocketHandler {
 
             case (18): // Funcion random
                 int gameId_c18 = node.get("idPartida").asInt();
+                int playerId_c18 = node.get("idJugador").asInt();
+                int randomNum_c18 = node.get("randomNum").asInt();
                 Game gameAux_c18 = gameList.get(gameId_c18);
-
-                WebSocketSession auxSession_c18 = gameAux_c18.getJ1().getSession();
-                WebSocketSession auxSession2_c18 = gameAux_c18.getJ2().getSession();
-
-                int randomNum_c18 = randomNumberOnline(1, 100);
 
                 msg.put("idFuncion", 18);
                 msg.put("randomNum", randomNum_c18);
 
-                auxSession_c18.sendMessage(new TextMessage(msg.toString()));
-                auxSession2_c18.sendMessage(new TextMessage(msg.toString()));
-
-                // if (playerId_c18 == gameAux_c18.getJ1().getId()) {
-                //     // Si el jugador que ha enviado el mensaje al servidor
-                //     // es el J1, enviamos de vuelta un mensaje al J2 de su
-                //     // misma partida
-                //     WebSocketSession auxSession_c18 = gameAux_c18.getJ2().getSession();
-                //     auxSession_c18.sendMessage(new TextMessage(msg.toString()));
-                // } else { // Si el jugador que ha enviado el mensaje al servidor es el J2, enviamos de
-                //          // vuelta un mensaje al J1 de su misma partida
-                //     WebSocketSession auxSession2_c18 = gameAux_c18.getJ1().getSession();
-                //     auxSession2_c18.sendMessage(new TextMessage(msg.toString()));
-                // }
+                if (playerId_c18 == gameAux_c18.getJ1().getId()) {
+                    // Si el jugador que ha enviado el mensaje al servidor
+                    // es el J1, enviamos de vuelta un mensaje al J2 de su
+                    // misma partida
+                    WebSocketSession auxSession_c18 = gameAux_c18.getJ2().getSession();
+                    auxSession_c18.sendMessage(new TextMessage(msg.toString()));
+                } else { // Si el jugador que ha enviado el mensaje al servidor es el J2, enviamos de
+                         // vuelta un mensaje al J1 de su misma partida
+                    WebSocketSession auxSession2_c18 = gameAux_c18.getJ1().getSession();
+                    auxSession2_c18.sendMessage(new TextMessage(msg.toString()));
+                }
                 break;
 
             case (20): // Parar ataque jugador
@@ -499,6 +493,9 @@ public class Handler extends TextWebSocketHandler {
         }  
     }
 
+    // GENERAR NUMERO ALEATORIO DENTRO DEL SERVER
+    // Esto se iba a usar, ya que si no hay un retardo entre el número aleatorio del cliente 1 y del cliente 2, 
+    // pero salían errores de que se cerraba el servidor no sabemos por qué. Ibamos justos de tiempo y no hemos podido solucionarlo
     private int randomNumberOnline(int min, int max) {
         return (int)Math.floor(Math.random() * (max - min + 1) + min);
     }
