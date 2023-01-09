@@ -597,7 +597,6 @@ class Level1 extends Phaser.Scene {
                 var playerPos = this.player1.getCenter();
                 
                 this.player1.depth  =this.player1.getCenter().y; //Para que no se superpongan
-                this.player2.depth  = this.player2.getCenter().y; //Para que no se superpongan
                     
                 if (this.player1.keyA.isDown) {
                     this.player1.setVelocityX(-160);
@@ -697,8 +696,9 @@ class Level1 extends Phaser.Scene {
 
                 for (var i = 0; i < this.activeEnemies.length; i++) {
                     if (this.activeEnemies[i].alive) {
-
+    
                         var playerPos = this.player2.getCenter();
+                        this.player2.depth  = this.player2.getCenter().y; //Para que no se superpongan
                         var enemyPos = this.activeEnemies[i].getCenter();
                         var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
                         var distx = Phaser.Math.Distance.Between(playerPos.x,0, enemyPos.x,0);
