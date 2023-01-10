@@ -78,7 +78,7 @@ A continuación se mostrará el diseño del juego enseñando los diferentes spri
 
 ![bg-image-menu1](https://user-images.githubusercontent.com/82967594/204659344-277ca8d0-5e9e-4ad1-93aa-984bafdfb8e6.jpg)
 
-**ENTREGA FASE 3: API REST** 
+# **ENTREGA FASE 3: API REST** 
 
 ![Diagrama de clases](https://user-images.githubusercontent.com/84155484/208774497-47ce8022-431c-4cda-8874-79595c80f759.png)
 
@@ -93,11 +93,11 @@ Se han creado 6 clases para controlar el servidor. Las clases *Message*, *Player
 *(Se puede producir un error si java no está actualizado)
 
 
-**ENTREGA FASE 4: WEBSOCKETS** 
+# **ENTREGA FASE 4: WEBSOCKETS** 
 
 
 ___
-**ENTREGA FASE 5: MEJORAS FINALES**
+# **ENTREGA FASE 5: MEJORAS FINALES**
 
 **LOS FALLOS OBSERVADOS SON:** 
 
