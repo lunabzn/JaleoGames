@@ -132,9 +132,20 @@ Nuevas implementaciones:
 
 - Cuenta atrás antes de comenzar el nivel.
 
+![Countdown](https://user-images.githubusercontent.com/115088130/211434448-cb918ceb-89ae-4aab-9b27-6ec448eb4374.jpg)
+
 - Nuevos niveles.
 
+![Nivel 2](https://user-images.githubusercontent.com/115088130/211435235-aefc1550-0238-4bb5-a6aa-bc94476b6d87.png)
+![Nivel 2](https://user-images.githubusercontent.com/115088130/211435239-cf31226d-0c8a-4961-a361-36597f86bf7d.png)
+
+
+
 - Nuevos enemigos.
+
+![poli3](https://user-images.githubusercontent.com/115088130/211434894-83a2f433-885b-4826-bd8d-d8d9d332d4de.jpg)
+![poli2](https://user-images.githubusercontent.com/115088130/211434901-69954ed0-a6e4-447d-9e60-24ddc9054d8a.jpg)
+
 
 - Juego Online.
     
