@@ -101,7 +101,14 @@ Para el nivel online se han creado los archivos onlineLevel.js junto a pauseOnli
 
 Para la inclusión de Websockets se ha creado la clase App.java, que se encarga de configurar el apartado de Websockets, además de Handler.java y connection.js. Cuando se quiere notificar al servidor de un cambio (para que este avise a su vez al otro jugador o para que actualice algún valor), connection.js se encargada de enviar un mensaje al servidor a través de la sesión del jugador. Este mensaje contiene un atributo llamado "idFunción" que al llegar al servidor, handler utiliza para seleccionar un case del switch que tiene. Cada case determina el tipo de acciones que se deberán llevar a cabo en consecuencia al aviso. Una vez se ha procesado el mensaje, se reenvía otro al cliente opuesto. Este lo recibe en connection.js, que utiliza la ID_Funcion del mensaje enviado desde el servidor para llevar a cabo las acciones necesarias y modificar lo que sea conveniente para que se transmita de forma correcta la información entre jugadores.
 
-EJ: Movimiento del Jugador 1
+EJ: Movimiento a la derecha del Jugador 1
+
+    1. Cuando el Jugador 1 pulsa la tecla D, se ejecuta la función playerMoveRight() de connection.js, enviando así un mensaje al servidor
+    2. El servidor lo recibe y en Handler.java utiliza el atributo idFuncion = 5 para ejecutar el case(5), que envía otro mensaje pero esta vez al Jugador 2,                  notificándole del movimiento de Vivo (Jugador 1)
+    3. El Jugador 2 recibe el mensaje en su clase connection.js, que gracias a ID_Funcion = 5 ejecuta la función activate_WEB_goRight() en el case 5
+    4. activate_WEB_goRight() está en onlineLevel.js y activa un booleano de forma que en el siguiente update, ahrá que se entre en un if() y se mueva a Vivo
+
+De esta forma, las acciones de cada uno de los Jugadores se transmiten de forma correcta entre cada uno de ellos y se puede jugar online sin problemas.
 
 ![websockets explicacion](https://user-images.githubusercontent.com/81293638/211439455-b2dbc21b-f204-43ec-a803-4c3f7633bf70.png)
 
