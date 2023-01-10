@@ -137,7 +137,7 @@ Nuevas implementaciones:
 - Nuevos niveles.
 
 ![Nivel 2](https://user-images.githubusercontent.com/115088130/211435235-aefc1550-0238-4bb5-a6aa-bc94476b6d87.png)
-![Nivel 2](https://user-images.githubusercontent.com/115088130/211435239-cf31226d-0c8a-4961-a361-36597f86bf7d.png)
+![fondollvl3(1)](https://user-images.githubusercontent.com/115088130/211435315-4bc50234-a48e-4d5c-9afb-6a84bf6bd365.jpg)
 
 
 
