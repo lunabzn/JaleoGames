@@ -143,7 +143,7 @@ Nuevas implementaciones:
 
 - Nuevos enemigos.
 
-![poli3](https://user-images.githubusercontent.com/115088130/211434894-83a2f433-885b-4826-bd8d-d8d9d332d4de.jpg)
+![imagen](https://user-images.githubusercontent.com/115088130/211435448-ac3fcef8-f7c6-4d42-bb1a-4aaa9d7ddff8.png)
 ![poli2](https://user-images.githubusercontent.com/115088130/211434901-69954ed0-a6e4-447d-9e60-24ddc9054d8a.jpg)
 
 
