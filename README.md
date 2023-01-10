@@ -78,6 +78,8 @@ A continuación se mostrará el diseño del juego enseñando los diferentes spri
 
 ![bg-image-menu1](https://user-images.githubusercontent.com/82967594/204659344-277ca8d0-5e9e-4ad1-93aa-984bafdfb8e6.jpg)
 
+**ENTREGA FASE 3: API REST** 
+
 ![Diagrama de clases](https://user-images.githubusercontent.com/84155484/208774497-47ce8022-431c-4cda-8874-79595c80f759.png)
 
 Se han creado 6 clases para controlar el servidor. Las clases *Message*, *Player* y *Lobby* son clases  *@Service* que permiten añadir elementos al propio servidor. La clase Lobby está compuesta de listas de Mensajes enviados y listas de Jugadores que se han conectado. Por otro lado, *File* es una clase de tipo *@Repository* que será la encargada de gestionar la persistencia de datos una vez se finalice la ejecución del proyecto en el servidor. *LobbyController* es una clase de tipo *@Controller*. En está clase se sitúan los métodos GET, POST y DELETE para crear, introducir y eliminar datos en el servidor. Es la clase contenedora de todo lo que tiene que ver con el REST. Finalmente la clase *SBApplication* es de tipo *@SpringBootApplication* y será la encargada de configurar automáticamente la aplicación en función de las dependencias agregadas en el proyecto.
@@ -91,8 +93,12 @@ Se han creado 6 clases para controlar el servidor. Las clases *Message*, *Player
 *(Se puede producir un error si java no está actualizado)
 
 
+**ENTREGA FASE 4: WEBSOCKETS** 
+
 
 ___
+**ENTREGA FASE 5: MEJORAS FINALES**
+
 **LOS FALLOS OBSERVADOS SON:** 
 
 - El fondo de las pantallas de pausa, gameOver y gameWin dan fallo cuando se carga una de las pantallas. El fondo del primer menu en aparecer es el que sale en los tres menus restantes.
