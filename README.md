@@ -95,6 +95,7 @@ Se han creado 6 clases para controlar el servidor. Las clases *Message*, *Player
 
 # **ENTREGA FASE 4: WEBSOCKETS** 
 
+![Diagrama de Clases_2023-01-09_21-54-40](https://user-images.githubusercontent.com/115088130/211434133-943360b4-91df-4714-acbc-580e7bc71035.png)
 
 ___
 # **ENTREGA FASE 5: MEJORAS FINALES**
