@@ -97,6 +97,15 @@ Se han creado 6 clases para controlar el servidor. Las clases *Message*, *Player
 
 ![Diagrama de Clases_2023-01-09_21-54-40](https://user-images.githubusercontent.com/115088130/211434133-943360b4-91df-4714-acbc-580e7bc71035.png)
 
+Para el nivel online se han creado los archivos onlineLevel.js junto a pauseOnlineScene.js y gameWinOnline.js.
+
+Para la inclusión de Websockets se ha creado la clase App.java, que se encarga de configurar el apartado de Websockets, además de Handler.java y connection.js. Cuando se quiere notificar al servidor de un cambio (para que este avise a su vez al otro jugador o para que actualice algún valor), connection.js se encargada de enviar un mensaje al servidor a través de la sesión del jugador. Este mensaje contiene un atributo llamado "idFunción" que al llegar al servidor, handler utiliza para seleccionar un case del switch que tiene. Cada case determina el tipo de acciones que se deberán llevar a cabo en consecuencia al aviso. Una vez se ha procesado el mensaje, se reenvía otro al cliente opuesto. Este lo recibe en connection.js, que utiliza la ID_Funcion del mensaje enviado desde el servidor para llevar a cabo las acciones necesarias y modificar lo que sea conveniente para que se transmita de forma correcta la información entre jugadores.
+
+EJ: Movimiento del Jugador 1
+
+![websockets explicacion](https://user-images.githubusercontent.com/81293638/211439455-b2dbc21b-f204-43ec-a803-4c3f7633bf70.png)
+
+
 ___
 # **ENTREGA FASE 5: MEJORAS FINALES**
 
