@@ -143,8 +143,9 @@ Nuevas implementaciones:
 
 - Nuevos enemigos.
 
-![imagen](https://user-images.githubusercontent.com/115088130/211435448-ac3fcef8-f7c6-4d42-bb1a-4aaa9d7ddff8.png)
-![poli2](https://user-images.githubusercontent.com/115088130/211434901-69954ed0-a6e4-447d-9e60-24ddc9054d8a.jpg)
+![imagen](https://user-images.githubusercontent.com/115088130/211435521-b3746afe-bae2-4ed1-8a5f-5a03aae95cc3.png)
+![imagen](https://user-images.githubusercontent.com/115088130/211435529-703f1c51-6f86-4a8e-a9fc-98c20b0d4a40.png)
+
 
 
 - Juego Online.
