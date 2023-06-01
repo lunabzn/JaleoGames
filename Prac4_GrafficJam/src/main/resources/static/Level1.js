@@ -20,7 +20,7 @@ class Level1 extends Phaser.Scene {
         var endF = 17
 
         //carga de fondo
-        this.load.image("background", "resources/fondol1.png");
+        this.load.image("background1", "resources/fondol1.png");
 
         //boton de pausa
         this.load.image("pause", "resources/pausa.png");
@@ -50,7 +50,7 @@ class Level1 extends Phaser.Scene {
 
     create() {
 
-        this.background = this.add.image(400, 300, 'background');
+        this.background = this.add.image(400, 300, 'background1');
         this.invisibleCollider = this.physics.add.sprite(400,-50,'invisibleCollider');
 
         //boton de pausa
@@ -61,6 +61,10 @@ class Level1 extends Phaser.Scene {
             this.scene.stop('gameOver');
             this.scene.switch('pauseScene');
         })
+
+        this.events.on('shutdown', () => {
+            this.background.destroy();
+        });
 
         // Creación de los dos personajes
         this.player1 = this.physics.add.sprite(100, 300, 'vivo').setCollideWorldBounds(true);
@@ -568,7 +572,7 @@ class Level1 extends Phaser.Scene {
     }
 
     update() {
-
+        
         //ACTUALIZA LA PROFUNDIDAD DE LOS ENEMIGOS
         for (var i = 0; i < this.activeEnemies.length; i++) {
             if (this.activeEnemies[i].alive) {
@@ -900,17 +904,19 @@ class Level1 extends Phaser.Scene {
         }
 
         if(this.roundCont > 3){
-            this.scene.start('gameWin');
+            this.background.destroy();
             this.scene.stop('Level1');
             this.scene.stop('pauseScene');
+            this.scene.switch('gameWin');
             
         }
 
         //cambiar escena a gameover
         if(this.player1.life<=0 && this.player2.life<=0){
-            this.scene.start('gameOver');
+            this.background.destroy();
             this.scene.stop('Level1');
-            this.scene.stop('pauseScene');          
+            this.scene.stop('pauseScene'); 
+            this.scene.switch('gameOver');         
             
         }
 

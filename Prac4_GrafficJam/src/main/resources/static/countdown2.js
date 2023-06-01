@@ -34,7 +34,8 @@ class countdown2 extends Phaser.Scene{
         });
 
         this.time.delayedCall(4000, () =>{
-			this.scene.stop('Level1'),
+            this.scene.stop('Level1'),
+            this.scene.stop('Level3'),
             this.scene.switch('Level2'),
             this.scene.stop('countdown2'),
             console.log('cambio')
