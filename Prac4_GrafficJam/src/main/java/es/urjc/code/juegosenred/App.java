@@ -14,10 +14,12 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 @Configuration
 public class App implements WebSocketConfigurer {
+	
 	public static void main(String[] args) {
 		SpringApplication.run(App.class, args);
 	}
 	
+	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(gameHandler(), "/grafficjam").setAllowedOrigins("*");
 	}
