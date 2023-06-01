@@ -20,9 +20,14 @@ class gameOver extends Phaser.Scene{
         let inicio = this.add.image(400,450,'inic').setScale(0.1);
         inicio.setInteractive();
         inicio.on('pointerdown', function(){
+            this.background.destroy();
             this.scene.stop('pauseScene');
             this.scene.stop('gameWin');
             this.scene.start('selectorModeScene');            
         }, this);
+
+        this.events.on('shutdown', () => {
+            this.background.destroy();
+        });
     }
 };
