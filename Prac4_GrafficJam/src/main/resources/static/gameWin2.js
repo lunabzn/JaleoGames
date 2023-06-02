@@ -17,13 +17,15 @@ class gameWin2 extends Phaser.Scene{
     
     create(){
         this.background = this.add.image(0,0,'menu').setOrigin(0).setScale(1);
-
+        var mensaje = this.scene.settings.data.mensaje
+            console.log(mensaje[0])
+            console.log(mensaje[1])
         let inicio = this.add.image(300,550,'inicio').setScale(0.07);
         inicio.setInteractive();
         inicio.on('pointerdown',function(){
             this.scene.stop('Level2');
             this.scene.stop('pauseScene');
-            this.scene.start('selectorLevelScene');
+            this.scene.start('selectorLevelScene', {mensaje:mensaje});
         }, this);
 
         let signiv = this.add.image(500,550,'signiv').setScale(0.07);
@@ -31,7 +33,7 @@ class gameWin2 extends Phaser.Scene{
         signiv.on('pointerdown',function(){
             this.scene.stop('Level2');
             this.scene.stop('pauseScene');
-            this.scene.start('countdown3');
+            this.scene.start('countdown3', {mensaje:mensaje});
         }, this);
     }
 };

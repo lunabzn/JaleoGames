@@ -53,10 +53,15 @@ class Level3 extends Phaser.Scene {
         this.background = this.add.image(400, 300, 'background');
         this.invisibleCollider = this.physics.add.sprite(400,-50,'invisibleCollider');
 
+        var mensaje = this.scene.settings.data.mensaje
+            console.log(mensaje[0])
+            console.log(mensaje[1])
+
         //boton de pausa
         let pause = this.add.image(425, 50, "pause").setScale(0.07);
         pause.setInteractive();
         pause.on('pointerdown', () => {
+            mensaje[2]=3
             this.scene.stop('gameWin');
             this.scene.stop('gameOver');
             this.scene.switch('pauseScene');
@@ -887,7 +892,9 @@ class Level3 extends Phaser.Scene {
         }
 
         if(this.roundCont > 3){
-            this.scene.start('gameWin3');
+            var mensaje = this.scene.settings.data.mensaje
+            mensaje[1]=true
+            this.scene.start('gameWin3',{mensaje:mensaje});
             this.scene.stop('Level1');
             this.scene.stop('pauseScene');
             
@@ -895,7 +902,8 @@ class Level3 extends Phaser.Scene {
 
         //cambiar escena a gameover
         if(this.player1.life<=0 && this.player2.life<=0){
-            this.scene.start('gameOver');
+            var mensaje = this.scene.settings.data.mensaje
+            this.scene.start('gameOver',{mensaje:mensaje});
             this.scene.stop('Level1');
             this.scene.stop('pauseScene');          
             
