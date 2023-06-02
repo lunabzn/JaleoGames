@@ -20,7 +20,7 @@ class Level1 extends Phaser.Scene {
         var endF = 17
 
         //carga de fondo
-        this.load.image("background", "resources/fondol1.png");
+        this.load.image("background1", "resources/fondol1.png");
 
         //boton de pausa
         this.load.image("pause", "resources/pausa.png");
@@ -54,7 +54,7 @@ class Level1 extends Phaser.Scene {
         console.log(mensaje[0])
         console.log(mensaje[1])
 
-        this.background = this.add.image(400, 300, 'background');
+        this.background = this.add.image(400, 300, 'background1');
         this.invisibleCollider = this.physics.add.sprite(400,-50,'invisibleCollider');
 
         //boton de pausa
@@ -924,8 +924,5 @@ class Level1 extends Phaser.Scene {
 
         //ACTUALIZA CORAZONES
         this.updateHearts();
-   
-
     }
-
 }

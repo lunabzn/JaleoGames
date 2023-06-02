@@ -20,7 +20,7 @@ class Level3 extends Phaser.Scene {
         var endF = 17
 
         //carga de fondo
-        this.load.image("background", "resources/fondoL3.jpg");
+        this.load.image("background3", "resources/fondoL3.jpg");
 
         //boton de pausa
         this.load.image("pause", "resources/pausa.png");
@@ -50,7 +50,7 @@ class Level3 extends Phaser.Scene {
 
     create() {
 
-        this.background = this.add.image(400, 300, 'background');
+        this.background = this.add.image(400, 300, 'background3');
         this.invisibleCollider = this.physics.add.sprite(400,-50,'invisibleCollider');
 
         var mensaje = this.scene.settings.data.mensaje
@@ -64,7 +64,7 @@ class Level3 extends Phaser.Scene {
             mensaje[2]=3
             this.scene.stop('gameWin');
             this.scene.stop('gameOver');
-            this.scene.switch('pauseScene');
+            this.scene.switch('pauseScene3');
         })
 
         // Creación de los dos personajes

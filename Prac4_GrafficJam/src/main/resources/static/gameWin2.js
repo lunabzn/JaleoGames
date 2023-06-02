@@ -9,14 +9,14 @@ class gameWin2 extends Phaser.Scene{
     }
 
     preload() {
-        this.load.image('menu', 'resources/finalL2.png');
+        this.load.image('menu2', 'resources/finalL2.png');
         this.load.image('inicio', 'resources/menu.png');        
         this.load.image('signiv', 'resources/signivel.png');
 
     }
     
     create(){
-        this.background = this.add.image(0,0,'menu').setOrigin(0).setScale(1);
+        this.background = this.add.image(0,0,'menu2').setOrigin(0).setScale(1);
         var mensaje = this.scene.settings.data.mensaje
             console.log(mensaje[0])
             console.log(mensaje[1])
