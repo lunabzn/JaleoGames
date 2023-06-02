@@ -344,14 +344,16 @@ class Level1 extends Phaser.Scene {
             key: 'eAttackLeft',
             frames: this.anims.generateFrameNumbers('girlPolice', { start: 6, end: 8 }),
             frameRate: 1,
-            repeat: -1
+            repeat: -1,
+            duration: 2000
         });
 
         this.anims.create({
             key: 'eAttackRight',
             frames: this.anims.generateFrameNumbers('girlPolice', { start: 9, end: 11 }),
             frameRate: 1,
-            repeat: -1
+            repeat: -1,
+            duration: 2000
         });
 
         this.anims.create({
