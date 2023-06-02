@@ -15,7 +15,6 @@ var WEB_playerStop = false;
 var WEB_randomNum = 0;
 var WEB_playerHasDied = false;
 
-
 class onlineLevel extends Phaser.Scene {
 
     constructor() {
@@ -67,7 +66,7 @@ class onlineLevel extends Phaser.Scene {
     create() {
 
         this.background = this.add.image(400, 300, 'background');
-        this.invisibleCollider = this.physics.add.sprite(400,-50,'invisibleCollider');
+        this.invisibleCollider = this.physics.add.sprite(400, -50, 'invisibleCollider');
 
         // Boton de pausa
         let pause = this.add.image(425, 50, "pause").setScale(0.07);
@@ -80,7 +79,7 @@ class onlineLevel extends Phaser.Scene {
         })
 
         // Creación de los dos personajes
-        if(Soy_J1){
+        if (Soy_J1) {
             console.log("Soy el Jugador 1");
             this.player = this.physics.add.sprite(100, 300, 'vivo').setCollideWorldBounds(true);
             this.player2 = this.physics.add.sprite(100, 500, 'tuerto').setCollideWorldBounds(true);
@@ -92,7 +91,7 @@ class onlineLevel extends Phaser.Scene {
             LocalJ1 = false;
         }
 
-        this.probabilities=[];
+        this.probabilities = [];
 
         this.quantEnemiesRound1 = 0;
         this.quantEnemiesRound2 = 0;
@@ -100,13 +99,13 @@ class onlineLevel extends Phaser.Scene {
         this.roundCont = 1;
 
         this.activeEnemies = [this.quantEnemiesRound1];
-        this.velocities = [100,80,60];
+        this.velocities = [100, 80, 60];
         this.countDead = 0;
 
         this.createEnemies(this.activeEnemies, this.quantEnemiesRound1);
 
-        this.player.body.setSize(this.player.width*0.5, this.player.height*0.85);
-        this.player2.body.setSize(this.player2.width*0.5, this.player2.height*0.85);
+        this.player.body.setSize(this.player.width * 0.5, this.player.height * 0.85);
+        this.player2.body.setSize(this.player2.width * 0.5, this.player2.height * 0.85);
         this.invisibleCollider.body.setSize(800, 385);
 
         this.player.turnedLeft = false;
@@ -121,8 +120,8 @@ class onlineLevel extends Phaser.Scene {
         this.player2.attackRight = false;
 
         this.physics.add.collider(this.player, this.player2);
-        this.physics.add.collider(this.player,this.invisibleCollider);
-        this.physics.add.collider(this.player2,this.invisibleCollider);
+        this.physics.add.collider(this.player, this.invisibleCollider);
+        this.physics.add.collider(this.player2, this.invisibleCollider);
         this.invisibleCollider.setImmovable(true);
 
         //Añadir vida vivo
@@ -132,15 +131,15 @@ class onlineLevel extends Phaser.Scene {
         this.cora3 = this.add.image(180, 55, 'corazon');
         this.cora4 = this.add.image(215, 55, 'corazon');
         this.cora5 = this.add.image(250, 55, 'corazon');
-  
+
         this.vivoLife.setScrollFactor(0);
         this.cora1.setScrollFactor(0);
         this.cora2.setScrollFactor(0);
         this.cora3.setScrollFactor(0);
         this.cora4.setScrollFactor(0);
         this.cora5.setScrollFactor(0);
-  
-  
+
+
         //Añadir vida tuerto
         this.tuertoLife = this.add.image(745, 50, 'tuertoLife');
         this.cora6 = this.add.image(685, 55, 'corazon');
@@ -148,7 +147,7 @@ class onlineLevel extends Phaser.Scene {
         this.cora8 = this.add.image(615, 55, 'corazon');
         this.cora9 = this.add.image(580, 55, 'corazon');
         this.cora10 = this.add.image(545, 55, 'corazon');
-  
+
         this.tuertoLife.setScrollFactor(0);
         this.cora6.setScrollFactor(0);
         this.cora7.setScrollFactor(0);
@@ -395,14 +394,16 @@ class onlineLevel extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
-        
+
         // Preparamos los dos personajes orientados hacia la derecha
-        if(Soy_J1){
+        if (Soy_J1) {
             this.player2.play('p2TurnRight');
         } else {
             this.player2.play('p1TurnRight');
         }
 
+        player1_global = this.player;
+        player2_global = this.player2;
     }
 
     /////////// FUNCIONES AUXILIARES //////////
@@ -728,7 +729,7 @@ class onlineLevel extends Phaser.Scene {
         ////////////////////////////////// APARTADO ONLINE (WEBSOCKETS)
 
         if (WEB_goLeft && !WEB_goRight) { // Movimiento L la izquierda del otro jugador
-            console.log("Mov. Izq");
+            //console.log("Mov. Izq");
             this.player2.setVelocityX(-160);
             this.player2.turnedLeft = true;
             WEB_goRight = false;
@@ -741,11 +742,11 @@ class onlineLevel extends Phaser.Scene {
 
             if (WEB_goUp) {
                 if (Soy_J1) {
-                    console.log("Mov. Izq-Up");
+                    //console.log("Mov. Izq-Up");
                     this.player2.stop('p2Left', true);
                     this.player2.play('p2Left', true);
                 } else {
-                    console.log("Mov. Izq-Up");
+                    //console.log("Mov. Izq-Up");
                     this.player2.stop('p1Left', true);
                     this.player2.play('p1Left', true);
                 }
@@ -755,11 +756,11 @@ class onlineLevel extends Phaser.Scene {
 
             if (WEB_goDown) {
                 if (Soy_J1) {
-                    console.log("Mov. Izq-Down");
+                    //console.log("Mov. Izq-Down");
                     this.player2.stop('p2Left', true);
                     this.player2.play('p2Left', true);
                 } else {
-                    console.log("Mov. Izq-Down");
+                    //console.log("Mov. Izq-Down");
                     this.player2.stop('p2Left', true);
                     this.player2.play('p1Left', true);
                 }
@@ -768,7 +769,7 @@ class onlineLevel extends Phaser.Scene {
             }
 
             if (WEB_dontGoLeft) {
-                console.log("WEB_dontGoLeft  " + WEB_dontGoLeft);
+                //console.log("WEB_dontGoLeft  " + WEB_dontGoLeft);
                 WEB_goLeft = false;
                 this.player2.setVelocityX(0);
                 if (this.player2.turnedLeft) {
@@ -790,7 +791,7 @@ class onlineLevel extends Phaser.Scene {
         } 
         
         if (WEB_goRight && !WEB_goLeft) {
-            console.log("Mov. Der");
+            //console.log("Mov. Der");
             this.player2.setVelocityX(160);
             this.player2.turnedLeft = false;
             WEB_goLeft = false;
@@ -803,10 +804,10 @@ class onlineLevel extends Phaser.Scene {
 
             if (WEB_goUp) {
                 if (Soy_J1) {
-                    console.log("Mov. Der-Up");
+                    //console.log("Mov. Der-Up");
                     this.player2.play('p2UpRight', true);
                 } else {
-                    console.log("Mov. Der-Up");
+                    //console.log("Mov. Der-Up");
                     this.player2.play('p1UpRight', true);
                 } 
                 this.player2.setVelocityY(-160);
@@ -815,10 +816,10 @@ class onlineLevel extends Phaser.Scene {
 
             if (WEB_goDown) {
                 if (Soy_J1) {
-                    console.log("Mov. Der-Down");
+                    //console.log("Mov. Der-Down");
                     this.player2.play('p2DownRight', true);
                 } else {
-                    console.log("Mov. Der-Down");
+                    //console.log("Mov. Der-Down");
                     this.player2.play('p1DownRight', true);
                 }
                 this.player2.setVelocityY(160);
@@ -826,7 +827,7 @@ class onlineLevel extends Phaser.Scene {
             }
 
             if (WEB_dontGoRight) {
-                console.log("WEB_dontGoRight  " + WEB_dontGoRight);
+                //console.log("WEB_dontGoRight  " + WEB_dontGoRight);
                 WEB_goRight = false;
                 this.player2.setVelocityX(0);
                 if (this.player2.turnedLeft) {
@@ -848,7 +849,7 @@ class onlineLevel extends Phaser.Scene {
         } 
         
         if (WEB_goUp) {
-            console.log("Mov. Up");
+            //console.log("Mov. Up");
             this.player2.setVelocityY(-160);
 
             if (this.player2.turnedLeft) {
@@ -867,10 +868,10 @@ class onlineLevel extends Phaser.Scene {
 
             if (WEB_goLeft) {
                 if (Soy_J1) {
-                    console.log("Mov. Up-Izq");
+                    //console.log("Mov. Up-Izq");
                     this.player2.play('p2UpLeft', true);
                 } else {
-                    console.log("Mov. Up-Izq");
+                    //console.log("Mov. Up-Izq");
                     this.player2.play('p1UpLeft', true);
                 }
                 this.player2.setVelocityX(-160);
@@ -879,10 +880,10 @@ class onlineLevel extends Phaser.Scene {
 
             if (WEB_goRight) {
                 if (Soy_J1) {
-                    console.log("Mov. Up-Der");
+                    //console.log("Mov. Up-Der");
                     this.player2.play('p2UpRight', true);
                 } else {
-                    console.log("Mov. Up-Der");
+                    //console.log("Mov. Up-Der");
                     this.player2.play('p1UpRight', true);
                 }
                 this.player2.setVelocityX(160);
@@ -912,7 +913,7 @@ class onlineLevel extends Phaser.Scene {
         } 
         
         if (WEB_goDown){
-            console.log("Mov. Down");
+            //console.log("Mov. Down");
             this.player2.setVelocityY(160);
 
             if (this.player2.turnedLeft) {
@@ -931,10 +932,10 @@ class onlineLevel extends Phaser.Scene {
 
             if (WEB_goLeft) {
                 if (Soy_J1) {
-                    console.log("Mov. Down-Izq");
+                    //console.log("Mov. Down-Izq");
                     this.player2.play('p2DownLeft', true);
                 } else {
-                    console.log("Mov. Down-Izq");
+                    //console.log("Mov. Down-Izq");
                     this.player2.play('p1DownLeft', true);
                 }
                 this.player2.setVelocityX(-160);
@@ -943,10 +944,10 @@ class onlineLevel extends Phaser.Scene {
 
             if (WEB_goRight) {
                 if (Soy_J1) {
-                    console.log("Mov. Down-Der");
+                    //console.log("Mov. Down-Der");
                     this.player2.play('p2DownRight', true);
                 } else {
-                    console.log("Mov. Down-Der");
+                    //console.log("Mov. Down-Der");
                     this.player2.play('p1DownRight', true);
                 }
                 this.player2.setVelocityX(160);
@@ -954,7 +955,7 @@ class onlineLevel extends Phaser.Scene {
             }
 
             if (WEB_dontGoDown) {
-                console.log("WEB_dontGoDown  " + WEB_dontGoDown);
+                //console.log("WEB_dontGoDown  " + WEB_dontGoDown);
                 WEB_goDown = false;
                 //this.player2.setVelocityX(0);
                 // this.player2.setVelocityY(0);
@@ -1080,6 +1081,7 @@ class onlineLevel extends Phaser.Scene {
                 this.player2.setVelocityX(0);
                 this.player2.setVelocityY(0); 
             }
+            player2Alive = false;
             WEB_playerHasDied = false;
         }
         
@@ -1093,6 +1095,11 @@ class onlineLevel extends Phaser.Scene {
         }
 
         //////////// ACTUALIZAR JUGADORES
+
+        if(this.player2.life <= 0){
+            player2Alive = false;
+        }
+
         // J1
         if (this.player.life <= 0) { // Si el jugador está muerto, no se puede mover
             if (this.player.turnedLeft) {
@@ -1130,7 +1137,7 @@ class onlineLevel extends Phaser.Scene {
                 
                 if (this.player.keyW.isDown) {
                     playerMoveUp();
-                    console.log("Sumo mov. arriba");
+                    //console.log("Sumo mov. arriba");
                     this.player.setVelocityY(-160);
                 }
 
@@ -1176,7 +1183,7 @@ class onlineLevel extends Phaser.Scene {
                         this.player.play('p2UpRight', true);
                     } 
                 }
-                console.log("Entra en Mov.Arriba");
+                //console.log("Entra en Mov.Arriba");
             }
             else if (this.player.keyS.isDown) { // Si el Jugador 1 pulsa la S, se mueve hacia abajo
                 playerMoveDown(); // Avisamos al otro cliente de que nos movemos hacia abajo
@@ -1545,8 +1552,26 @@ class onlineLevel extends Phaser.Scene {
             this.scene.stop('pauseScene');
             deleteGame();
         }
+
+        // WS SYNC
+        player1_global = this.player;
+        player1_life = this.player.life;
+
+        player2_global = this.player2;
+        player2_life = this.player2.life;
     }
 
+    /////////// SINCRONIZACIÓN DE POSICIONES ENTRE JUGADORES //////////
+    // Envío una actualización de las posiciones de los dos jugadores
+    checkSync = setInterval(this.makeSyncWSSendMessage, 200);
+
+    makeSyncWSSendMessage() {
+        if (player2_life >= 0 && Soy_J1) { // si el jugador del otro cliente sigue vivo y soy el Jugador 1
+            // Este mensaje lo envía el J1, por lo que la pos de Vivo será la de player1 y la de Tuerto la de player2
+            syncWS.sendWS(player1_global.getCenter(), player2_global.getCenter()) // envío mensaje de WS para actualizar la información de las posiciones
+            //console.log("He enviado WS de actualizacion de poisicones entre jugadores con (" + player.getCenter().x + ", " + this.player.getCenter().y + ") y (" + this.player2.getCenter().x + ", " + this.player2.getCenter().y + ")");
+        }
+    }
 }
 
 // FUNCIONES A EJECUTAR CUANDO connection.js LO SOLICITE

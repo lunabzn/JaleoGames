@@ -7,6 +7,7 @@
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
 
+    <script type="text/javascript" src="syncWS.js"></script>
     <script type="text/javascript" src="connection.js"></script>
     <script type="text/javascript" src="onlineLevel.js"></script>
     <script type="text/javascript" src="pauseOnlineScene.js"></script>
@@ -51,6 +52,14 @@
         // Numero aleatorio
         var probability=0;
         var Random_Num = 0;
+
+        // Sincronización Web Sockets
+        var checkSync;
+        var player1_global;
+        var player1_life
+        var player2_global;
+        var player2_life;
+        
 
     </script>
 

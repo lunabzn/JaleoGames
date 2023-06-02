@@ -22,10 +22,16 @@ public class App implements WebSocketConfigurer {
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(gameHandler(), "/grafficjam").setAllowedOrigins("*");
+		registry.addHandler(syncHandler(), "/sync").setAllowedOrigins("*");
 	}
 
 	@Bean
 	public Handler gameHandler() {
 		return new Handler();
+	}
+
+	@Bean
+	public SyncHandler syncHandler() {
+		return new SyncHandler();
 	}
 }

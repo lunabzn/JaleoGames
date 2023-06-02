@@ -1,8 +1,8 @@
 
 var socket = new WebSocket("ws://127.0.0.1:8080/grafficjam");
 
-socket.onopen = function () {
-	console.log("Conexion establecida");
+socket.onopen = function (msg) {
+	console.log("Conexion establecida con connection.js");
 }
 
 window.onbeforeunload = function () {
@@ -52,6 +52,7 @@ socket.onmessage = function (event) {
 			StartGame = aux.estadoPartida;
 			console.log(aux.estadoPartida);
 			console.log("El ID jugador del server es:" + aux.idJugador);
+			console.log("[Partida completada] StartGame = " + aux.estadoPartida);
 			break;
 
 		case (7): // Mover jugador arriba
