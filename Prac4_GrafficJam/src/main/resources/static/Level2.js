@@ -57,9 +57,9 @@ class Level2 extends Phaser.Scene {
         let pause = this.add.image(425, 50, "pause").setScale(0.07);
         pause.setInteractive();
         pause.on('pointerdown', () => {
-            this.scene.stop('gameWin');
+            this.scene.stop('gameWin2');
             this.scene.stop('gameOver');
-            this.scene.switch('pauseScene');
+            this.scene.switch('pauseScene2');
         })
 
         this.events.on('shutdown', () => {
@@ -900,7 +900,7 @@ class Level2 extends Phaser.Scene {
         if(this.roundCont > 3){
             this.background.destroy();
             this.scene.stop('Level1');
-            this.scene.stop('pauseScene');
+            this.scene.stop('pauseScene2');
             this.scene.switch('gameWin2');
             
         }
@@ -909,7 +909,7 @@ class Level2 extends Phaser.Scene {
         if(this.player1.life<=0 && this.player2.life<=0){
             this.background.destroy();
             this.scene.stop('Level1');
-            this.scene.stop('pauseScene');   
+            this.scene.stop('pauseScene2');   
             this.scene.switch('gameOver');       
             
         }

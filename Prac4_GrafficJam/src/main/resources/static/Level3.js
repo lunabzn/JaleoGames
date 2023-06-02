@@ -57,9 +57,9 @@ class Level3 extends Phaser.Scene {
         let pause = this.add.image(425, 50, "pause").setScale(0.07);
         pause.setInteractive();
         pause.on('pointerdown', () => {
-            this.scene.stop('gameWin');
+            this.scene.stop('gameWin3');
             this.scene.stop('gameOver');
-            this.scene.switch('pauseScene');
+            this.scene.switch('pauseScene3');
         });
 
         this.events.on('shutdown', () => {
@@ -560,8 +560,6 @@ class Level3 extends Phaser.Scene {
 
     update() {
 
-        this.background = this.add.image(400, 300, 'background3');
-
         //ACTUALIZA LA PROFUNDIDAD DE LOS ENEMIGOS
         for (var i = 0; i < this.activeEnemies.length; i++) {
             if (this.activeEnemies[i].alive) {
@@ -895,7 +893,7 @@ class Level3 extends Phaser.Scene {
         if(this.roundCont > 3){
             this.background.destroy();
             this.scene.stop('Level1');
-            this.scene.stop('pauseScene');
+            this.scene.stop('pauseScene3');
             this.scene.switch('gameWin3');
             
         }
@@ -904,7 +902,7 @@ class Level3 extends Phaser.Scene {
         if(this.player1.life<=0 && this.player2.life<=0){
             this.background.destroy();
             this.scene.stop('Level1');
-            this.scene.stop('pauseScene');   
+            this.scene.stop('pauseScene3');   
             this.scene.switch('gameOver');       
             
         }
