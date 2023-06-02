@@ -9,11 +9,15 @@ syncWS.onerror = function(e){
     console.log("WS error: " + e);
 }
 
+syncWS.onclose = function (event) {
+    console.log("Conexión cerrada. Código: " + event.code + ", Razón: " + event.reason);
+}
+
 // Cuando recibe un mensaje del servidor
 syncWS.onmessage = function(msg){
     var data = JSON.parse(msg.data);
     console.log("[syncWS.onmessage()] ME HA LLEGADO UN MENSAJE");
-    if(SoyJ1 == false){ // sólo actualiza la información el J2. Es decir, siempre se usa la info del J1 como fuente fiable
+    if(Soy_J1 == false){ // sólo actualiza la información el J2. Es decir, siempre se usa la info del J1 como fuente fiable
         console.log("Antigua posición Vivo: [" + onlineLevel.player2.x + ", " + onlineLevel.player2.y + "]");
         console.log("Antigua posición Tuerto: [" + onlineLevel.player.x + ", " + onlineLevel.player.y + "]");
 
@@ -34,5 +38,8 @@ syncWS.sendWS = function(_posVivo, _posTuerto){
         posVivo: _posVivo,
         posTuerto: _posTuerto
     }
-    syncWS.send(JSON.stringify(message));
+    if (syncWS.readyState === WebSocket.OPEN) {
+        console.log("Envio de info");
+        syncWS.send(JSON.stringify(message));
+    }
 }
