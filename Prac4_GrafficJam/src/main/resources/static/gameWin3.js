@@ -16,18 +16,15 @@ class gameWin3 extends Phaser.Scene{
     
     create(){
         this.background = this.add.image(0,0,'menu3').setOrigin(0).setScale(1);
-
+        var mensaje = this.scene.settings.data.mensaje
+            console.log(mensaje[0])
+            console.log(mensaje[1])
         let inicio = this.add.image(400,550,'inicio').setScale(0.07);
         inicio.setInteractive();
         inicio.on('pointerdown',function(){
-            this.background.destroy();
             this.scene.stop('Level1');
             this.scene.stop('pauseScene');
-            this.scene.start('selectorLevelScene');
+            this.scene.start('selectorLevelScene',{mensaje:mensaje});
         }, this);
-
-        this.events.on('shutdown', () => {
-            this.background.destroy();
-        });
     }
 };

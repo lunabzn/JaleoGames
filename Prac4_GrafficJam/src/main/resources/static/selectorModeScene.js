@@ -22,16 +22,18 @@ class selectorModeScene extends Phaser.Scene {
         
         this.clickSound = this.sound.add("click");
 
+        var mensaje = this.scene.settings.data.mensaje
+        
         playButtonVolver.setInteractive();
         playButtonVolver.on('pointerdown', () => {
             this.clickSound.play();
-            this.scene.start('mainScene')
+            this.scene.start('mainScene',{mensaje: mensaje})
         })
 
         playButtonOffline.setInteractive();
         playButtonOffline.on('pointerdown', () => {
             this.clickSound.play();
-            this.scene.start('selectorLevelScene')
+            this.scene.start('selectorLevelScene', {mensaje: mensaje})
         })
 
         playButtonLobby.setInteractive();

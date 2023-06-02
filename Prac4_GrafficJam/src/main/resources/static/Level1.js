@@ -49,6 +49,10 @@ class Level1 extends Phaser.Scene {
 
 
     create() {
+        var mensaje = this.scene.settings.data.mensaje
+
+        console.log(mensaje[0])
+        console.log(mensaje[1])
 
         this.background = this.add.image(400, 300, 'background1');
         this.invisibleCollider = this.physics.add.sprite(400,-50,'invisibleCollider');
@@ -57,14 +61,11 @@ class Level1 extends Phaser.Scene {
         let pause = this.add.image(425, 50, "pause").setScale(0.07);
         pause.setInteractive();
         pause.on('pointerdown', () => {
+            mensaje[2]=1
             this.scene.stop('gameWin');
             this.scene.stop('gameOver');
             this.scene.switch('pauseScene');
         })
-
-        this.events.on('shutdown', () => {
-            this.background.destroy();
-        });
 
         // Creación de los dos personajes
         this.player1 = this.physics.add.sprite(100, 300, 'vivo').setCollideWorldBounds(true);
@@ -572,7 +573,7 @@ class Level1 extends Phaser.Scene {
     }
 
     update() {
-        
+
         //ACTUALIZA LA PROFUNDIDAD DE LOS ENEMIGOS
         for (var i = 0; i < this.activeEnemies.length; i++) {
             if (this.activeEnemies[i].alive) {
@@ -904,26 +905,24 @@ class Level1 extends Phaser.Scene {
         }
 
         if(this.roundCont > 3){
-            this.background.destroy();
+            var mensaje = this.scene.settings.data.mensaje
+            mensaje[0]= true
+            this.scene.start('gameWin',{mensaje: mensaje});
             this.scene.stop('Level1');
             this.scene.stop('pauseScene');
-            this.scene.switch('gameWin');
             
         }
 
         //cambiar escena a gameover
         if(this.player1.life<=0 && this.player2.life<=0){
-            this.background.destroy();
+            var mensaje = this.scene.settings.data.mensaje
+            this.scene.start('gameOver',{mensaje: mensaje});
             this.scene.stop('Level1');
-            this.scene.stop('pauseScene'); 
-            this.scene.switch('gameOver');         
+            this.scene.stop('pauseScene');          
             
         }
 
         //ACTUALIZA CORAZONES
         this.updateHearts();
-   
-
     }
-
 }
