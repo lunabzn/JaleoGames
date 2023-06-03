@@ -93,7 +93,7 @@ class onlineLevel extends Phaser.Scene {
 
         this.probabilities = [];
 
-        this.quantEnemiesRound1 = 0;
+        this.quantEnemiesRound1 = 2;
         this.quantEnemiesRound2 = 0;
         this.quantEnemiesRound3 = 0;
         this.roundCont = 1;
@@ -409,6 +409,8 @@ class onlineLevel extends Phaser.Scene {
 
         // Enemigos
         activeEnemies_global = this.activeEnemies;
+        activeEnemies_length = this.activeEnemies.length;
+        console.log(activeEnemies_global.length);
 
     }
 
@@ -740,6 +742,7 @@ class onlineLevel extends Phaser.Scene {
 
         for (var i = 0; i < this.activeEnemies.length; i++) {
             // Actualizo la posiciónde cada enemigo
+            this.activeEnemies[i].setPosition(activeEnemies_global[i].getCenter().x, activeEnemies_global[i].getCenter().y);
         }
 
         if (WEB_goLeft && !WEB_goRight) { // Movimiento L la izquierda del otro jugador
@@ -1574,6 +1577,9 @@ class onlineLevel extends Phaser.Scene {
 
         player2_global = this.player2;
         player2_life = this.player2.life;
+
+        activeEnemies_global = this.activeEnemies;
+        activeEnemies_length = this.activeEnemies.length;
     }
 
     /////////// SINCRONIZACIÓN DE POSICIONES ENTRE JUGADORES //////////
@@ -1582,10 +1588,20 @@ class onlineLevel extends Phaser.Scene {
 
     makeSyncWSSendMessage() {
         if (player2_life >= 0 && Soy_J1) { // si el jugador del otro cliente sigue vivo y soy el Jugador 1
+            // Sincronización posición jugadores:
             // Este mensaje lo envía el J1, por lo que la pos de Vivo será la de player1 y la de Tuerto la de player2
             syncWS.sendWS(player1_global.getCenter(), player2_global.getCenter()) // envío mensaje de WS para actualizar la información de las posiciones
-            //console.log("He enviado WS de actualizacion de poisicones entre jugadores con (" + player.getCenter().x + ", " + this.player.getCenter().y + ") y (" + this.player2.getCenter().x + ", " + this.player2.getCenter().y + ")");
         }
+        
+        if (Soy_J1) {
+            for (var i = 0; i < activeEnemies_length; i++) {
+                if (activeEnemies_global[i].alive) { // si el enemigo está vivo, envío su posición para actulizarla en el otro cliente
+                    // Sincronización posición enemigos:
+                    enemySyncWS.sendWS(i, activeEnemies_global[i].getCenter());
+                }
+            }
+        }
+
     }
 }
 

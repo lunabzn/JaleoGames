@@ -38,6 +38,7 @@ public class SyncHandler extends TextWebSocketHandler{
 			if(session != user)
 			{
 				user.sendMessage(message);
+				System.err.println("SyncHanlder: He enviado el mensaje");
 			}
 		}
 	}
