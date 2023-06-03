@@ -402,8 +402,14 @@ class onlineLevel extends Phaser.Scene {
             this.player2.play('p1TurnRight');
         }
 
+        // WS SYNC
+        // Jugadores
         player1_global = this.player;
         player2_global = this.player2;
+
+        // Enemigos
+        activeEnemies_global = this.activeEnemies;
+
     }
 
     /////////// FUNCIONES AUXILIARES //////////
@@ -727,6 +733,14 @@ class onlineLevel extends Phaser.Scene {
     update() {
 
         ////////////////////////////////// APARTADO ONLINE (WEBSOCKETS)
+
+        // Sincronización de posiciones
+        this.player.setPosition(player1_global.getCenter().x , player1_global.getCenter().y); 
+        this.player2.setPosition(player2_global.getCenter().x , player2_global.getCenter().y);
+
+        for (var i = 0; i < this.activeEnemies.length; i++) {
+            // Actualizo la posiciónde cada enemigo
+        }
 
         if (WEB_goLeft && !WEB_goRight) { // Movimiento L la izquierda del otro jugador
             //console.log("Mov. Izq");
@@ -1526,6 +1540,7 @@ class onlineLevel extends Phaser.Scene {
             }
         }
 
+        // Cuando han muerto todos los enemigos de una ronda
         if (this.countDead == this.activeEnemies.length) {
             this.roundCont++;
             if (this.roundCont == 2) {
