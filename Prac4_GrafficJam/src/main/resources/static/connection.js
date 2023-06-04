@@ -10,23 +10,24 @@ window.onbeforeunload = function () {
 };
 
 socket.onmessage = function (event) {
-	var aux = JSON.parse(event.data)
-	ID_Funcion = aux.idFuncion
+	var messageReceived = JSON.parse(event.data)
+	ID_Funcion = messageReceived.idFuncion
 
 	switch (ID_Funcion) {
 
 		//LO QUE RECIBO DEL SERVIDOR
 		case (0): 
-			ID_Partida = aux.idPartida;
-			Soy_J1 = aux.soyJ1;
-			console.log("aux " + aux.soyJ1);
+			ID_Partida = messageReceived.idPartida;
+			Soy_J1 = messageReceived.soyJ1;
 			console.log("Soy Jugador 1?: " + Soy_J1);
-			console.log(aux.stringPrueba);
-			console.log(ID_Partida);
+			console.log(messageReceived.stringPrueba);
 			break;
 
 		case (1): //borrarPartida()
-			console.log(aux.mensajeBorrado + aux.idPartida);
+			partidaCreada = false;
+			yaHayUnJugador = false;
+			StartGame = false;
+			console.log(messageReceived.mensajeBorrado + messageReceived.idPartida);
 			break;
 
 		case (2): //Ataque Jugador
@@ -34,10 +35,9 @@ socket.onmessage = function (event) {
 			break;
 
 		case (3)://crearJugador() 
-			J1_id = aux.idJugador;
-			console.log(aux.mensaje); // "Se ha creado el jugador X"
-			console.log(aux.idJugador); // X
-			barrera = true;
+			J1_id = messageReceived.idJugador;
+			console.log(messageReceived.mensaje); // "Se ha creado el jugador X"
+			yaHayUnJugador = true;
 			break;
 
 		case (4): // Mover jugador a la izquierda
@@ -49,10 +49,10 @@ socket.onmessage = function (event) {
 			break;
  
 		case (6): // Cuando se completa una partida
-			StartGame = aux.estadoPartida;
-			console.log(aux.estadoPartida);
-			console.log("El ID jugador del server es:" + aux.idJugador);
-			console.log("[Partida completada] StartGame = " + aux.estadoPartida);
+			StartGame = messageReceived.estadoPartida;
+			console.log(messageReceived.estadoPartida);
+			console.log("El ID jugador del server es:" + messageReceived.idJugador);
+			console.log("[Partida completada] StartGame = " + messageReceived.estadoPartida);
 			break;
 
 		case (7): // Mover jugador arriba
@@ -100,7 +100,7 @@ socket.onmessage = function (event) {
 			break;
 
 		case (18): // Funcion random
-			Random_Num = aux.randomNum;
+			Random_Num = messageReceived.randomNum;
 			break;
 
 		case (20):

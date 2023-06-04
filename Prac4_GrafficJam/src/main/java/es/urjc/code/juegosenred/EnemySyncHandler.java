@@ -38,7 +38,6 @@ public class EnemySyncHandler extends TextWebSocketHandler{
 			if(session != user)
 			{
 				user.sendMessage(message);
-				System.err.println("EnemySyncHanlder: He enviado el mensaje");
 			}
 		}
 	}

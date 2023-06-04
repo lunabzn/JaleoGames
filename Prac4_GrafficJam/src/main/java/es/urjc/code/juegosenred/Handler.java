@@ -46,6 +46,7 @@ public class Handler extends TextWebSocketHandler {
                 int idLocal = 0;
                 Game gameAux_c0 = new Game();
                 String debug = "Me he unido a la partida";
+                
                 if (currentGames < MAX_GAMES) { // si no se ha superado el máximo de partida
                     int idJug = node.get("idJugador").asInt();
                     for (Game game : gameList) {// Recorro mi lista por cada elemento partida
@@ -78,7 +79,7 @@ public class Handler extends TextWebSocketHandler {
                     WebSocketSession localSesJ1 = gameAux_c0.getJ1().getSession();
                     WebSocketSession localSesJ2 = gameAux_c0.getJ2().getSession();
                     
-                    System.err.println("Iniciar la partida");
+                    System.out.println("Se va a iniciar la partida");
 
                     msg.put("idFuncion", 6);
                     msgaux.put("idFuncion", 6);
@@ -91,7 +92,7 @@ public class Handler extends TextWebSocketHandler {
                 }
                 break;
 
-            case (1): // Cerrar partida
+            case (1): // Borrar partida
                 int idJugador1 = node.get("idJugador1").asInt();
                 int idJugador2 = node.get("idJugador2").asInt();
                 int gameId_aux = node.get("idPartida").asInt();
@@ -104,16 +105,19 @@ public class Handler extends TextWebSocketHandler {
                 int idP1ToDelete = player1ToDelete.getId();
                 int idP2ToDelete = player2ToDelete.getId();
 
+                String texto = "NO se ha borrado la partida";
+
                 System.err.println("Voy a borrar la partida: " + gameId_aux + "que esta guardada con id " + idGameToDelete);
                 if (!gameToDelete.getNeedsMorePlayers()) {
-                    System.err.println("He entrado a borrar");
+                    System.out.println("He entrado a borrar");
+                    System.out.println("Número de partidas ANTES de borrar: " + currentGames);
                     Game newAux = new Game();
                     gameList.set(idGameToDelete, newAux); // añado una partida vacía en la posicion de la que vamos a borrar
                     currentGames--;
-                    System.err.println(currentGames);
+                    System.out.println("Número de partidas DESPUÉS de borrar: " + currentGames);
+                    texto = "Se ha borrado la partida";
                 }
 
-                String texto = "Se ha borrado la partida";
                 msg.put("mensajeBorrado", texto);
                 msg.put("idFuncion", 1);
                 session.sendMessage(new TextMessage(msg.toString()));
@@ -139,9 +143,10 @@ public class Handler extends TextWebSocketHandler {
                 }
                 break;
 
-            case(3): // Crear jugador
+            case (3): // Crear jugador
                 if(firstEntry) { // si es la primera vez, se tienen que inicializar los arrays de partidas y jugadores
                     initGamesPlayers();
+                    System.out.println("First Entry");
                     firstEntry=false;
                 }
                 int localId_auxc3 = 0;
@@ -154,7 +159,7 @@ public class Handler extends TextWebSocketHandler {
                             currentPlayers++; //Actualizo el numero de jugadores que hay en el server
                             playerList.set(localId_auxc3, newPlayer);//Añado mi jugador a la lista en la posición correspondiente
                             msg.put("idJugador", currentPlayers-1); //Le envio el id al jugador para que lo guarde
-                            String debug_c3 = "Se ha creado el jugador "+ (currentPlayers-1); //MENSAJE DEBUG(SOBRA)
+                            String debug_c3 = "Se ha creado el jugador con ID "+ (currentPlayers-1); //MENSAJE DEBUG(SOBRA)
                             msg.put("mensaje", debug_c3); //Debug
                             break;
                         }

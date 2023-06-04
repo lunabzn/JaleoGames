@@ -410,8 +410,6 @@ class onlineLevel extends Phaser.Scene {
         // Enemigos
         activeEnemies_global = this.activeEnemies;
         activeEnemies_length = this.activeEnemies.length;
-        console.log(activeEnemies_global.length);
-
     }
 
     /////////// FUNCIONES AUXILIARES //////////
@@ -908,7 +906,7 @@ class onlineLevel extends Phaser.Scene {
             }
 
             if (WEB_dontGoUp) {
-                console.log("WEB_dontGoUp  " + WEB_dontGoUp);
+                //console.log("WEB_dontGoUp  " + WEB_dontGoUp);
                 WEB_goUp = false;
                 //this.player2.setVelocityY(0);
                 if (this.player2.turnedLeft) {
@@ -1057,7 +1055,6 @@ class onlineLevel extends Phaser.Scene {
 
             if (WEB_dontPlayerAttack) {
                 WEB_playerAttack = false;
-                console.log("ha dejado de atacar");
                 this.player2.attackRight = false;
                 this.player2.attackLeft = false;
                 if (this.player2.turnedLeft) {
@@ -1078,7 +1075,6 @@ class onlineLevel extends Phaser.Scene {
         }
 
         if(WEB_playerHasDied){
-            console.log("Mato al player2")
             if (this.player2.turnedLeft) {
                 if(Soy_J1){
                     this.player2.play('p2DefeatLeft', true); // Animacion Tuerto
@@ -1098,7 +1094,6 @@ class onlineLevel extends Phaser.Scene {
                 this.player2.setVelocityX(0);
                 this.player2.setVelocityY(0); 
             }
-            player2Alive = false;
             WEB_playerHasDied = false;
         }
         
@@ -1112,11 +1107,6 @@ class onlineLevel extends Phaser.Scene {
         }
 
         //////////// ACTUALIZAR JUGADORES
-
-        if(this.player2.life <= 0){
-            player2Alive = false;
-        }
-
         // J1
         if (this.player.life <= 0) { // Si el jugador está muerto, no se puede mover
             if (this.player.turnedLeft) {
@@ -1504,7 +1494,6 @@ class onlineLevel extends Phaser.Scene {
                 if (dist <= 101) {
                     if (this.player.atkP1.isDown) {
                         this.activeEnemies[i].life -= 1;
-                        console.log("pucch");
                         if (this.activeEnemies[i].life <= 0) {
                             this.activeEnemies[i].y = -100;
                             this.activeEnemies[i].body.moves = false;
@@ -1523,7 +1512,6 @@ class onlineLevel extends Phaser.Scene {
                 if (dist <= 101) {
                     if (WEB_playerAttack) {
                         this.activeEnemies[i].life -= 1;
-                        console.log("oucch");
                         if (this.activeEnemies[i].life <= 0) {
                             this.activeEnemies[i].y = -100;
                             this.activeEnemies[i].body.moves = false;
@@ -1569,6 +1557,10 @@ class onlineLevel extends Phaser.Scene {
             this.scene.stop('onlineLevel');
             this.scene.stop('pauseScene');
             deleteGame();
+
+            partidaCreada = false;
+            yaHayUnJugador = false;
+            StartGame = false;
         }
 
         // WS SYNC
@@ -1587,21 +1579,22 @@ class onlineLevel extends Phaser.Scene {
     checkSync = setInterval(this.makeSyncWSSendMessage, 200);
 
     makeSyncWSSendMessage() {
-        if (player2_life >= 0 && Soy_J1) { // si el jugador del otro cliente sigue vivo y soy el Jugador 1
-            // Sincronización posición jugadores:
-            // Este mensaje lo envía el J1, por lo que la pos de Vivo será la de player1 y la de Tuerto la de player2
-            syncWS.sendWS(player1_global.getCenter(), player2_global.getCenter()) // envío mensaje de WS para actualizar la información de las posiciones
-        }
-        
-        if (Soy_J1) {
-            for (var i = 0; i < activeEnemies_length; i++) {
-                if (activeEnemies_global[i].alive) { // si el enemigo está vivo, envío su posición para actulizarla en el otro cliente
-                    // Sincronización posición enemigos:
-                    enemySyncWS.sendWS(i, activeEnemies_global[i].getCenter());
+        if(StartGame == true){ // Si la partida está en curso
+            if (player2_life >= 0 && Soy_J1) { // si el jugador del otro cliente sigue vivo y soy el Jugador 1
+                // Sincronización posición jugadores:
+                // Este mensaje lo envía el J1, por lo que la pos de Vivo será la de player1 y la de Tuerto la de player2
+                syncWS.sendWS(player1_global.getCenter(), player2_global.getCenter()) // envío mensaje de WS para actualizar la información de las posiciones
+            }
+            
+            if (Soy_J1) {
+                for (var i = 0; i < activeEnemies_length; i++) {
+                    if (activeEnemies_global[i].alive) { // si el enemigo está vivo, envío su posición para actulizarla en el otro cliente
+                        // Sincronización posición enemigos:
+                        enemySyncWS.sendWS(i, activeEnemies_global[i].getCenter());
+                    }
                 }
             }
         }
-
     }
 }
 
