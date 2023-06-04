@@ -93,7 +93,7 @@ class onlineLevel extends Phaser.Scene {
 
         this.probabilities = [];
 
-        this.quantEnemiesRound1 = 2;
+        this.quantEnemiesRound1 = 0;
         this.quantEnemiesRound2 = 0;
         this.quantEnemiesRound3 = 0;
         this.roundCont = 1;
@@ -623,7 +623,6 @@ class onlineLevel extends Phaser.Scene {
 
     updateHearts() {
         if (Soy_J1) {
-            console.log("Cliente 1 ");
             if (this.player.life == 4) {
                 this.cora5.destroy();
                 console.log("cora5 destruido");
@@ -740,7 +739,7 @@ class onlineLevel extends Phaser.Scene {
 
         for (var i = 0; i < this.activeEnemies.length; i++) {
             // Actualizo la posiciónde cada enemigo
-            this.activeEnemies[i].setPosition(activeEnemies_global[i].getCenter().x, activeEnemies_global[i].getCenter().y);
+            //this.activeEnemies[i].setPosition(activeEnemies_global[i].getCenter().x, activeEnemies_global[i].getCenter().y);
         }
 
         if (WEB_goLeft && !WEB_goRight) { // Movimiento L la izquierda del otro jugador

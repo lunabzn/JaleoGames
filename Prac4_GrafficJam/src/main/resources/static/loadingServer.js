@@ -12,9 +12,6 @@ class loadingServer extends Phaser.Scene {
     }
 
     update() {
-
-        // yaHayUnJugador se activa cuando se ha creado ya un jugador MIRAR SI HAY QUE DESACTIVARLA PARA SEGUNDAS PARTIDAS ONLINE
-
         if ((partidaCreada == false) && (yaHayUnJugador == true)) { // si todavía no se ha creado una partida y ya se ha creado un jugador
             createGame(); // llama a connection.js que solicita la creación de partida
             partidaCreada = true;

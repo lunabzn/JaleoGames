@@ -34,7 +34,7 @@ socket.onmessage = function (event) {
 			activate_WEB_playerAttack();
 			break;
 
-		case (3)://crearJugador() 
+		case (3): //crearJugador() 
 			J1_id = messageReceived.idJugador;
 			console.log(messageReceived.mensaje); // "Se ha creado el jugador X"
 			yaHayUnJugador = true;
@@ -50,8 +50,6 @@ socket.onmessage = function (event) {
  
 		case (6): // Cuando se completa una partida
 			StartGame = messageReceived.estadoPartida;
-			console.log(messageReceived.estadoPartida);
-			console.log("El ID jugador del server es:" + messageReceived.idJugador);
 			console.log("[Partida completada] StartGame = " + messageReceived.estadoPartida);
 			break;
 
