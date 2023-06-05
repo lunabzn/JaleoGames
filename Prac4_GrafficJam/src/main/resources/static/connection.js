@@ -23,10 +23,11 @@ socket.onmessage = function (event) {
 			console.log(messageReceived.stringPrueba); // "Me he unido a la partida X"
 			break;
 
-		case (1): //borrarPartida()
+		case (1): //borrarPartida() Si le llega este case, es que el otro usuario ya ha borrado la partida en el servidor. Activamos el booleano gameAlreadyDeleted
 			partidaCreada = false;
 			yaHayUnJugador = false;
 			StartGame = false;
+			gameAlreadyDeleted = true;
 			console.log(messageReceived.mensajeBorrado + messageReceived.idPartida);
 			break;
 
@@ -121,16 +122,16 @@ function createGame(){ //Mi función que envía los datos que necesito al server
 		idFuncion: 0, //Cuando el server mire el mensaje, sabra que función llamar gracias a este nombre
 		idJugador: J1_id,
 	}	
-	socket.send(JSON.stringify(message)); 
+	socket.send(JSON.stringify(message));
 }
 
-function deleteGame() { 
+function deleteGame() {
 	let message = {
-			idFuncion: 1,
-			idPartida: ID_Partida,
-			idJugador1: J1_id,
-			idJugador2: J2_id,
-			soyJ1: Soy_J1
+		idFuncion: 1,
+		idPartida: ID_Partida,
+		idJugador1: J1_id,
+		idJugador2: J2_id,
+		soyJ1: Soy_J1
 	}
 	socket.send(JSON.stringify(message));
 }

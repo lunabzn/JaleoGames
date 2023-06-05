@@ -12,16 +12,17 @@ class gameWinOnline extends Phaser.Scene{
     create(){
         this.background = this.add.image(0,0,'menup').setOrigin(0).setScale(1);
 
-        partidaCreada = false;
-        yaHayUnJugador = false;
-        StartGame = false;
-        
         let inicio = this.add.image(400,550,'inicio').setScale(0.07);
         inicio.setInteractive();
         inicio.on('pointerdown',function(){
             this.scene.start('selectorModeScene');
             this.scene.stop('Level1');
             this.scene.stop('pauseScene');
+
+            if(!gameAlreadyDeleted){ // Controlamos que la partida todavía no se haya borrado en el servidor, si no dará problemas
+                deleteGame(); // Borrado de la partida online
+            }
+            
         }, this);
     }
 };

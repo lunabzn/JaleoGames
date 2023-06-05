@@ -21,16 +21,17 @@ class pauseOnlineScene extends Phaser.Scene{
         logout.setInteractive();
         logout.on('pointerdown',()=>{
             playerPauseLogOut(); // Avisamos al servidor de que salimos de la partida para que saque también al otro cliente
-            deleteGame(); // Borramos la partida actual de la lista de partidas     
-            
-            partidaCreada = false;
-            yaHayUnJugador = false;
-            StartGame = false;
             
             this.scene.stop('gameWin');
             this.scene.stop('gameOver');
             this.scene.stop('onlineLevel');
             this.scene.start('selectorModeScene'); 
+
+            partidaCreada = false;
+            yaHayUnJugador = false;
+            StartGame = false;
+
+            deleteGame(); // Borrado de la partida online
         })
 
         let resume = this.add.image(200,450,'resume').setScale(0.5);
@@ -55,15 +56,20 @@ class pauseOnlineScene extends Phaser.Scene{
         }
 
         if(WEB_makeLogOut){
-            partidaCreada = false;
-            yaHayUnJugador = false;
-            StartGame = false;
             
             this.scene.stop('gameWin');
             this.scene.stop('gameOver');
             this.scene.stop('onlineLevel');
             this.scene.start('selectorModeScene'); 
             WEB_makeLogOut = false;
+
+            partidaCreada = false;
+            yaHayUnJugador = false;
+            StartGame = false;
+
+            if(!gameAlreadyDeleted){ // Controlamos que la partida todavía no se haya borrado en el servidor, si no dará problemas
+                deleteGame(); // Borrado de la partida online
+            }
         }
     }
 };

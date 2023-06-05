@@ -22,7 +22,12 @@ class gameOver extends Phaser.Scene{
         inicio.on('pointerdown', function(){
             this.scene.stop('pauseScene');
             this.scene.stop('gameWin');
-            this.scene.start('selectorModeScene');            
+            this.scene.start('selectorModeScene');      
+            
+            if(!gameAlreadyDeleted){ // Controlamos que la partida todavía no se haya borrado en el servidor, si no dará problemas
+                deleteGame(); // Borrado de la partida online
+            }
+
         }, this);
     }
 };

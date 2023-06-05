@@ -439,8 +439,6 @@ class onlineLevel extends Phaser.Scene {
 
         for (var i = 0; i < size; i++) {
 
-            console.log("se ha creado n " + i);
-
             if(posbol==true){
                 enemies[i] = this.physics.add.sprite(enemyPosX[i], enemyPosY[i], 'girlPolice');
             }else{
@@ -739,7 +737,7 @@ class onlineLevel extends Phaser.Scene {
 
         for (var i = 0; i < this.activeEnemies.length; i++) {
             // Actualizo la posiciónde cada enemigo
-            //this.activeEnemies[i].setPosition(activeEnemies_global[i].getCenter().x, activeEnemies_global[i].getCenter().y);
+            this.activeEnemies[i].setPosition(activeEnemies_global[i].getCenter().x, activeEnemies_global[i].getCenter().y);
         }
 
         if (WEB_goLeft && !WEB_goRight) { // Movimiento L la izquierda del otro jugador
@@ -1544,6 +1542,11 @@ class onlineLevel extends Phaser.Scene {
                 this.createEnemies(this.activeEnemies, this.quantEnemiesRound3);
                 this.updateVelocities(velocitiesSize);
             }else if(this.roundCont > 3){
+
+                partidaCreada = false;
+                yaHayUnJugador = false;
+                StartGame = false;
+
                 this.scene.start('gameWinOnline');
                 this.scene.stop('onlineLevel');
                 this.scene.stop('pauseScene');
@@ -1552,14 +1555,14 @@ class onlineLevel extends Phaser.Scene {
 
         //Cambiar escena L gameover
         if(this.player.life==0 && this.player2.life==0){
-            this.scene.start('gameOver');
-            this.scene.stop('onlineLevel');
-            this.scene.stop('pauseScene');
-            deleteGame();
-
+            
             partidaCreada = false;
             yaHayUnJugador = false;
             StartGame = false;
+
+            this.scene.start('gameOver');
+            this.scene.stop('onlineLevel');
+            this.scene.stop('pauseScene');
         }
 
         // WS SYNC
@@ -1576,7 +1579,7 @@ class onlineLevel extends Phaser.Scene {
     /////////// SINCRONIZACIÓN DE POSICIONES ENTRE JUGADORES //////////
     // Envío una actualización de las posiciones de los dos jugadores
     checkSync = setInterval(this.makeSyncWSSendMessage, 200);
-    
+
 
     makeSyncWSSendMessage() {
         if(StartGame == true){ // Si la partida está en curso

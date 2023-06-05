@@ -15,6 +15,7 @@ class loadingServer extends Phaser.Scene {
         if ((partidaCreada == false) && (yaHayUnJugador == true)) { // si todavía no se ha creado una partida y ya se ha creado un jugador
             createGame(); // llama a connection.js que solicita la creación de partida
             partidaCreada = true;
+            gameAlreadyDeleted = false;
         }
 
         if (StartGame == true) { // StartGame valdrá true cuando haya dos jugadores
