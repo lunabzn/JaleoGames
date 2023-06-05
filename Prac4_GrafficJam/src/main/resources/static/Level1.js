@@ -20,7 +20,7 @@ class Level1 extends Phaser.Scene {
         var endF = 17
 
         //carga de fondo
-        this.load.image("background", "resources/fondol1.png");
+        this.load.image("background1", "resources/fondol1.png");
 
         //boton de pausa
         this.load.image("pause", "resources/pausa.png");
@@ -49,14 +49,19 @@ class Level1 extends Phaser.Scene {
 
 
     create() {
+        var mensaje = this.scene.settings.data.mensaje
 
-        this.background = this.add.image(400, 300, 'background');
-        this.invisibleCollider = this.physics.add.sprite(400, -50, 'invisibleCollider');
+        console.log(mensaje[0])
+        console.log(mensaje[1])
+
+        this.background = this.add.image(400, 300, 'background1');
+        this.invisibleCollider = this.physics.add.sprite(400,-50,'invisibleCollider');
 
         //boton de pausa
         let pause = this.add.image(425, 50, "pause").setScale(0.07);
         pause.setInteractive();
         pause.on('pointerdown', () => {
+            mensaje[2]=1
             this.scene.stop('gameWin');
             this.scene.stop('gameOver');
             this.scene.switch('pauseScene');
@@ -915,16 +920,23 @@ class Level1 extends Phaser.Scene {
             }
         }
 
-        if (this.roundCont > 3) {
-            this.scene.start('gameWin');
+
+
+        if(this.roundCont > 3){
+            var mensaje = this.scene.settings.data.mensaje
+            mensaje[0]= true
+            this.scene.start('gameWin',{mensaje: mensaje});
             this.scene.stop('Level1');
             this.scene.stop('pauseScene');
 
         }
 
         //cambiar escena a gameover
-        if (this.player1.life <= 0 && this.player2.life <= 0) {
-            this.scene.start('gameOver');
+
+        if(this.player1.life<=0 && this.player2.life<=0){
+            var mensaje = this.scene.settings.data.mensaje
+            this.scene.start('gameOver',{mensaje: mensaje});
+
             this.scene.stop('Level1');
             this.scene.stop('pauseScene');
 
@@ -933,6 +945,6 @@ class Level1 extends Phaser.Scene {
         //ACTUALIZA CORAZONES
         this.updateHearts();
 
-
     }
 }
+

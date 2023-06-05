@@ -11,6 +11,12 @@ class mainScene extends Phaser.Scene {
     }
 
     create() {
+        let lvlUnlock = []
+        lvlUnlock.push(false)
+        lvlUnlock.push(false)
+        lvlUnlock.push(0)
+
+        
 
         this.add.image(0, 0, "menuP").setOrigin(0);
         this.clickSound = this.sound.add("click");
@@ -19,7 +25,7 @@ class mainScene extends Phaser.Scene {
         playButton.setInteractive();
         playButton.on('pointerdown', () => {
             this.clickSound.play();
-            this.scene.start('selectorModeScene')
+            this.scene.start('selectorModeScene',{mensaje: lvlUnlock})
         })
     }
 };
