@@ -1,3 +1,5 @@
+
+
 class Level1 extends Phaser.Scene {
 
     constructor() {
@@ -20,7 +22,7 @@ class Level1 extends Phaser.Scene {
         var endF = 17
 
         //carga de fondo
-        this.load.image("background1", "resources/fondol1.png");
+        this.load.image("background", "resources/fondol1.png");
 
         //boton de pausa
         this.load.image("pause", "resources/pausa.png");
@@ -35,7 +37,7 @@ class Level1 extends Phaser.Scene {
         this.load.spritesheet('tuerto', 'resources/spritesTuertoDef.png', { frameWidth: fStandarWidth, frameHeight: fStandarHeight, endframe: endF });
 
         //collider pared
-        this.load.spritesheet('invisibleCollider','resources/invisible.png',{frameWidth: 800, frameHeigh:100 , endframe:1});
+        this.load.spritesheet('invisibleCollider', 'resources/invisible.png', { frameWidth: 800, frameHeigh: 100, endframe: 1 });
 
         //carga de enemigo: policia chica
         this.load.spritesheet('girlPolice', 'resources/spritesPoliciaChicaDef.png', { frameWidth: fStandarWidth, frameHeight: fStandarHeight, endframe: 21 });
@@ -44,24 +46,20 @@ class Level1 extends Phaser.Scene {
         this.load.image('corazon', 'resources/cora.png');
         this.load.image('tuertoLife', 'resources/tuertoLife.png');
         this.load.image('vivoLife', 'resources/vivoLife.png');
+
     }
 
 
 
     create() {
-        var mensaje = this.scene.settings.data.mensaje
 
-        console.log(mensaje[0])
-        console.log(mensaje[1])
-
-        this.background = this.add.image(400, 300, 'background1');
-        this.invisibleCollider = this.physics.add.sprite(400,-50,'invisibleCollider');
+        this.background = this.add.image(400, 300, 'background');
+        this.invisibleCollider = this.physics.add.sprite(400, -50, 'invisibleCollider');
 
         //boton de pausa
-        let pause = this.add.image(425, 50, "pause").setScale(0.07);
+        let pause = this.add.image(700, 520, "pause").setScale(0.07);
         pause.setInteractive();
         pause.on('pointerdown', () => {
-            mensaje[2]=1
             this.scene.stop('gameWin');
             this.scene.stop('gameOver');
             this.scene.switch('pauseScene');
@@ -71,26 +69,19 @@ class Level1 extends Phaser.Scene {
         this.player1 = this.physics.add.sprite(100, 300, 'vivo').setCollideWorldBounds(true);
         this.player2 = this.physics.add.sprite(100, 500, 'tuerto').setCollideWorldBounds(true);
 
-        //Variables para el movimiento
-        this.cursors = this.input.keyboard.createCursorKeys();
-        this.wKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-        this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-        this.sKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-
         this.quantEnemiesRound1 = 3;
         this.quantEnemiesRound2 = 4;
         this.quantEnemiesRound3 = 6;
         this.roundCont = 1;
 
         this.activeEnemies = [this.quantEnemiesRound1];
-        this.velocities = [100,80,60];
+        this.velocities = [100, 80, 60];
         this.countDead = 0;
 
         this.createEnemies(this.activeEnemies, this.quantEnemiesRound1);
 
-        this.player1.body.setSize(this.player1.width*0.5, this.player1.height*0.1);
-        this.player2.body.setSize(this.player2.width*0.5, this.player2.height*0.1);
+        this.player1.body.setSize(this.player1.width * 0.5, this.player1.height * 0.1);
+        this.player2.body.setSize(this.player2.width * 0.5, this.player2.height * 0.1);
         this.invisibleCollider.body.setSize(800, 500);
 
         this.player1.turnedLeft = false;
@@ -105,8 +96,8 @@ class Level1 extends Phaser.Scene {
         this.player2.attackRight = false;
 
         this.physics.add.collider(this.player1, this.player2);
-        this.physics.add.collider(this.player1,this.invisibleCollider);
-        this.physics.add.collider(this.player2,this.invisibleCollider);
+        this.physics.add.collider(this.player1, this.invisibleCollider);
+        this.physics.add.collider(this.player2, this.invisibleCollider);
         this.invisibleCollider.setImmovable(true);
 
         //Añadir vida vivo
@@ -116,15 +107,15 @@ class Level1 extends Phaser.Scene {
         this.cora3 = this.add.image(180, 55, 'corazon');
         this.cora4 = this.add.image(215, 55, 'corazon');
         this.cora5 = this.add.image(250, 55, 'corazon');
-  
+
         this.vivoLife.setScrollFactor(0);
         this.cora1.setScrollFactor(0);
         this.cora2.setScrollFactor(0);
         this.cora3.setScrollFactor(0);
         this.cora4.setScrollFactor(0);
         this.cora5.setScrollFactor(0);
-  
-  
+
+
         //Añadir vida tuerto
         this.tuertoLife = this.add.image(745, 50, 'tuertoLife');
         this.cora6 = this.add.image(685, 55, 'corazon');
@@ -132,7 +123,7 @@ class Level1 extends Phaser.Scene {
         this.cora8 = this.add.image(615, 55, 'corazon');
         this.cora9 = this.add.image(580, 55, 'corazon');
         this.cora10 = this.add.image(545, 55, 'corazon');
-  
+
         this.tuertoLife.setScrollFactor(0);
         this.cora6.setScrollFactor(0);
         this.cora7.setScrollFactor(0);
@@ -156,6 +147,28 @@ class Level1 extends Phaser.Scene {
         this.spraySound = this.sound.add("spray");
         this.paintSound = this.sound.add("paint");
         this.punchSound = this.sound.add("punch");
+
+        //función del contador
+        var start = false;
+        var countdownText = this.add.text(350, 200, '', { font: '180px Arial', fill: '#ffffff', stroke: '#000', strokeThickness: '8' });
+        var countdownTime = 4;
+
+        function updateCountdown() {
+            countdownTime--;
+            countdownText.setText(countdownTime);
+            if (countdownTime <= 0) {
+                //this.time.removeAllEvents();
+                start = true;
+                countdownText.setText("START");
+                countdownText.setVisible(false);
+            }
+        }
+
+        this.time.addEvent({
+            delay: 1000,
+            callback: updateCountdown,
+            loop: true
+        });
 
         // Animaciones de movimiento de los jugadores
         // ANIMACIONES JUGADOR 1
@@ -380,11 +393,11 @@ class Level1 extends Phaser.Scene {
             repeat: -1
         });
 
-
-    }   
+        this.player1.play('p1TurnRight');
+        this.player2.play('p2TurnRight');
+    }
 
     createEnemies(enemies, size) {
-
         for (var i = 0; i < size; i++) {
             enemies[i] = this.physics.add.sprite(this.randomNum(250, 700), this.randomNum(200, 500), 'girlPolice');
             enemies[i].body.setSize(enemies[i].width * 0.3, enemies[i].height * 0.85);
@@ -400,13 +413,14 @@ class Level1 extends Phaser.Scene {
                 var enemyCoords = police.getCenter();
 
                 if (player.atkP1.isDown) {
-                    police.life--;
+                    police.life -= 1;
                     if (police.life <= 0) {
-                        police.y = -1000000;
+                        police.y = -100;
                         police.body.moves = false;
                     }
-                }                
+                }
             });
+
 
             //this.physics.add.collider(this.player2, enemies[i], function (player, police) {console.log("colision collider")});
             //this.physics.add.collider(this.player1, enemies[i], function (player, police) {console.log("colision collider")});
@@ -419,9 +433,9 @@ class Level1 extends Phaser.Scene {
                 var dist = Phaser.Math.Distance.Between(playerCoords.x, playerCoords.y, enemyCoords.x, enemyCoords.y);
 
                 if (player.atkP2.isDown) {
-                    police.life--;
+                    police.life -= 1;
                     if (police.life <= 0) {
-                        police.y = -1000000;
+                        police.y = -100;
                         police.body.moves = false;
                     }
                 }
@@ -527,53 +541,53 @@ class Level1 extends Phaser.Scene {
 
     }
 
-    updateHearts(){
-        if(this.player1.life==4){
+    updateHearts() {
+        if (this.player1.life == 4) {
             this.cora5.destroy();
-         }
-         else if(this.player1.life==3){
+        }
+        else if (this.player1.life == 3) {
             this.cora4.destroy();
-         }
-         else if(this.player1.life==2){
+        }
+        else if (this.player1.life == 2) {
             this.cora3.destroy();
-         }
-         else if(this.player1.life==1){
+        }
+        else if (this.player1.life == 1) {
             this.cora2.destroy();
-         }
-         else if(this.player1.life==0){
+        }
+        else if (this.player1.life == 0) {
             this.cora1.destroy();
-         }
+        }
 
-        if(this.player2.life==4){
-           this.cora10.destroy();
+        if (this.player2.life == 4) {
+            this.cora10.destroy();
         }
-        else if(this.player2.life==3){
-           this.cora9.destroy();
+        else if (this.player2.life == 3) {
+            this.cora9.destroy();
         }
-        else if(this.player2.life==2){
-           this.cora8.destroy();
+        else if (this.player2.life == 2) {
+            this.cora8.destroy();
         }
-        else if(this.player2.life==1){
-           this.cora7.destroy();
+        else if (this.player2.life == 1) {
+            this.cora7.destroy();
         }
-        else if(this.player2.life==0){
-           this.cora6.destroy();
+        else if (this.player2.life == 0) {
+            this.cora6.destroy();
         }
     }
 
 
-    updateVelocities(velocitiesSize){
+    updateVelocities(velocitiesSize) {
         var newVelocities = this.velocities;
         for (var i = 0; i < 2; i++) {
             newVelocities.push(this.velocities[velocitiesSize - 1 + i]);
         }
-        this.velocities=newVelocities;
+        this.velocities = newVelocities;
     }
 
-    isMoving(enemy){
-        if(enemy.body.velocity.x==0 && enemy.body.velocity.y==0){
+    isMoving(enemy) {
+        if (enemy.body.velocity.x == 0 && enemy.body.velocity.y == 0) {
             return true;
-        } else{
+        } else {
             return false;
         }
     }
@@ -605,15 +619,14 @@ class Level1 extends Phaser.Scene {
                 this.player1.play('p1DefeatLeft', true);
                 this.player1.setImmovable(true);
                 this.player1.setVelocityX(0);
-                this.player1.setVelocityY(0); 
+                this.player1.setVelocityY(0);
 
             } else {
                 this.player1.play('p1DefeatRight', true);
                 this.player1.setImmovable(true);
                 this.player1.setVelocityX(0);
-                this.player1.setVelocityY(0); 
+                this.player1.setVelocityY(0);
             }
-
         } else {
             // Eventos de controles del JUGADOR 1
             var playerPos = this.player1.getCenter();
@@ -632,37 +645,17 @@ class Level1 extends Phaser.Scene {
                     this.player1.setVelocityY(-160);
                 }
 
-                // Movimiento horizontal
-                if (this.aKey.isDown) {
-                        this.player1.setVelocityX(-160);
-                        this.player1.turnedLeft = true;
-                        this.player1.play('p1Left', true); 
-                } else if (this.dKey.isDown) {
-                        this.player1.setVelocityX(160);
-                        this.player1.turnedLeft = false;
-                        this.player1.play('p1Right', true); 
-                } else if(this.wKey.isDown){
-                        this.player1.setVelocityX(0);
-                        if (this.player1.turnedLeft) {
-                            this.player1.play('p1Left', true); 
-                        } else {
-                            this.player1.play('p1Right', true);
-                        }
+                if (this.player1.keyS.isDown) {
+                    this.player1.setVelocityY(160);
                 }
-                else if(this.sKey.isDown){
-                        this.player1.setVelocityX(0);
-                        if (this.player1.turnedLeft) {
-                            this.player1.play('p1Left', true); 
-                        } else {
-                            this.player1.play('p1Right', true);
-                        }
-                }else {
-                        this.player1.setVelocityX(0);
-                        if (this.player1.turnedLeft) {
-                            this.player1.play('p1TurnLeft');
-                        } else {
-                            this.player1.play('p1TurnRight');
-                        }
+            }
+            else if (this.player1.keyD.isDown) {
+                this.player1.setVelocityX(160);
+                this.player1.turnedLeft = false;
+                this.player1.play('p1Right', true);
+
+                if (this.player1.keyW.isDown) {
+                    this.player1.setVelocityY(-160);
                 }
 
                 if (this.player1.keyS.isDown) {
@@ -704,26 +697,35 @@ class Level1 extends Phaser.Scene {
                     if (!this.player1.attackLeft) {
                         this.spraySound.play();
                     }
+                    this.player1.attackLeft = true;
+                    this.player1.play('p1AttackLeft');
+                } else {
+                    this.player1.setVelocityX(0);
+                    this.player1.setVelocityY(0);
+                    if (!this.player1.attackRight) {
+                        this.spraySound.play();
+                    }
+                    this.player1.attackRight = true;
+                    this.player1.play('p1AttackRight');
                 }
-                if (this.player1.atkP1.isUp) {
-                    this.player1.attackRight = false;
-                    this.player1.attackLeft = false;
-                }
+            }
+            if (this.player1.atkP1.isUp) {
+                this.player1.attackRight = false;
+                this.player1.attackLeft = false;
+            }
         }
-            
-            
 
         if (this.player2.life <= 0) {
             if (this.player2.turnedLeft) {
                 this.player2.play('p2DefeatLeft', true);
-                this.player2.setImmovable(true); 
+                this.player2.setImmovable(true);
                 this.player2.setVelocityX(0);
-                this.player2.setVelocityY(0);                
+                this.player2.setVelocityY(0);
             } else {
                 this.player2.play('p2DefeatRight', true);
                 this.player2.setImmovable(true);
                 this.player2.setVelocityX(0);
-                this.player2.setVelocityY(0); 
+                this.player2.setVelocityY(0);
             }
         } else {
 
@@ -800,44 +802,11 @@ class Level1 extends Phaser.Scene {
                     if (this.player2.turnedLeft) {
                         this.player2.setVelocityX(0);
                         this.player2.setVelocityY(0);
-                            if (this.player2.turnedLeft) {
-                                this.player2.play('p2TurnLeft');
-                            } else {
-                                this.player2.play('p2TurnRight');
-                            }
-                    }
-
-                    // Movimiento horizontal
-                    if (this.cursors.left.isDown) {
-                            this.player2.setVelocityX(-160);
-                            this.player2.turnedLeft = true;
-                            this.player2.play('p2Left', true); 
-                    } else if (this.cursors.right.isDown) {
-                            this.player2.setVelocityX(160);
-                            this.player2.turnedLeft = false;
-                            this.player2.play('p2Right', true); 
-                    } else if(this.cursors.up.isDown){
-                            this.player2.setVelocityX(0);
-                            if (this.player2.turnedLeft) {
-                                this.player2.play('p2Left', true); 
-                            } else {
-                                this.player2.play('p2Right', true);
-                            }
-                    }
-                    else if(this.cursors.down.isDown){
-                            this.player2.setVelocityX(0);
-                            if (this.player2.turnedLeft) {
-                                this.player2.play('p2Left', true); 
-                            } else {
-                                this.player2.play('p2Right', true);
-                            }
-                    }else {
-                            this.player2.setVelocityX(0);
-                            if (this.player2.turnedLeft) {
-                                this.player2.play('p2TurnLeft');
-                            } else {
-                                this.player2.play('p2TurnRight');
-                            }
+                        if (this.player2.turnedLeft) {
+                            this.player2.play('p2TurnLeft');
+                        } else {
+                            this.player2.play('p2TurnRight');
+                        }
                     }
 
                     // Ataque JUGADOR 2
@@ -867,8 +836,6 @@ class Level1 extends Phaser.Scene {
                 }
             }, 4000);
         }
-        
-            
 
         var velocitiesSize = this.velocities.length;
         var mediumVelocity = this.velocities[Math.floor(velocitiesSize / 5)];
@@ -877,7 +844,7 @@ class Level1 extends Phaser.Scene {
         var velocitiesSize = this.velocities.length;
         var mediumVelocity = this.velocities[Math.floor(velocitiesSize / 2)];
 
-            
+        setTimeout(() => {
 
             for (var i = 0; i < this.activeEnemies.length; i++) {
                 if (this.activeEnemies[i].alive) {
@@ -889,32 +856,30 @@ class Level1 extends Phaser.Scene {
                                 this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
                             }
                         } else {
-                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                            if (this.player2.life > 0) {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                            } else {
+                                this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i]);
+                            }
                         }
                     } else {
-                        if(this.player2.life > 0){
-                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                        if (i % 2 == 0) {
+                            if (this.player1.life > 0) {
+                                this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i] - 1);
+                            } else {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                            }
                         } else {
-                            this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i]);
-                        }
-                    }
-                } else {
-                    if (i % 2 == 0) {
-                        if(this.player1.life > 0){
-                            this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i] - 1);
-                        } else {
-                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
-                        }
-                    } else {
-                        if(this.player2.life > 0){
-                            this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
-                        } else {
-                            this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i] - 1);
+                            if (this.player2.life > 0) {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                            } else {
+                                this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i] - 1);
+                            }
                         }
                     }
                 }
             }
-        }
+        }, 4000);
 
         ////////////////////////////ATAQUE ENEMIGOS///////////////////////////////
         //BUCLE PARA QUE FUNCIONEN COLISIONES SI EL JUGADOR ATACA SIN MOVERSE
@@ -928,7 +893,7 @@ class Level1 extends Phaser.Scene {
                 if (dist <= 101) {
 
                     if (this.player1.atkP1.isDown) {
-                        this.activeEnemies[i].life--;
+                        this.activeEnemies[i].life -= 1;
                         console.log("punch");
                         if (this.activeEnemies[i].life <= 0) {
                             this.activeEnemies[i].y = -100;
@@ -948,7 +913,7 @@ class Level1 extends Phaser.Scene {
                 if (dist <= 101) {
 
                     if (this.player2.atkP2.isDown) {
-                        this.activeEnemies[i].life--;
+                        this.activeEnemies[i].life -= 1;
                         console.log("pucch");
                         if (this.activeEnemies[i].life <= 0) {
                             this.activeEnemies[i].y = -100;
@@ -970,7 +935,6 @@ class Level1 extends Phaser.Scene {
             }
         }
 
-        
         if (this.countDead == this.activeEnemies.length) {
             this.roundCont++;
             if (this.roundCont == 2) {
@@ -983,7 +947,10 @@ class Level1 extends Phaser.Scene {
                 this.countDead = 0;
                 this.createEnemies(this.activeEnemies, this.quantEnemiesRound3);
                 this.updateVelocities(velocitiesSize);
-            
+            } else if (this.roundCont > 3) {
+                this.scene.start('gameWin');
+                this.scene.stop('Level1');
+                this.scene.stop('pauseScene');
             }
         }
 
@@ -992,20 +959,9 @@ class Level1 extends Phaser.Scene {
             this.scene.start('gameOver');
             this.scene.stop('Level1');
             this.scene.stop('pauseScene');
-            
-        }
-
-        //cambiar escena a gameover
-        if(this.player1.life<=0 && this.player2.life<=0){
-            var mensaje = this.scene.settings.data.mensaje
-            this.scene.start('gameOver',{mensaje: mensaje});
-            this.scene.stop('Level1');
-            this.scene.stop('pauseScene');          
-            
         }
 
         //ACTUALIZA CORAZONES
         this.updateHearts();
     }
 }
-

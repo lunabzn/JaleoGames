@@ -68,6 +68,10 @@ Diagrama de interfaz del final de partida en caso de Derrota con la opción de i
 
 # **Diagrama de las clases utilizadas para la implementación del Lobby:**
 
+![Diagrama de clases](https://user-images.githubusercontent.com/84155484/208774497-47ce8022-431c-4cda-8874-79595c80f759.png)
+
+Se han creado 6 clases para controlar el servidor. Las clases *Message*, *Player* y *Lobby* son clases  *@Service* que permiten añadir elementos al propio servidor. La clase Lobby está compuesta de listas de Mensajes enviados y listas de Jugadores que se han conectado. Por otro lado, *File* es una clase de tipo *@Repository* que será la encargada de gestionar la persistencia de datos una vez se finalice la ejecución del proyecto en el servidor. *LobbyController* es una clase de tipo *@Controller*. En está clase se sitúan los métodos GET, POST y DELETE para crear, introducir y eliminar datos en el servidor. Es la clase contenedora de todo lo que tiene que ver con el REST. Finalmente la clase *SBApplication* es de tipo *@SpringBootApplication* y será la encargada de configurar automáticamente la aplicación en función de las dependencias agregadas en el proyecto.
+
 A continuación se mostrará el diseño del juego enseñando los diferentes sprites:
 
 ![spritesapolis](https://user-images.githubusercontent.com/82967594/204659016-bad415a9-0bf2-4aec-b0ff-414f8d16a7d3.png)
@@ -78,12 +82,6 @@ A continuación se mostrará el diseño del juego enseñando los diferentes spri
 
 ![bg-image-menu1](https://user-images.githubusercontent.com/82967594/204659344-277ca8d0-5e9e-4ad1-93aa-984bafdfb8e6.jpg)
 
-# **ENTREGA FASE 3: API REST** 
-
-![Diagrama de clases](https://user-images.githubusercontent.com/84155484/208774497-47ce8022-431c-4cda-8874-79595c80f759.png)
-
-Se han creado 6 clases para controlar el servidor. Las clases *Message*, *Player* y *Lobby* son clases  *@Service* que permiten añadir elementos al propio servidor. La clase Lobby está compuesta de listas de Mensajes enviados y listas de Jugadores que se han conectado. Por otro lado, *File* es una clase de tipo *@Repository* que será la encargada de gestionar la persistencia de datos una vez se finalice la ejecución del proyecto en el servidor. *LobbyController* es una clase de tipo *@Controller*. En está clase se sitúan los métodos GET, POST y DELETE para crear, introducir y eliminar datos en el servidor. Es la clase contenedora de todo lo que tiene que ver con el REST. Finalmente la clase *SBApplication* es de tipo *@SpringBootApplication* y será la encargada de configurar automáticamente la aplicación en función de las dependencias agregadas en el proyecto.
-
 # **INSTRUCCIONES PRECISAS PARA EJECUTAR LA APLICACIÓN**
 1. Descomprimir JeR_22-23_F3_GRUPO-A.zip
 2. Abrir la consola de comandos
@@ -93,29 +91,8 @@ Se han creado 6 clases para controlar el servidor. Las clases *Message*, *Player
 *(Se puede producir un error si java no está actualizado)
 
 
-# **ENTREGA FASE 4: WEBSOCKETS** 
-
-![Diagrama de Clases_2023-01-09_21-54-40](https://user-images.githubusercontent.com/115088130/211434133-943360b4-91df-4714-acbc-580e7bc71035.png)
-
-Para el nivel online se han creado los archivos onlineLevel.js junto a pauseOnlineScene.js y gameWinOnline.js.
-
-Para la inclusión de Websockets se ha creado la clase App.java, que se encarga de configurar el apartado de Websockets, además de Handler.java y connection.js. Cuando se quiere notificar al servidor de un cambio (para que este avise a su vez al otro jugador o para que actualice algún valor), connection.js se encargada de enviar un mensaje al servidor a través de la sesión del jugador. Este mensaje contiene un atributo llamado "idFunción" que al llegar al servidor, handler utiliza para seleccionar un case del switch que tiene. Cada case determina el tipo de acciones que se deberán llevar a cabo en consecuencia al aviso. Una vez se ha procesado el mensaje, se reenvía otro al cliente opuesto. Este lo recibe en connection.js, que utiliza la ID_Funcion del mensaje enviado desde el servidor para llevar a cabo las acciones necesarias y modificar lo que sea conveniente para que se transmita de forma correcta la información entre jugadores.
-
-EJ: Movimiento a la derecha del Jugador 1
-
-1. Cuando el Jugador 1 pulsa la tecla D, se ejecuta la función playerMoveRight() de connection.js, enviando así un mensaje al servidor
-2. El servidor lo recibe y en Handler.java utiliza el atributo idFuncion = 5 para ejecutar el case(5), que envía otro mensaje pero esta vez al Jugador 2,         notificándole del movimiento de Vivo (Jugador 1)
-3. El Jugador 2 recibe el mensaje en su clase connection.js, que gracias a ID_Funcion = 5 ejecuta la función activate_WEB_goRight() en el case 5
-4. activate_WEB_goRight() está en onlineLevel.js y activa un booleano de forma que en el siguiente update, hará que se entre en un if() y se mueva a Vivo
-
-De esta forma, las acciones de cada uno de los Jugadores se transmiten de forma correcta entre cada uno de ellos y se puede jugar online sin problemas.
-
-![websockets explicacion](https://user-images.githubusercontent.com/81293638/211439455-b2dbc21b-f204-43ec-a803-4c3f7633bf70.png)
-
 
 ___
-# **ENTREGA FASE 5: MEJORAS FINALES**
-
 **LOS FALLOS OBSERVADOS SON:** 
 
 - El fondo de las pantallas de pausa, gameOver y gameWin dan fallo cuando se carga una de las pantallas. El fondo del primer menu en aparecer es el que sale en los tres menus restantes.
@@ -128,43 +105,5 @@ Se detecta la colisión por el bounding box de cada uno por lo que solo se detec
 - Están implementados los world colliders pero si el personaje es empujado por el enemigo estos no funcionan.
 
 
-___
-**PRODUCTO FINAL**
-Los siguientes errores han sido solucionados:
 
-- Daño de los enemigos. (Actualmente los enemigos solo quitan un corazón cuando te atacan).
-
-- Superposición (Añadimos la capacidad de cambiar de la profundidad, creando la sensación de que los enemigos estan unos detrás de otros).
-
-- Enemy collider (El jugador ya no necesita estar corriendo hacia los enemigos para hacerles daño al atacar).
-
-- World collider (Los enemigos ya no te empujan fuera del mapa).
-
-- Misma resolución de los personajes (Los personajes tienen ahora la misma resolución de imagen).
-
-- Correcta gestión de escenas de pausa, gameover y gamewin.
-    
-Nuevas implementaciones:
-
-- Cuenta atrás antes de comenzar el nivel.
-
-![Countdown](https://user-images.githubusercontent.com/115088130/211434448-cb918ceb-89ae-4aab-9b27-6ec448eb4374.jpg)
-
-- Nuevos niveles.
-
-![Nivel 2](https://user-images.githubusercontent.com/115088130/211435235-aefc1550-0238-4bb5-a6aa-bc94476b6d87.png)
-![fondollvl3(1)](https://user-images.githubusercontent.com/115088130/211435315-4bc50234-a48e-4d5c-9afb-6a84bf6bd365.jpg)
-
-
-
-- Nuevos enemigos.
-
-![imagen](https://user-images.githubusercontent.com/115088130/211435521-b3746afe-bae2-4ed1-8a5f-5a03aae95cc3.png)
-![imagen](https://user-images.githubusercontent.com/115088130/211435529-703f1c51-6f86-4a8e-a9fc-98c20b0d4a40.png)
-
-
-
-- Juego Online.
-    
-    
 
