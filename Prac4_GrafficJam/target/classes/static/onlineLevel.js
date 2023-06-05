@@ -1576,6 +1576,7 @@ class onlineLevel extends Phaser.Scene {
     /////////// SINCRONIZACIÓN DE POSICIONES ENTRE JUGADORES //////////
     // Envío una actualización de las posiciones de los dos jugadores
     checkSync = setInterval(this.makeSyncWSSendMessage, 200);
+    
 
     makeSyncWSSendMessage() {
         if(StartGame == true){ // Si la partida está en curso
