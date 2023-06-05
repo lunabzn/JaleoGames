@@ -33,11 +33,8 @@ class pauseScene extends Phaser.Scene{
         resume.on('pointerdown',function(){    
             this.scene.stop('gameWin');
             this.scene.stop('gameOver'); 
-            this.scene.stop('pauseScene');  
-            
+            this.scene.stop('pauseScene');       
             this.scene.wake('Level1');
-           
-            
         }, this);
 
     }

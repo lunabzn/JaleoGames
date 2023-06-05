@@ -7,7 +7,7 @@
     dom: {
         createContainer: true
     },
-    scene: [audioManager, mainScene, selectorModeScene, selectorLevelScene, countdown, countdown2, countdown3, Level1, Level2, Level3, pauseScene, pauseScene2 ,pauseScene3 ,gameOver, gameWinOnline, gameWin, gameWin2, gameWin3, Lobby, loadingServer, onlineLevel, pauseOnlineScene],
+    scene: [audioManager, mainScene, selectorModeScene, selectorLevelScene, countdown, countdown2, countdown3, Level1, Level2, Level3, pauseScene, gameOver, gameWinOnline, gameWin, gameWin2, gameWin3, Lobby, loadingServer, onlineLevel, pauseOnlineScene],
     physics: {
         default: 'arcade', 
         arcade: {

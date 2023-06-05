@@ -106,7 +106,7 @@ EJ: Movimiento a la derecha del Jugador 1
 1. Cuando el Jugador 1 pulsa la tecla D, se ejecuta la función playerMoveRight() de connection.js, enviando así un mensaje al servidor
 2. El servidor lo recibe y en Handler.java utiliza el atributo idFuncion = 5 para ejecutar el case(5), que envía otro mensaje pero esta vez al Jugador 2,         notificándole del movimiento de Vivo (Jugador 1)
 3. El Jugador 2 recibe el mensaje en su clase connection.js, que gracias a ID_Funcion = 5 ejecuta la función activate_WEB_goRight() en el case 5
-4. activate_WEB_goRight() está en onlineLevel.js y activa un booleano de forma que en el siguiente update, hará que se entre en un if() y se mueva a Vivo
+4. activate_WEB_goRight() está en onlineLevel.js y activa un booleano de forma que en el siguiente update, ahrá que se entre en un if() y se mueva a Vivo
 
 De esta forma, las acciones de cada uno de los Jugadores se transmiten de forma correcta entre cada uno de ellos y se puede jugar online sin problemas.
 
