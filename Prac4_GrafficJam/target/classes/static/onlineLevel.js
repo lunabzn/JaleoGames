@@ -15,6 +15,7 @@ var WEB_playerStop = false;
 var WEB_randomNum = 0;
 var WEB_playerHasDied = false;
 var WEB_gameOver = false;
+var WEB_gameWin = false;
 
 
 class onlineLevel extends Phaser.Scene {
@@ -95,9 +96,9 @@ class onlineLevel extends Phaser.Scene {
 
         this.probabilities = [];
 
-        this.quantEnemiesRound1 = 1;
-        this.quantEnemiesRound2 = 0;
-        this.quantEnemiesRound3 = 0;
+        this.quantEnemiesRound1 = 3;
+        this.quantEnemiesRound2 = 4;
+        this.quantEnemiesRound3 = 6;
         this.roundCont = 1;
 
         this.activeEnemies = [this.quantEnemiesRound1];
@@ -1104,6 +1105,20 @@ class onlineLevel extends Phaser.Scene {
             this.scene.start('gameOver');
             this.scene.stop('onlineLevel');
             this.scene.stop('pauseScene');
+
+            WEB_gameOver = false;
+        }
+
+        if (WEB_gameWin) {
+            partidaCreada = false;
+            yaHayUnJugador = false;
+            StartGame = false;
+
+            this.scene.start('gameWinOnline');
+            this.scene.stop('onlineLevel');
+            this.scene.stop('pauseScene');
+
+            WEB_gameWin = false;
         }
 
         // ACTUALIZA LA PROFUNDIDAD DE LOS ENEMIGOS
@@ -1558,6 +1573,8 @@ class onlineLevel extends Phaser.Scene {
                 yaHayUnJugador = false;
                 StartGame = false;
 
+                gameWinSync(); // avisamos al otro cliente de que se ha acabado la partida
+
                 this.scene.start('gameWinOnline');
                 this.scene.stop('onlineLevel');
                 this.scene.stop('pauseScene');
@@ -1681,4 +1698,8 @@ function activate_WEB_playerHasDied(){
 
 function activate_WEB_gameOver(){
     WEB_gameOver = true;
+}
+
+function activate_WEB_gameWin(){
+    WEB_gameWin = true;
 }

@@ -507,13 +507,33 @@ public class Handler extends TextWebSocketHandler {
                     // Si el jugador que ha enviado el mensaje al servidor
                     // es el J1, enviamos de vuelta un mensaje al J2 de su
                     // misma partida
-                    WebSocketSession auxSession_c21 = gameAux_c22.getJ2().getSession();
-                    auxSession_c21.sendMessage(new TextMessage(msg.toString()));
-                } else { 
+                    WebSocketSession auxSession_c22 = gameAux_c22.getJ2().getSession();
+                    auxSession_c22.sendMessage(new TextMessage(msg.toString()));
+                } else {
                     // Si el jugador que ha enviado el mensaje al servidor es el J2, enviamos de
                     // vuelta un mensaje al J1 de su misma partida
-                    WebSocketSession auxSession2_c21 = gameAux_c22.getJ1().getSession();
-                    auxSession2_c21.sendMessage(new TextMessage(msg.toString()));
+                    WebSocketSession auxSession2_c22 = gameAux_c22.getJ1().getSession();
+                    auxSession2_c22.sendMessage(new TextMessage(msg.toString()));
+                }
+
+                break;
+
+            case (23): // Game Over
+                int gameId_c23 = node.get("idPartida").asInt();
+                int playerId_c23 = node.get("idJugador").asInt();
+                Game gameAux_c23 = gameList.get(gameId_c23);
+
+                if (playerId_c23 == gameAux_c23.getJ1().getId()) {
+                    // Si el jugador que ha enviado el mensaje al servidor
+                    // es el J1, enviamos de vuelta un mensaje al J2 de su
+                    // misma partida
+                    WebSocketSession auxSession_c23 = gameAux_c23.getJ2().getSession();
+                    auxSession_c23.sendMessage(new TextMessage(msg.toString()));
+                } else {
+                    // Si el jugador que ha enviado el mensaje al servidor es el J2, enviamos de
+                    // vuelta un mensaje al J1 de su misma partida
+                    WebSocketSession auxSession2_c23 = gameAux_c23.getJ1().getSession();
+                    auxSession2_c23.sendMessage(new TextMessage(msg.toString()));
                 }
 
                 break;

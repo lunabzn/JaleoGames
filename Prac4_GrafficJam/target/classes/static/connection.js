@@ -114,6 +114,10 @@ socket.onmessage = function (event) {
 			activate_WEB_gameOver();
 			break;
 
+		case (23):
+			activate_WEB_gameWin();
+			break;
+
 		default:
 			break;
 	}
@@ -314,6 +318,15 @@ function cerrarVentana() { //Mi función que recibe los datos que necesito del j
 function gameOverSync() {
 	let message = {
 		idFuncion: 22,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
+}
+
+function gameWinSync() {
+	let message = {
+		idFuncion: 23,
 		idPartida: ID_Partida,
 		idJugador: J1_id
 	}
