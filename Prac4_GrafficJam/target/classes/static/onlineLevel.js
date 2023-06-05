@@ -14,6 +14,8 @@ var WEB_dontPlayerAttack = false;
 var WEB_playerStop = false;
 var WEB_randomNum = 0;
 var WEB_playerHasDied = false;
+var WEB_gameOver = false;
+
 
 class onlineLevel extends Phaser.Scene {
 
@@ -1094,6 +1096,15 @@ class onlineLevel extends Phaser.Scene {
             WEB_playerHasDied = false;
         }
         
+        if(WEB_gameOver){
+            partidaCreada = false;
+            yaHayUnJugador = false;
+            StartGame = false;
+
+            this.scene.start('gameOver');
+            this.scene.stop('onlineLevel');
+            this.scene.stop('pauseScene');
+        }
 
         // ACTUALIZA LA PROFUNDIDAD DE LOS ENEMIGOS
         for (var i = 0; i < this.activeEnemies.length; i++) {
@@ -1560,6 +1571,8 @@ class onlineLevel extends Phaser.Scene {
             yaHayUnJugador = false;
             StartGame = false;
 
+            gameOverSync(); // avisamos al otro cliente de que se ha acabado la partida
+
             this.scene.start('gameOver');
             this.scene.stop('onlineLevel');
             this.scene.stop('pauseScene');
@@ -1664,4 +1677,8 @@ function activate_WEB_playerStop(){
 
 function activate_WEB_playerHasDied(){
     WEB_playerHasDied = true;
+}
+
+function activate_WEB_gameOver(){
+    WEB_gameOver = true;
 }

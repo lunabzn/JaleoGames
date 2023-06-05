@@ -99,6 +99,7 @@ public class Handler extends TextWebSocketHandler {
                 int gameId_aux = node.get("idPartida").asInt();
                 Boolean sesionEsJ1 = node.get("soyJ1").asBoolean();
 
+
                 Game gameToDelete = gameList.get(gameId_aux);
                 Player player1ToDelete = playerList.get(idJugador1);
                 Player player2ToDelete = playerList.get(idJugador2);
@@ -477,7 +478,7 @@ public class Handler extends TextWebSocketHandler {
                     auxSession2_c20.sendMessage(new TextMessage(msg.toString()));
                 }
                 break;
-            
+
             case (21): // Matar a jugador
                 int gameId_c21 = node.get("idPartida").asInt();
                 int playerId_c21 = node.get("idJugador").asInt();
@@ -497,7 +498,25 @@ public class Handler extends TextWebSocketHandler {
                     auxSession2_c21.sendMessage(new TextMessage(msg.toString()));
                 }
                 break;
-            
+            case (22): // Game Over
+                int gameId_c22 = node.get("idPartida").asInt();
+                int playerId_c22 = node.get("idJugador").asInt();
+                Game gameAux_c22 = gameList.get(gameId_c22);
+
+                if (playerId_c22 == gameAux_c22.getJ1().getId()) {
+                    // Si el jugador que ha enviado el mensaje al servidor
+                    // es el J1, enviamos de vuelta un mensaje al J2 de su
+                    // misma partida
+                    WebSocketSession auxSession_c21 = gameAux_c22.getJ2().getSession();
+                    auxSession_c21.sendMessage(new TextMessage(msg.toString()));
+                } else { 
+                    // Si el jugador que ha enviado el mensaje al servidor es el J2, enviamos de
+                    // vuelta un mensaje al J1 de su misma partida
+                    WebSocketSession auxSession2_c21 = gameAux_c22.getJ1().getSession();
+                    auxSession2_c21.sendMessage(new TextMessage(msg.toString()));
+                }
+
+                break;
         }
     }
 

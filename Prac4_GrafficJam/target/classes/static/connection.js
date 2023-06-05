@@ -110,6 +110,10 @@ socket.onmessage = function (event) {
 			activate_WEB_playerHasDied();
 			break;
 
+		case(22):
+			activate_WEB_gameOver();
+			break;
+
 		default:
 			break;
 	}
@@ -280,7 +284,7 @@ function resumeGame(){
 	socket.send(JSON.stringify(message));
 }
 
-function playerPauseLogOut(){
+function playerPauseLogOut() {
 	let message = {
 		idFuncion: 16,
 		idPartida: ID_Partida,
@@ -289,7 +293,7 @@ function playerPauseLogOut(){
 	socket.send(JSON.stringify(message));
 }
 
-function killPlayer(){
+function killPlayer() {
 	let message = {
 		idFuncion: 21,
 		idPartida: ID_Partida,
@@ -298,11 +302,20 @@ function killPlayer(){
 	socket.send(JSON.stringify(message));
 }
 
-function cerrarVentana(){ //Mi función que recibe los datos que necesito del jugador 2
-	let message ={
-			idFuncion: 10,
-			idPartida: ID_Partida,
-			idJugador: J1_id
+function cerrarVentana() { //Mi función que recibe los datos que necesito del jugador 2
+	let message = {
+		idFuncion: 10,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
+}
+
+function gameOverSync() {
+	let message = {
+		idFuncion: 22,
+		idPartida: ID_Partida,
+		idJugador: J1_id
 	}
 	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
 }
