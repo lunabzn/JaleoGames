@@ -22,6 +22,11 @@ class pauseOnlineScene extends Phaser.Scene{
         logout.on('pointerdown',()=>{
             playerPauseLogOut(); // Avisamos al servidor de que salimos de la partida para que saque también al otro cliente
             deleteGame(); // Borramos la partida actual de la lista de partidas     
+            
+            partidaCreada = false;
+            yaHayUnJugador = false;
+            StartGame = false;
+            
             this.scene.stop('gameWin');
             this.scene.stop('gameOver');
             this.scene.stop('onlineLevel');
@@ -50,6 +55,10 @@ class pauseOnlineScene extends Phaser.Scene{
         }
 
         if(WEB_makeLogOut){
+            partidaCreada = false;
+            yaHayUnJugador = false;
+            StartGame = false;
+            
             this.scene.stop('gameWin');
             this.scene.stop('gameOver');
             this.scene.stop('onlineLevel');

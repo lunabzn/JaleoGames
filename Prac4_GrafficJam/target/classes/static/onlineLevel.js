@@ -93,7 +93,7 @@ class onlineLevel extends Phaser.Scene {
 
         this.probabilities = [];
 
-        this.quantEnemiesRound1 = 0;
+        this.quantEnemiesRound1 = 1;
         this.quantEnemiesRound2 = 0;
         this.quantEnemiesRound3 = 0;
         this.roundCont = 1;

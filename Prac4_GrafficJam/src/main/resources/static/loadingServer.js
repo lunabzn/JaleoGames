@@ -18,6 +18,7 @@ class loadingServer extends Phaser.Scene {
         }
 
         if (StartGame == true) { // StartGame valdrá true cuando haya dos jugadores
+            console.log("START GAME!");
             this.scene.start("onlineLevel");
         }
     }

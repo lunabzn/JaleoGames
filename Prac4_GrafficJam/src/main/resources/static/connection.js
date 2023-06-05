@@ -16,11 +16,11 @@ socket.onmessage = function (event) {
 	switch (ID_Funcion) {
 
 		//LO QUE RECIBO DEL SERVIDOR
-		case (0): 
+		case (0): // Unirse a una partida
 			ID_Partida = messageReceived.idPartida;
 			Soy_J1 = messageReceived.soyJ1;
 			console.log("Soy Jugador 1?: " + Soy_J1);
-			console.log(messageReceived.stringPrueba);
+			console.log(messageReceived.stringPrueba); // "Me he unido a la partida X"
 			break;
 
 		case (1): //borrarPartida()
@@ -129,7 +129,8 @@ function deleteGame() {
 			idFuncion: 1,
 			idPartida: ID_Partida,
 			idJugador1: J1_id,
-			idJugador2: J2_id
+			idJugador2: J2_id,
+			soyJ1: Soy_J1
 	}
 	socket.send(JSON.stringify(message));
 }

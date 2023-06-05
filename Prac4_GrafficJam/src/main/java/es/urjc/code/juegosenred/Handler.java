@@ -51,7 +51,7 @@ public class Handler extends TextWebSocketHandler {
                     int idJug = node.get("idJugador").asInt();
                     for (Game game : gameList) {// Recorro mi lista por cada elemento partida
                         if (!game.getHayJugador()) { // SI NO HAY J1 (es decir, no hay jugadores)
-                            createGame(currentGames, playerList.get(idJug));// Creo una partida
+                            createGame(idLocal, playerList.get(idJug));// Creo una partida
                             msg.put("soyJ1", true); // al ser el primer jugador en entrar, será el J1
                             gameAux_c0 = game;
                             break;
@@ -97,6 +97,8 @@ public class Handler extends TextWebSocketHandler {
                 int idJugador1 = node.get("idJugador1").asInt();
                 int idJugador2 = node.get("idJugador2").asInt();
                 int gameId_aux = node.get("idPartida").asInt();
+                Boolean sesionEsJ1 = node.get("soyJ1").asBoolean();
+
 
                 Game gameToDelete = gameList.get(gameId_aux);
                 Player player1ToDelete = playerList.get(idJugador1);
@@ -106,10 +108,20 @@ public class Handler extends TextWebSocketHandler {
                 int idP1ToDelete = player1ToDelete.getId();
                 int idP2ToDelete = player2ToDelete.getId();
 
+                // Accedemos a la sesión del otro cliente para avisarle también del borrado de partida
+
+                WebSocketSession session2;
+                if(sesionEsJ1){ // si la sesion que ha mandado borrar la partida es la sesión del J1
+                    session2 = gameToDelete.getJ2().getSession(); // guardamos al sesión del otro jugador
+                } else { // si la sesión que ha mandado borrar la partida es la sesión del J2
+                    session2 = gameToDelete.getJ1().getSession(); // guardamos la sesión del otro jugador
+                }
+                
+
                 String texto = "NO se ha borrado la partida";
 
-                System.err.println("Voy a borrar la partida: " + gameId_aux + " que esta guardada con id " + idGameToDelete);
                 if (!gameToDelete.getNeedsMorePlayers()) {
+                    System.err.println("Voy a borrar la partida: " + gameId_aux + " que esta guardada con id " + idGameToDelete);
                     System.out.println("He entrado a borrar");
                     System.out.println("Número de partidas ANTES de borrar: " + currentGames);
                     Game newAux = new Game();
@@ -119,10 +131,18 @@ public class Handler extends TextWebSocketHandler {
                     texto = "Se ha borrado la partida";
                 }
 
+                // Mando la orden de borrar la partida a la sesión que ejecutó la llamada
                 msg.put("mensajeBorrado", texto);
                 msg.put("idFuncion", 1);
                 msg.put("idPartida", idGameToDelete);
                 session.sendMessage(new TextMessage(msg.toString()));
+
+                // Mando la orden de borrar la partida a la otra sesión
+                msgaux.put("mensajeBorrado", texto);
+                msgaux.put("idFuncion", 1);
+                msgaux.put("idPartida", idGameToDelete);
+                session2.sendMessage(new TextMessage(msgaux.toString()));
+
                 break;
 
             case (2): // Ataque jugador
