@@ -2,6 +2,7 @@ package es.urjc.code.juegosenred;
 
 import org.springframework.boot.SpringApplication;
 
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,11 +17,11 @@ public class App implements WebSocketConfigurer {
 	public static void main(String[] args) {
 		SpringApplication.run(App.class, args);
 	}
-
-	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(gameHandler(), "/race51").setAllowedOrigins("*");
-	}
 	
+	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+		registry.addHandler(gameHandler(), "/grafficjam").setAllowedOrigins("*");
+	}
+
 	@Bean
 	public Handler gameHandler() {
 		return new Handler();
