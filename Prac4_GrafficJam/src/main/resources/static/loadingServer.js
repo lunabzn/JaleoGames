@@ -15,13 +15,14 @@ class loadingServer extends Phaser.Scene {
 
     update() {
         if ((crearPartidaBool == false) && (barrera == true)) {
-            crearPartida();
-            console.log("He enviado petición para crear partida");
+            createGame();
+            console.log("He enviado peticion para crear partida");
             crearPartidaBool = true;
+            console.log(StartGame);
         }
 
         if (StartGame == true) {
-            this.scene.start("Level1");
+            this.scene.start("onlineLevel");
         }
     }
 }

@@ -1,4 +1,4 @@
-var config = {
+    var config = {
     type: Phaser.AUTO,
     parent: "videogame",
     width: 800,
@@ -7,7 +7,7 @@ var config = {
     dom: {
         createContainer: true
     },
-    scene: [audioManager, mainScene, selectorModeScene, selectorLevelScene, Level1, pauseScene, gameOver, gameWin, Lobby, loadingServer],
+    scene: [audioManager, mainScene, selectorModeScene, selectorLevelScene, countdown, countdown2, countdown3, Level1, Level2, Level3, pauseScene, pauseScene2 ,pauseScene3 ,gameOver, gameWinOnline, gameWin, gameWin2, gameWin3, Lobby, loadingServer, onlineLevel, pauseOnlineScene],
     physics: {
         default: 'arcade', 
         arcade: {

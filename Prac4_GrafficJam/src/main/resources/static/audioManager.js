@@ -32,8 +32,8 @@ class audioManager extends Phaser.Scene {
             seek: 0,
             loop: true,
             delay: 0
-        }    
-        
+        }
+
         var level1Config = {
             mute: true,
             volume: 1,
@@ -51,7 +51,7 @@ class audioManager extends Phaser.Scene {
     }
 
     update() {
-        
+
         if (this.scene.isActive('mainScene')) {
             this.mainMusic.resume();
             this.pauseMusic.resume();
@@ -59,39 +59,51 @@ class audioManager extends Phaser.Scene {
             this.mainMusic.setMute(false);
             this.pauseMusic.setMute(true);
             this.level1Music.setMute(true);
-        }
 
-        else if (this.scene.isActive('selectorModeScene')) {
+        } else if (this.scene.isActive('selectorModeScene')) {
             this.mainMusic.resume();
             this.pauseMusic.resume();
             this.level1Music.resume();
             this.mainMusic.setMute(false);
             this.pauseMusic.setMute(true);
             this.level1Music.setMute(true);
-        }
 
-        else if (this.scene.isActive('selectorLevelScene')) {
+        } else if (this.scene.isActive('selectorLevelScene')) {
             this.mainMusic.resume();
             this.pauseMusic.resume();
             this.level1Music.resume();
             this.mainMusic.setMute(true);
             this.pauseMusic.setMute(false);
             this.level1Music.setMute(true);
-        }
 
-        else if(this.scene.isActive('Level1')){
+        } else if (this.scene.isActive('Level1')) {
             this.mainMusic.resume();
             this.pauseMusic.resume();
             this.level1Music.resume();
             this.mainMusic.setMute(true);
             this.pauseMusic.setMute(true);
             this.level1Music.setMute(false);
-        }
-        
-        else {
+
+        } else if (this.scene.isActive('Level2')) {
+            this.mainMusic.resume();
+            this.pauseMusic.resume();
+            this.level1Music.resume();
+            this.mainMusic.setMute(true);
+            this.pauseMusic.setMute(true);
+            this.level1Music.setMute(false);
+
+        } else if (this.scene.isActive('Level3')) {
+            this.mainMusic.resume();
+            this.pauseMusic.resume();
+            this.level1Music.resume();
+            this.mainMusic.setMute(true);
+            this.pauseMusic.setMute(true);
+            this.level1Music.setMute(false);
+
+        } else {
             this.mainMusic.pause();
             this.pauseMusic.pause();
         }
-        
+
     }
 };

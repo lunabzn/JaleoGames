@@ -4,26 +4,26 @@ import org.springframework.web.socket.WebSocketSession;
 import java.time.LocalDateTime;
 
 public class Player {
-    private int id;
+	private int id;
 	private String name;
 	private int SKIN;
 	private WebSocketSession SESSION;
 	private LocalDateTime Tiempo;
 	private boolean inGame;
 
-	Player(int id,  WebSocketSession session) { 
+	Player(int id, WebSocketSession session) {
 		this.id = id;
 		this.SKIN = 0;
 		this.SESSION = session;
 		this.Tiempo = LocalDateTime.now();
 		this.inGame = false;
 	}
-	
-	Player() { 
-			this.SKIN = 0;
-			this.Tiempo = LocalDateTime.now();
-			this.inGame = false;
-    }
+
+	Player() {
+		this.SKIN = 0;
+		this.Tiempo = LocalDateTime.now();
+		this.inGame = false;
+	}
 
 	public String getName() {
 		return name;

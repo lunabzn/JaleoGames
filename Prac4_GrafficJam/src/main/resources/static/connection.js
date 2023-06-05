@@ -1,4 +1,4 @@
-var socket = new WebSocket("ws://localhost:8080/race51");
+var socket = new WebSocket("ws://10.6.62.241:8080/grafficjam");
 
 socket.onopen = function () {
 	console.log("Conexion establecida");
@@ -15,23 +15,21 @@ socket.onmessage = function (event) {
 	switch (ID_Funcion) {
 
 		//LO QUE RECIBO DEL SERVIDOR
-		case (0): //CrearPartida() (Pending)
-			ID_Partida = aux.idPartida;//EJEMPLO if(aux.Estado) // EN SERVER ESTARIA msg.put("Estado", partidas.getId(idpartida).getVacio();
+		case (0): 
+			ID_Partida = aux.idPartida;
 			Soy_J1 = aux.soyJ1;
 			console.log("aux " + aux.soyJ1);
-			console.log("la buena " + Soy_J1);
+			console.log("Soy Jugador 1?: " + Soy_J1);
 			console.log(aux.stringPrueba);
 			console.log(ID_Partida);
 			break;
 
-		case (1)://borrarPartida()
+		case (1): //borrarPartida()
 			console.log(aux.mensajeBorrado + aux.idPartida);
 			break;
 
-		case (2)://Jugador coge powerup
-			console.log("He cogido powerup")
-			WEB_TipoPowerup = aux.tipoPowerup;
-			cogerPowerup();
+		case (2): //Ataque Jugador
+			activate_WEB_playerAttack();
 			break;
 
 		case (3)://crearJugador() 
@@ -41,42 +39,74 @@ socket.onmessage = function (event) {
 			barrera = true;
 			break;
 
-		case (4)://CUANDO LA PARTIDA ESTA LLENA()
-			J2_skin = aux.idSkin;
+		case (4): // Mover jugador a la izquierda
+			activate_WEB_goLeft();
+			break;
+
+		case (5): // Mover jugador a la derecha
+			activate_WEB_goRight();
+			break;
+ 
+		case (6): // Cuando se completa una partida
 			StartGame = aux.estadoPartida;
 			console.log(aux.estadoPartida);
-
-			console.log("El id jugador del server es:" + aux.idJugador);
-			console.log("La skin del jugador 2 es:" + aux.idSkin);
-			//J2_id = aux.idJugador;
-
+			console.log("El ID jugador del server es:" + aux.idJugador);
 			break;
 
-		case (5):
-			console.log("Me han dicho que salte");
-			saltoJugador();
-
+		case (7): // Mover jugador arriba
+			activate_WEB_goUp();
 			break;
 
-		case (6):
-			console.log("Me han dicho que genere un powerup ");
-			generarPowerup();
+		case (8): // Mover jugador abajo
+			activate_WEB_goDown();
 			break;
 
-		case (7):
-			console.log("Me han dicho que he recibido daño");
-			//recibirDaño();
-			break;
-
-		case (8):
-			console.log("Me han dicho que genere un obstáculo");
-			WEB_J1randObstaculo = aux.randObst;
-			WEB_J2randObstaculo = aux.randObst;
-			generarObstaculo();
+		case (9): // Parar movimiento hacia la izquierda
+			deactivate_WEB_goLeft();
 			break;
 
 		case (10):
 			cambiarDesconexion();
+			break;
+
+		case (11): // Parar movimiento hacia la izquierda
+			deactivate_WEB_goRight();
+			break;
+
+		case (12): // Parar movimiento hacia arriba
+			deactivate_WEB_goUp();
+			break;
+
+		case (13): // Parar movimiento hacia abajo
+			deactivate_WEB_goDown();
+			break;
+
+		case (14): // Pausar la partida
+			makePauseGame();
+			break;
+
+		case (15): // Resumir la partida
+			makeResumeGame();
+			break;
+
+		case(16): // Jugador se sale de la partida online desde el menú de Pausa
+			makePlayerLogOut();
+			break;
+
+		case (17): // Parar ataque jugador
+			deactivate_WEB_dontPlayerAttack();
+			break;
+
+		case (18): // Funcion random
+			Random_Num = aux.randomNum;
+			break;
+
+		case (20):
+			activate_WEB_playerStop();
+			break;
+
+		case (21):
+			activate_WEB_playerHasDied();
 			break;
 
 		default:
@@ -86,25 +116,25 @@ socket.onmessage = function (event) {
 
 
 //LO QUE LE ENVIO AL SERVIDOR
-function crearPartida(){ //Mi función que envía los datos que necesito al server
+function createGame(){ //Mi función que envía los datos que necesito al server
 	let message = {
 		idFuncion: 0, //Cuando el server mire el mensaje, sabra que función llamar gracias a este nombre
 		idJugador: J1_id,
-		ayuda: "Partida llegue" //debug
 	}	
 	socket.send(JSON.stringify(message)); 
 }
 
-function borrarPartida() { // POR HACER
+function deleteGame() { 
 	let message = {
 			idFuncion: 1,
 			idPartida: ID_Partida,
-			idJugador: J1_id
+			idJugador1: J1_id,
+			idJugador2: J2_id
 	}
 	socket.send(JSON.stringify(message));
 }
 
-function borrarJugador() { // POR HACER
+function borrarJugador() { 
 	let message = {
 			idFuncion: 9,
 			idJugador: J1_id
@@ -112,62 +142,158 @@ function borrarJugador() { // POR HACER
 	socket.send(JSON.stringify(message));
 }
 
-function crearJugador(){ //Mi función que recibe los datos que necesito del jugador 2
+function playerAttack(){
+	let message = {
+		idFuncion: 2,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
+function playerStopAttack(){
+	let message = {
+		idFuncion: 17,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
+function randomNumber(){
+	let message = {
+		idFuncion: 18,
+		idPartida: ID_Partida,
+		idJugador: J1_id,
+		randomNum: probability
+	}
+	socket.send(JSON.stringify(message));
+}
+
+function createPlayer(){ //Mi función que recibe los datos que necesito del jugador 2
 	let message ={
-			idFuncion: 3,
-			mensaje: hola
+		idFuncion: 3,
+		mensaje: hola
 	}
 	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
 
 }
 
-function jugadorSalto(){ //Mi función que recibe los datos que necesito del jugador 2
-	let message ={
-			idFuncion: 5,
-			idPartida: ID_Partida,
-			idJugador: J1_id
+function playerMoveLeft() {
+	let message = {
+		idFuncion: 4,
+		idPartida: ID_Partida,
+		idJugador: J1_id
 	}
-	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
-
+	socket.send(JSON.stringify(message));
 }
 
-function jugadorPowerup(){ //Mi función que recibe los datos que necesito del jugador 2
-	let message ={
-			idFuncion: 2,
-			idPartida: ID_Partida,
-			idJugador: J1_id,
-			decision: decisionPowerup
+function playerMoveRight() {
+	let message = {
+		idFuncion: 5,
+		idPartida: ID_Partida,
+		idJugador: J1_id
 	}
-	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
+	socket.send(JSON.stringify(message));
 }
 
-function jugadorDano(){ //Mi función que recibe los datos que necesito del jugador 2
-	let message ={
-			idFuncion: 7,
-			idPartida: ID_Partida,
-			idJugador: J1_id
+function playerMoveUp() {
+	let message = {
+		idFuncion: 7,
+		idPartida: ID_Partida,
+		idJugador: J1_id
 	}
-	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
+	socket.send(JSON.stringify(message));
 }
 
-function jugadorGenerarObstaculo(){ //Mi función que recibe los datos que necesito del jugador 2
-	let message ={
-			idFuncion: 8,
-			idPartida: ID_Partida,
-			idJugador: J1_id,
-			randObstaculo: J1_randObstaculo,
-			randObstaculo2: J2_randObstaculo
+function playerMoveDown(){
+	let message = {
+		idFuncion: 8,
+		idPartida: ID_Partida,
+		idJugador: J1_id
 	}
-	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
+	socket.send(JSON.stringify(message));
 }
 
-function jugadorGenerarPowerup(){ //Mi función que recibe los datos que necesito del jugador 2
-	let message ={
-			idFuncion: 6,
-			idPartida: ID_Partida,
-			idJugador: J1_id
+function playerStopMoveLeft(){
+	let message = {
+		idFuncion: 9,
+		idPartida: ID_Partida,
+		idJugador: J1_id
 	}
-	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
+	socket.send(JSON.stringify(message));
+}
+
+function playerStopMoveRight(){
+	let message = {
+		idFuncion: 11,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
+function playerStopMoveUp(){
+	let message = {
+		idFuncion: 12,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
+function playerStopMoveDown(){
+	let message = {
+		idFuncion: 13,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
+function playerStop(){
+	let message = {
+		idFuncion: 20,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
+function pauseGame(){
+	let message = {
+		idFuncion: 14,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
+function resumeGame(){
+	let message = {
+		idFuncion: 15,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
+function playerPauseLogOut(){
+	let message = {
+		idFuncion: 16,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+}
+
+function killPlayer(){
+	let message = {
+		idFuncion: 21,
+		idPartida: ID_Partida,
+		idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
 }
 
 function cerrarVentana(){ //Mi función que recibe los datos que necesito del jugador 2
