@@ -96,9 +96,9 @@ class onlineLevel extends Phaser.Scene {
 
         this.probabilities = [];
 
-        this.quantEnemiesRound1 = 3;
-        this.quantEnemiesRound2 = 4;
-        this.quantEnemiesRound3 = 6;
+        this.quantEnemiesRound1 = 0;
+        this.quantEnemiesRound2 = 0;
+        this.quantEnemiesRound3 = 0;
         this.roundCont = 1;
 
         this.activeEnemies = [this.quantEnemiesRound1];
@@ -408,7 +408,10 @@ class onlineLevel extends Phaser.Scene {
         // WS SYNC
         // Jugadores
         player1_global = this.player;
+        player1_turnedLeft = this.player.turnedLeft;
+
         player2_global = this.player2;
+        player2_turnedLeft = this.player2.turnedLeft;
 
         // Enemigos
         activeEnemies_global = this.activeEnemies;
@@ -736,11 +739,14 @@ class onlineLevel extends Phaser.Scene {
 
         // Sincronización de posiciones
         this.player.setPosition(player1_global.getCenter().x , player1_global.getCenter().y); 
+        this.player.turnedLeft = player1_turnedLeft;
+
         this.player2.setPosition(player2_global.getCenter().x , player2_global.getCenter().y);
+        this.player2.turnedLeft = player2_turnedLeft;
 
         for (var i = 0; i < this.activeEnemies.length; i++) {
             // Actualizo la posiciónde cada enemigo
-            this.activeEnemies[i].setPosition(activeEnemies_global[i].getCenter().x, activeEnemies_global[i].getCenter().y);
+            //this.activeEnemies[i].setPosition(activeEnemies_global[i].getCenter().x, activeEnemies_global[i].getCenter().y);
         }
 
         if (WEB_goLeft && !WEB_goRight) { // Movimiento L la izquierda del otro jugador
@@ -1598,9 +1604,11 @@ class onlineLevel extends Phaser.Scene {
         // WS SYNC
         player1_global = this.player;
         player1_life = this.player.life;
+        player1_turnedLeft = this.player.turnedLeft;
 
         player2_global = this.player2;
         player2_life = this.player2.life;
+        player2_turnedLeft = this.player2.turnedLeft;
 
         activeEnemies_global = this.activeEnemies;
         activeEnemies_length = this.activeEnemies.length;
@@ -1616,7 +1624,7 @@ class onlineLevel extends Phaser.Scene {
             if (player2_life >= 0 && Soy_J1) { // si el jugador del otro cliente sigue vivo y soy el Jugador 1
                 // Sincronización posición jugadores:
                 // Este mensaje lo envía el J1, por lo que la pos de Vivo será la de player1 y la de Tuerto la de player2
-                syncWS.sendWS(player1_global.getCenter(), player2_global.getCenter()) // envío mensaje de WS para actualizar la información de las posiciones
+                syncWS.sendWS(player1_global.getCenter(), player2_global.getCenter(), player1_turnedLeft, player2_turnedLeft) // envío mensaje de WS para actualizar la información de las posiciones
             }
             
             if (Soy_J1) {

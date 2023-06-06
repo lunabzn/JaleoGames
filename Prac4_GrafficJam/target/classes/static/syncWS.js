@@ -19,18 +19,23 @@ syncWS.onmessage = function(msg){
     console.log("[syncWS.onmessage()] ME HA LLEGADO UN MENSAJE");
     if(Soy_J1 == false){ // sólo actualiza la información el J2. Es decir, siempre se usa la info del J1 como fuente fiable
         player1_global.setPosition(data.posTuerto.x, data.posTuerto.y); // en el cliente 2 (J2), player es Tuerto
+        player1_turnedLeft = data.tuertoTurnedLeft;
+
         player2_global.setPosition(data.posVivo.x, data.posVivo.y); // en el cliente 2 (J2), player2 es Vivo
+        player2_turnedLeft = data.vivoTurnedLeft;
     }
 }
 
 
 // Cuando envía un mensaje al servidor
-syncWS.sendWS = function(_posVivo, _posTuerto){
+syncWS.sendWS = function(_posVivo, _posTuerto, _vivoTurnedLeft, _tuertoTurnedLeft){
     // console.log("Voy a enviar pos VIVO: (" + _posVivo.x + ", " + _posVivo.y + ")");
     // console.log("Voy a enviar pos TUERTO: (" + _posTuerto.x + ", " + _posTuerto.y + ")");
     let message = {
         posVivo: _posVivo,
-        posTuerto: _posTuerto
+        posTuerto: _posTuerto,
+        vivoTurnedLeft: _vivoTurnedLeft,
+        tuertoTurnedLeft: _tuertoTurnedLeft
     }
 
     syncWS.send(JSON.stringify(message));
