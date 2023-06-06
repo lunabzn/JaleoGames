@@ -69,6 +69,25 @@ class onlineLevel extends Phaser.Scene {
 
     create() {
 
+        // Al entrar a la escena, reseteamos todas las variables de WS para evitar que se mantengan estados de aprtidas anteriores
+        WEB_goLeft = false;
+        WEB_goRight = false;
+        WEB_goUp = false;
+        WEB_goDown = false;
+        WEB_dontGoLeft = false;
+        WEB_dontGoRight = false;
+        WEB_dontGoUp = false;
+        WEB_dontGoDown = false;
+        WEB_pauseGame = false;
+        WEB_playerAttack = false;
+        WEB_dontPlayerAttack = false;
+        WEB_playerStop = false;
+        WEB_randomNum = 0;
+        WEB_playerHasDied = false;
+        WEB_gameOver = false;
+        WEB_gameWin = false;
+        WEB_enemyhasDied = false;
+
         this.background = this.add.image(400, 300, 'background');
         this.invisibleCollider = this.physics.add.sprite(400, -50, 'invisibleCollider');
 
@@ -1105,27 +1124,31 @@ class onlineLevel extends Phaser.Scene {
         }
         
         if(WEB_gameOver){
+            WEB_gameOver = false;
             partidaCreada = false;
             yaHayUnJugador = false;
             StartGame = false;
 
-            this.scene.start('gameOver');
-            this.scene.stop('onlineLevel');
-            this.scene.stop('pauseScene');
-
-            WEB_gameOver = false;
+            if(gameOverOnlineActive == false){
+                gameOverOnlineActive = true;
+                this.scene.start('gameOver');
+                this.scene.stop('onlineLevel');
+                this.scene.stop('pauseScene');
+            }
         }
 
         if (WEB_gameWin) {
+            WEB_gameWin = false;
             partidaCreada = false;
             yaHayUnJugador = false;
             StartGame = false;
-
-            this.scene.start('gameWinOnline');
-            this.scene.stop('onlineLevel');
-            this.scene.stop('pauseScene');
-
-            WEB_gameWin = false;
+            
+            if(gameWinOnlineActive == false){
+                gameWinOnlineActive = true;
+                this.scene.start('gameWinOnline');
+                this.scene.stop('onlineLevel');
+                this.scene.stop('pauseScene');
+            }
         }
 
         if (WEB_enemyhasDied) { // sincronización de la muerte de enemigos
@@ -1600,9 +1623,14 @@ class onlineLevel extends Phaser.Scene {
 
                 gameWinSync(); // avisamos al otro cliente de que se ha acabado la partida
 
-                this.scene.start('gameWinOnline');
-                this.scene.stop('onlineLevel');
-                this.scene.stop('pauseScene');
+                if (gameWinOnlineActive == false) {
+                    gameWinOnlineActive = true;
+                    console.log("Abro gameWinOnline desde 1608");
+                    this.scene.start('gameWinOnline');
+                    this.scene.stop('onlineLevel');
+                    this.scene.stop('pauseScene');
+                }
+
             }
         }
 
@@ -1615,9 +1643,12 @@ class onlineLevel extends Phaser.Scene {
 
             gameOverSync(); // avisamos al otro cliente de que se ha acabado la partida
 
-            this.scene.start('gameOver');
-            this.scene.stop('onlineLevel');
-            this.scene.stop('pauseScene');
+            if(gameOverOnlineActive == false){
+                gameOverOnlineActive = true;
+                this.scene.start('gameOver');
+                this.scene.stop('onlineLevel');
+                this.scene.stop('pauseScene');
+            }
         }
 
         // WS SYNC
@@ -1730,6 +1761,7 @@ function activate_WEB_gameOver(){
 
 function activate_WEB_gameWin(){
     WEB_gameWin = true;
+    console.log("activate_WEB_gameWin");
 }
 
 function activate_WEB_enemyHasDied(){

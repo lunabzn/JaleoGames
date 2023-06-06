@@ -33,8 +33,4 @@ enemySyncWS.sendWS = function(_i, _posEnemigo){ // i es el número de enemigo
 
     enemySyncWS.send(JSON.stringify(message));
     //console.log("Info enemigo enviada");
-    // if (syncWS.readyState === WebSocket.OPEN) {
-    //     console.log("Envio de info");
-    //     syncWS.send(JSON.stringify(message));
-    // }
 }
