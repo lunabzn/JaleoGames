@@ -16,6 +16,7 @@ var WEB_randomNum = 0;
 var WEB_playerHasDied = false;
 var WEB_gameOver = false;
 var WEB_gameWin = false;
+var WEB_enemyhasDied = false;
 
 
 class onlineLevel extends Phaser.Scene {
@@ -96,9 +97,9 @@ class onlineLevel extends Phaser.Scene {
 
         this.probabilities = [];
 
-        this.quantEnemiesRound1 = 0;
-        this.quantEnemiesRound2 = 0;
-        this.quantEnemiesRound3 = 0;
+        this.quantEnemiesRound1 = 2;
+        this.quantEnemiesRound2 = 3;
+        this.quantEnemiesRound3 = 4;
         this.roundCont = 1;
 
         this.activeEnemies = [this.quantEnemiesRound1];
@@ -746,7 +747,7 @@ class onlineLevel extends Phaser.Scene {
 
         for (var i = 0; i < this.activeEnemies.length; i++) {
             // Actualizo la posiciónde cada enemigo
-            //this.activeEnemies[i].setPosition(activeEnemies_global[i].getCenter().x, activeEnemies_global[i].getCenter().y);
+            this.activeEnemies[i].setPosition(activeEnemies_global[i].getCenter().x, activeEnemies_global[i].getCenter().y);
         }
 
         if (WEB_goLeft && !WEB_goRight) { // Movimiento L la izquierda del otro jugador
@@ -1125,6 +1126,19 @@ class onlineLevel extends Phaser.Scene {
             this.scene.stop('pauseScene');
 
             WEB_gameWin = false;
+        }
+
+        if (WEB_enemyhasDied) { // sincronización de la muerte de enemigos
+            if (idEnemyToKill != -1) {
+                this.activeEnemies[idEnemyToKill].life = -1;
+                this.activeEnemies[idEnemyToKill].y = -100;
+                this.activeEnemies[idEnemyToKill].body.moves = false;
+                this.activeEnemies[idEnemyToKill].alive = false;
+                this.countDead++;
+                console.log("Han matado al enemigo " + idEnemyToKill);
+            }
+            idEnemyToKill = -1;
+            WEB_enemyhasDied = false;
         }
 
         // ACTUALIZA LA PROFUNDIDAD DE LOS ENEMIGOS
@@ -1523,9 +1537,11 @@ class onlineLevel extends Phaser.Scene {
                 if (dist <= 101) {
                     if (this.player.atkP1.isDown) {
                         this.activeEnemies[i].life -= 1;
-                        if (this.activeEnemies[i].life <= 0) {
+                        if (this.activeEnemies[i].life <= 0) { // hacer desaparecer enemigo si ataque el player
                             this.activeEnemies[i].y = -100;
                             this.activeEnemies[i].body.moves = false;
+                            console.log("[onlineLevel.js] Mato al enemigo " + i);
+                            killEnemy(i) // avisamos al servidor de que este enemigo ha muerto
                         }
                     }
                 }
@@ -1541,7 +1557,7 @@ class onlineLevel extends Phaser.Scene {
                 if (dist <= 101) {
                     if (WEB_playerAttack) {
                         this.activeEnemies[i].life -= 1;
-                        if (this.activeEnemies[i].life <= 0) {
+                        if (this.activeEnemies[i].life <= 0) { // hacer desaparecer enemigo si se avisa de ataque desde el servidor
                             this.activeEnemies[i].y = -100;
                             this.activeEnemies[i].body.moves = false;
                         }
@@ -1555,7 +1571,10 @@ class onlineLevel extends Phaser.Scene {
             if (this.activeEnemies[i].alive) {
                 if (this.activeEnemies[i].life <= 0) {
                     this.activeEnemies[i].alive = false;
+                    this.activeEnemies[i].y = -100;
+                    this.activeEnemies[i].body.moves = false;
                     this.countDead++;
+                    console.log("[onlineLevel.js] Enemigo " + i + " muerto");
                 }
             }
         }
@@ -1629,10 +1648,11 @@ class onlineLevel extends Phaser.Scene {
             
             if (Soy_J1) {
                 for (var i = 0; i < activeEnemies_length; i++) {
-                    if (activeEnemies_global[i].alive) { // si el enemigo está vivo, envío su posición para actulizarla en el otro cliente
-                        // Sincronización posición enemigos:
-                        enemySyncWS.sendWS(i, activeEnemies_global[i].getCenter());
-                    }
+                    // if (activeEnemies_global[i].alive) { // si el enemigo está vivo, envío su posición para actulizarla en el otro cliente
+                    //     // Sincronización posición enemigos:
+                    //     enemySyncWS.sendWS(i, activeEnemies_global[i].getCenter());
+                    // }
+                    enemySyncWS.sendWS(i, activeEnemies_global[i].getCenter());
                 }
             }
         }
@@ -1710,4 +1730,8 @@ function activate_WEB_gameOver(){
 
 function activate_WEB_gameWin(){
     WEB_gameWin = true;
+}
+
+function activate_WEB_enemyHasDied(){
+    WEB_enemyhasDied = true;
 }

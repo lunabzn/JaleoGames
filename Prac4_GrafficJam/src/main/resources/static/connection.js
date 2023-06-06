@@ -106,16 +106,22 @@ socket.onmessage = function (event) {
 			activate_WEB_playerStop();
 			break;
 
-		case (21):
+		case (21): // Muerte de un jugador
 			activate_WEB_playerHasDied();
 			break;
 
-		case(22):
+		case(22): // Derrota y final de partida
 			activate_WEB_gameOver();
 			break;
 
-		case (23):
+		case (23): // Victoria y final de partida
 			activate_WEB_gameWin();
+			break;
+
+		case (24): // Muerte de un enemigo
+			idEnemyToKill = messageReceived.idEnemy;
+			console.log("[connection.js] Me han mandado matar al enemigo " + idEnemyToKill);
+			activate_WEB_enemyHasDied();
 			break;
 
 		default:
@@ -304,6 +310,7 @@ function killPlayer() {
 		idJugador: J1_id
 	}
 	socket.send(JSON.stringify(message));
+	
 }
 
 function cerrarVentana() { //Mi función que recibe los datos que necesito del jugador 2
@@ -331,4 +338,15 @@ function gameWinSync() {
 		idJugador: J1_id
 	}
 	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
+}
+
+function killEnemy(_idEnemy){
+	let message = {
+		idFuncion: 24,
+		idPartida: ID_Partida,
+		idJugador: J1_id,
+		idEnemy: _idEnemy
+	}
+	socket.send(JSON.stringify(message));
+	console.log("[connection.js] Mando matar al enemigo " + _idEnemy);
 }
