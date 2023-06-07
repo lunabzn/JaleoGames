@@ -452,13 +452,11 @@ class onlineLevel extends Phaser.Scene {
         for(var i=0;i<size;i++){
             enemyPosX[i]= 750 - equaldistX;
             equaldistX=auxX*(i+2);
-            console.log(enemyPosX[i]);
         }
 
         for(var i=0;i<size;i++){
             enemyPosY[i]= 500 - equaldistY;
             equaldistY=auxY*(i+2);
-            console.log(enemyPosY[i]);
         }
 
         var posbol=true;//boleano para alternar la creacion de las posiciones de los enemigos
@@ -765,7 +763,7 @@ class onlineLevel extends Phaser.Scene {
         this.player2.turnedLeft = player2_turnedLeft;
 
         for (var i = 0; i < this.activeEnemies.length; i++) {
-            // Actualizo la posiciónde cada enemigo
+            // Actualizo la posición de cada enemigo
             this.activeEnemies[i].setPosition(activeEnemies_global[i].getCenter().x, activeEnemies_global[i].getCenter().y);
         }
 
@@ -1154,13 +1152,15 @@ class onlineLevel extends Phaser.Scene {
         if (WEB_enemyhasDied) { // sincronización de la muerte de enemigos
             if (idEnemyToKill != -1) {
                 console.log("idEnemyToKill = " + idEnemyToKill);
-                console.log("activeEnemies = " + this.activeEenmies);
+                console.log("activeEnemies = " + this.activeEnemies);
+                
+                this.countDead++;
 
                 this.activeEnemies[idEnemyToKill].life = -1;
                 this.activeEnemies[idEnemyToKill].y = -100;
                 this.activeEnemies[idEnemyToKill].body.moves = false;
                 this.activeEnemies[idEnemyToKill].alive = false;
-                this.countDead++;
+                
                 console.log("Han matado al enemigo " + idEnemyToKill);
             }
             idEnemyToKill = -1;
@@ -1609,16 +1609,24 @@ class onlineLevel extends Phaser.Scene {
         if (this.countDead == this.activeEnemies.length) {
             this.roundCont++;
             if (this.roundCont == 2) {
+                console.log("RONDA: " + this.roundCont);
                 this.activeEnemies.length = this.quantEnemiesRound2;
                 this.countDead = 0;
                 this.createEnemies(this.activeEnemies, this.quantEnemiesRound2);
                 this.updateVelocities(velocitiesSize);
+
+                activeEnemies_global = this.activeEnemies;
+                activeEnemies_length = this.activeEnemies.length;
             } else if (this.roundCont == 3) {
+                console.log("RONDA: " + this.roundCont);
                 this.activeEnemies.length = this.quantEnemiesRound3;
                 this.countDead = 0;
                 this.createEnemies(this.activeEnemies, this.quantEnemiesRound3);
                 this.updateVelocities(velocitiesSize);
-            }else if(this.roundCont > 3){
+
+                activeEnemies_global = this.activeEnemies;
+                activeEnemies_length = this.activeEnemies.length;
+            } else if (this.roundCont > 3) {
 
                 partidaCreada = false;
                 yaHayUnJugador = false;
