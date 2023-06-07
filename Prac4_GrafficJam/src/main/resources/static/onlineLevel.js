@@ -1153,6 +1153,9 @@ class onlineLevel extends Phaser.Scene {
 
         if (WEB_enemyhasDied) { // sincronización de la muerte de enemigos
             if (idEnemyToKill != -1) {
+                console.log("idEnemyToKill = " + idEnemyToKill);
+                console.log("activeEnemies = " + this.activeEenmies);
+
                 this.activeEnemies[idEnemyToKill].life = -1;
                 this.activeEnemies[idEnemyToKill].y = -100;
                 this.activeEnemies[idEnemyToKill].body.moves = false;
@@ -1625,7 +1628,6 @@ class onlineLevel extends Phaser.Scene {
 
                 if (gameWinOnlineActive == false) {
                     gameWinOnlineActive = true;
-                    console.log("Abro gameWinOnline desde 1608");
                     this.scene.start('gameWinOnline');
                     this.scene.stop('onlineLevel');
                     this.scene.stop('pauseScene');

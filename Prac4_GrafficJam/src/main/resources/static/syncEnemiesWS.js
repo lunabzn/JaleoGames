@@ -18,6 +18,9 @@ enemySyncWS.onmessage = function(msg){
     var data = JSON.parse(msg.data);
     //console.log("[EnemySyncWS.onmessage()] ME HA LLEGADO UN MENSAJE");
     if(Soy_J1 == false){ // sólo actualiza la información el J2. Es decir, siempre se usa la info del J1 como fuente fiable
+        console.log("activeEnemies_global: " + activeEnemies_global);
+        console.log("data.i: " + data.i);
+
         activeEnemies_global[data.i].setPosition(data.posEnemigo.x, data.posEnemigo.y);
     }
 }
