@@ -35,10 +35,10 @@ class Level3 extends Phaser.Scene {
         this.load.spritesheet('tuerto', 'resources/spritesTuertoDef.png', { frameWidth: fStandarWidth, frameHeight: fStandarHeight, endframe: endF });
 
         //collider pared
-        this.load.spritesheet('invisibleCollider','resources/invisible.png',{frameWidth: 800, frameHeigh:100 , endframe:1});
+        this.load.spritesheet('invisibleCollider', 'resources/invisible.png', { frameWidth: 800, frameHeigh: 100, endframe: 1 });
 
         //carga de enemigo: policia chica
-        this.load.spritesheet('girl2Police', 'resources/spritePolis3.png', { frameWidth: fStandarWidth, frameHeight: fStandarHeight, endframe: 21});
+        this.load.spritesheet('girl2Police', 'resources/spritePolis3.png', { frameWidth: fStandarWidth, frameHeight: fStandarHeight, endframe: 21 });
 
         //carga de vida: iconos de tuerto y vivo y corazones
         this.load.image('corazon', 'resources/cora.png');
@@ -51,17 +51,17 @@ class Level3 extends Phaser.Scene {
     create() {
 
         this.background = this.add.image(400, 300, 'background3');
-        this.invisibleCollider = this.physics.add.sprite(400,-50,'invisibleCollider');
+        this.invisibleCollider = this.physics.add.sprite(400, -50, 'invisibleCollider');
 
         var mensaje = this.scene.settings.data.mensaje
-            console.log(mensaje[0])
-            console.log(mensaje[1])
+        console.log(mensaje[0])
+        console.log(mensaje[1])
 
         //boton de pausa
         let pause = this.add.image(425, 50, "pause").setScale(0.07);
         pause.setInteractive();
         pause.on('pointerdown', () => {
-            mensaje[2]=3
+            mensaje[2] = 3
             this.scene.stop('gameWin');
             this.scene.stop('gameOver');
             this.scene.switch('pauseScene3');
@@ -84,13 +84,13 @@ class Level3 extends Phaser.Scene {
         this.roundCont = 1;
 
         this.activeEnemies = [this.quantEnemiesRound1];
-        this.velocities = [120,100,80];
+        this.velocities = [120, 100, 80];
         this.countDead = 0;
 
         this.createEnemies(this.activeEnemies, this.quantEnemiesRound1);
 
-        this.player1.body.setSize(this.player1.width*0.5, this.player1.height*0.1);
-        this.player2.body.setSize(this.player2.width*0.5, this.player2.height*0.1);
+        this.player1.body.setSize(this.player1.width * 0.5, this.player1.height * 0.1);
+        this.player2.body.setSize(this.player2.width * 0.5, this.player2.height * 0.1);
         this.invisibleCollider.body.setSize(800, 500);
 
         this.player1.turnedLeft = false;
@@ -105,8 +105,8 @@ class Level3 extends Phaser.Scene {
         this.player2.attackRight = false;
 
         this.physics.add.collider(this.player1, this.player2);
-        this.physics.add.collider(this.player1,this.invisibleCollider);
-        this.physics.add.collider(this.player2,this.invisibleCollider);
+        this.physics.add.collider(this.player1, this.invisibleCollider);
+        this.physics.add.collider(this.player2, this.invisibleCollider);
         this.invisibleCollider.setImmovable(true);
 
         //Añadir vida vivo
@@ -116,15 +116,15 @@ class Level3 extends Phaser.Scene {
         this.cora3 = this.add.image(180, 55, 'corazon');
         this.cora4 = this.add.image(215, 55, 'corazon');
         this.cora5 = this.add.image(250, 55, 'corazon');
-  
+
         this.vivoLife.setScrollFactor(0);
         this.cora1.setScrollFactor(0);
         this.cora2.setScrollFactor(0);
         this.cora3.setScrollFactor(0);
         this.cora4.setScrollFactor(0);
         this.cora5.setScrollFactor(0);
-  
-  
+
+
         //Añadir vida tuerto
         this.tuertoLife = this.add.image(745, 50, 'tuertoLife');
         this.cora6 = this.add.image(685, 55, 'corazon');
@@ -132,7 +132,7 @@ class Level3 extends Phaser.Scene {
         this.cora8 = this.add.image(615, 55, 'corazon');
         this.cora9 = this.add.image(580, 55, 'corazon');
         this.cora10 = this.add.image(545, 55, 'corazon');
-  
+
         this.tuertoLife.setScrollFactor(0);
         this.cora6.setScrollFactor(0);
         this.cora7.setScrollFactor(0);
@@ -327,7 +327,7 @@ class Level3 extends Phaser.Scene {
         //ANIMACIONES ENEMIGO
         this.anims.create({
             key: 'e3Left',
-            frames: this.anims.generateFrameNumbers('girl2Police', {start: 12, end: 15  }),
+            frames: this.anims.generateFrameNumbers('girl2Police', { start: 12, end: 15 }),
             frameRate: 10,
             repeat: -1
         });
@@ -360,7 +360,7 @@ class Level3 extends Phaser.Scene {
 
         this.anims.create({
             key: 'e3AttackRight',
-            frames: this.anims.generateFrameNumbers('girl2Police', {  start: 9, end: 11 }),
+            frames: this.anims.generateFrameNumbers('girl2Police', { start: 9, end: 11 }),
             frameRate: 1,
             repeat: -1
         });
@@ -380,7 +380,7 @@ class Level3 extends Phaser.Scene {
         });
 
 
-    }   
+    }
 
     createEnemies(enemies, size) {
 
@@ -391,12 +391,13 @@ class Level3 extends Phaser.Scene {
             enemies[i].alive = true;
             enemies[i].turnedLeft = true;
             enemies[i].life = 3;
+            enemies[i].isAttacking = false;
 
             this.physics.add.collider(this.player1, enemies[i], function (player, police) {
 
                 console.log("colision p1");
                 var playerCoords = player.getCenter();
-                var enemyCoords = police.getCenter();  
+                var enemyCoords = police.getCenter();
 
                 if (player.atkP1.isDown) {
                     police.life--;
@@ -404,7 +405,7 @@ class Level3 extends Phaser.Scene {
                         police.y = -1000000;
                         police.body.moves = false;
                     }
-                }                
+                }
             });
 
             //this.physics.add.collider(this.player2, enemies[i], function (player, police) {console.log("colision collider")});
@@ -414,7 +415,7 @@ class Level3 extends Phaser.Scene {
 
                 console.log("colision p2");
                 var playerCoords = player.getCenter();
-                var enemyCoords = police.getCenter();  
+                var enemyCoords = police.getCenter();
                 var dist = Phaser.Math.Distance.Between(playerCoords.x, playerCoords.y, enemyCoords.x, enemyCoords.y);
 
                 if (player.atkP2.isDown) {
@@ -424,7 +425,7 @@ class Level3 extends Phaser.Scene {
                         police.body.moves = false;
                     }
                 }
-                
+
             });
         }
     }
@@ -433,11 +434,11 @@ class Level3 extends Phaser.Scene {
         var playerCoords = player.getCenter();
         var enemyCoords = enemy.getCenter();
 
-        if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
+        if ((playerCoords.x < enemyCoords.x) && (enemy.isAttacking == false))//si el enemigo va hacia la izquierda
         {
             enemy.play('e3Left', true);
         }
-        else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
+        else if ((playerCoords.x > enemyCoords.x) && (enemy.isAttacking == false))//si el enemigo va hacia la derecha
         {
             enemy.play('e3Right', true);
         }
@@ -448,11 +449,11 @@ class Level3 extends Phaser.Scene {
         var enemyCoords = enemy.getCenter();
         enemy.setVelocityX(0);
         enemy.setVelocityY(0);
-        if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
+        if ((playerCoords.x < enemyCoords.x) && (enemy.isAttacking == false))//si el enemigo va hacia la izquierda
         {
             enemy.play('e3TurnLeft', true);
         }
-        else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
+        else if ((playerCoords.x > enemyCoords.x) && (enemy.isAttacking == false))//si el enemigo va hacia la derecha
         {
             enemy.play('e3TurnRight', true);
         }
@@ -486,18 +487,18 @@ class Level3 extends Phaser.Scene {
         var pi = Math.PI;
         this.enemyWalk(player, enemy);
 
-        if (dist <=separation) {
+        if (dist <= separation) {
             this.enemyStop(player, enemy);
             if ((anglePlayerEnemy >= angleTopRight && anglePlayerEnemy <= angleBottomRight)) {
                 this.enemyAttack(player, enemy);
             } else if ((anglePlayerEnemy >= -1 * pi && anglePlayerEnemy <= angleTopLeft) || (anglePlayerEnemy <= pi && anglePlayerEnemy >= angleBottomLeft)) {
-                this.enemyAttack(player,enemy);
+                this.enemyAttack(player, enemy);
             }
         }
     }
 
-    enemyAttack(player,enemy) {
-     
+    enemyAttack(player, enemy) {
+
         //numero con el que se ataca
         var nAttack = 1;
         //la probabilidad del ataque del enemigo es del 0.0001%
@@ -505,63 +506,75 @@ class Level3 extends Phaser.Scene {
 
         var playerCoords = player.getCenter();
         var enemyCoords = enemy.getCenter();
-        
+
         var dist = Phaser.Math.Distance.Between(playerCoords.x, playerCoords.y, enemyCoords.x, enemyCoords.y);
 
-        if(dist <=101){
-            if (nAttack == probabilitty) {
-                if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
-                {
-                    this.punchSound.play();
-                    enemy.play('e3AttackLeft', true);
-                    player.life-=3;
+        if (enemy.isAttacking == false) {
 
-                } else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
-                {
-                    this.punchSound.play();
-                    enemy.play('e3AttackRight', true);                 
-                    player.life-=3;
+            if (dist <= 101) {
+                if (nAttack == probabilitty) {
+                    if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
+                    {
+                        this.punchSound.play();
+                        enemy.play('e3AttackLeft', true);
+                        enemy.isAttacking = true;
+                        player.life -= 3;
+
+                        setTimeout(function () {
+                            enemy.isAttacking = false;
+                        }, 200);
+
+                    } else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
+                    {
+                        this.punchSound.play();
+                        enemy.play('e3AttackRight', true);
+                        enemy.isAttacking = true;
+                        player.life -= 3;
+
+                        setTimeout(function () {
+                            enemy.isAttacking = false;
+                        }, 200);
+                    }
                 }
             }
         }
-        
     }
 
-    updateHearts(){
-        if(this.player1.life==2){
+    updateHearts() {
+        if (this.player1.life == 2) {
             this.cora5.destroy();
             this.cora4.destroy();
             this.cora3.destroy();
-         }
-         else if(this.player1.life<0){
+        }
+        else if (this.player1.life < 0) {
             this.cora2.destroy();
             this.cora1.destroy();
-         }
-
-        if(this.player2.life==2){
-           this.cora10.destroy();
-           this.cora9.destroy();
-           this.cora8.destroy()
         }
-        else if(this.player2.life<0){
+
+        if (this.player2.life == 2) {
+            this.cora10.destroy();
+            this.cora9.destroy();
+            this.cora8.destroy()
+        }
+        else if (this.player2.life < 0) {
             this.cora7.destroy();
-           this.cora6.destroy();
+            this.cora6.destroy();
         }
     }
-    
 
-    updateVelocities(velocitiesSize){
+
+    updateVelocities(velocitiesSize) {
         var newVelocities = this.velocities;
-        for(var i=0; i<2;i++){
-            newVelocities.push(this.velocities[velocitiesSize-1+i]);
+        for (var i = 0; i < 2; i++) {
+            newVelocities.push(this.velocities[velocitiesSize - 1 + i]);
         }
-        this.velocities=newVelocities;
+        this.velocities = newVelocities;
     }
 
-    isMoving(enemy){
-        if(enemy.body.velocity.x==0 && enemy.body.velocity.y==0){
+    isMoving(enemy) {
+        if (enemy.body.velocity.x == 0 && enemy.body.velocity.y == 0) {
             return true;
-        } else{
+        } else {
             return false;
         }
     }
@@ -582,221 +595,221 @@ class Level3 extends Phaser.Scene {
                 this.player1.play('p1DefeatLeft', true);
                 this.player1.setImmovable(true);
                 this.player1.setVelocityX(0);
-                this.player1.setVelocityY(0); 
+                this.player1.setVelocityY(0);
 
             } else {
                 this.player1.play('p1DefeatRight', true);
                 this.player1.setImmovable(true);
                 this.player1.setVelocityX(0);
-                this.player1.setVelocityY(0); 
+                this.player1.setVelocityY(0);
             }
 
         } else {
-                // Eventos de controles del JUGADOR 1
-                var playerPos = this.player1.getCenter();
-                
-                this.player1.depth  =this.player1.getCenter().y; //Para que no se superpongan
-                    
-                    // Movimiento vertical
-                    if (this.wKey.isDown) {
-                        this.player1.setVelocityY(-160);
-                        if (this.player1.turnedLeft) {
-                            this.player1.play('p1Left', true); 
-                        } else {
-                            this.player1.play('p1Right', true);
-                        }
-                } else if (this.sKey.isDown) {
-                        this.player1.setVelocityY(160);
-                        if (this.player1.turnedLeft) {
-                            this.player1.play('p1Left', true); 
-                        } else {
-                            this.player1.play('p1Right', true);
-                        }
-                } else if(this.aKey.isDown){
-                        this.player1.setVelocityY(0);
-                        if (this.player1.turnedLeft) {
-                            this.player1.play('p1Left', true); 
-                        } else {
-                            this.player1.play('p1Right', true);
-                        } 
-                }else if(this.dKey.isDown){
-                        this.player1.setVelocityY(0);
-                        if (this.player1.turnedLeft) {
-                            this.player1.play('p1Left', true); 
-                        } else {
-                            this.player1.play('p1Right', true);
-                        } 
-                }
-                else{
-                    this.player1.setVelocityY(0);
-                        if (this.player1.turnedLeft) {
-                            this.player1.play('p1TurnLeft');
-                        } else {
-                            this.player1.play('p1TurnRight');
-                        }
-                }
+            // Eventos de controles del JUGADOR 1
+            var playerPos = this.player1.getCenter();
 
-                // Movimiento horizontal
-                if (this.aKey.isDown) {
-                        this.player1.setVelocityX(-160);
-                        this.player1.turnedLeft = true;
-                        this.player1.play('p1Left', true); 
-                } else if (this.dKey.isDown) {
-                        this.player1.setVelocityX(160);
-                        this.player1.turnedLeft = false;
-                        this.player1.play('p1Right', true); 
-                } else if(this.wKey.isDown){
-                        this.player1.setVelocityX(0);
-                        if (this.player1.turnedLeft) {
-                            this.player1.play('p1Left', true); 
-                        } else {
-                            this.player1.play('p1Right', true);
-                        }
+            this.player1.depth = this.player1.getCenter().y; //Para que no se superpongan
+
+            // Movimiento vertical
+            if (this.wKey.isDown) {
+                this.player1.setVelocityY(-160);
+                if (this.player1.turnedLeft) {
+                    this.player1.play('p1Left', true);
+                } else {
+                    this.player1.play('p1Right', true);
                 }
-                else if(this.sKey.isDown){
-                        this.player1.setVelocityX(0);
-                        if (this.player1.turnedLeft) {
-                            this.player1.play('p1Left', true); 
-                        } else {
-                            this.player1.play('p1Right', true);
-                        }
-                }else {
-                        this.player1.setVelocityX(0);
-                        if (this.player1.turnedLeft) {
-                            this.player1.play('p1TurnLeft');
-                        } else {
-                            this.player1.play('p1TurnRight');
-                        }
+            } else if (this.sKey.isDown) {
+                this.player1.setVelocityY(160);
+                if (this.player1.turnedLeft) {
+                    this.player1.play('p1Left', true);
+                } else {
+                    this.player1.play('p1Right', true);
                 }
-        
-            
-                // Ataque JUGADOR 1
-                if (this.player1.atkP1.isDown) {
-                    if (this.player1.turnedLeft) {
-                        this.player1.setVelocityX(0);
-                        this.player1.setVelocityY(0);
-                        if (!this.player1.attackLeft) {
-                            this.spraySound.play();
-                        }
-                        this.player1.attackLeft = true;
-                        this.player1.play('p1AttackLeft');
-                    } else {
-                        this.player1.setVelocityX(0);
-                        this.player1.setVelocityY(0);
-                        if (!this.player1.attackRight) {
-                            this.spraySound.play();
-                        }
-                        this.player1.attackRight = true;
-                        this.player1.play('p1AttackRight');
+            } else if (this.aKey.isDown) {
+                this.player1.setVelocityY(0);
+                if (this.player1.turnedLeft) {
+                    this.player1.play('p1Left', true);
+                } else {
+                    this.player1.play('p1Right', true);
+                }
+            } else if (this.dKey.isDown) {
+                this.player1.setVelocityY(0);
+                if (this.player1.turnedLeft) {
+                    this.player1.play('p1Left', true);
+                } else {
+                    this.player1.play('p1Right', true);
+                }
+            }
+            else {
+                this.player1.setVelocityY(0);
+                if (this.player1.turnedLeft) {
+                    this.player1.play('p1TurnLeft');
+                } else {
+                    this.player1.play('p1TurnRight');
+                }
+            }
+
+            // Movimiento horizontal
+            if (this.aKey.isDown) {
+                this.player1.setVelocityX(-160);
+                this.player1.turnedLeft = true;
+                this.player1.play('p1Left', true);
+            } else if (this.dKey.isDown) {
+                this.player1.setVelocityX(160);
+                this.player1.turnedLeft = false;
+                this.player1.play('p1Right', true);
+            } else if (this.wKey.isDown) {
+                this.player1.setVelocityX(0);
+                if (this.player1.turnedLeft) {
+                    this.player1.play('p1Left', true);
+                } else {
+                    this.player1.play('p1Right', true);
+                }
+            }
+            else if (this.sKey.isDown) {
+                this.player1.setVelocityX(0);
+                if (this.player1.turnedLeft) {
+                    this.player1.play('p1Left', true);
+                } else {
+                    this.player1.play('p1Right', true);
+                }
+            } else {
+                this.player1.setVelocityX(0);
+                if (this.player1.turnedLeft) {
+                    this.player1.play('p1TurnLeft');
+                } else {
+                    this.player1.play('p1TurnRight');
+                }
+            }
+
+
+            // Ataque JUGADOR 1
+            if (this.player1.atkP1.isDown) {
+                if (this.player1.turnedLeft) {
+                    this.player1.setVelocityX(0);
+                    this.player1.setVelocityY(0);
+                    if (!this.player1.attackLeft) {
+                        this.spraySound.play();
                     }
+                    this.player1.attackLeft = true;
+                    this.player1.play('p1AttackLeft');
+                } else {
+                    this.player1.setVelocityX(0);
+                    this.player1.setVelocityY(0);
+                    if (!this.player1.attackRight) {
+                        this.spraySound.play();
+                    }
+                    this.player1.attackRight = true;
+                    this.player1.play('p1AttackRight');
                 }
-                if (this.player1.atkP1.isUp) {
-                    this.player1.attackRight = false;
-                    this.player1.attackLeft = false;
-                }
+            }
+            if (this.player1.atkP1.isUp) {
+                this.player1.attackRight = false;
+                this.player1.attackLeft = false;
+            }
         }
-            
-            
+
+
 
         if (this.player2.life <= 0) {
             if (this.player2.turnedLeft) {
                 this.player2.play('p2DefeatLeft', true);
-                this.player2.setImmovable(true); 
+                this.player2.setImmovable(true);
                 this.player2.setVelocityX(0);
-                this.player2.setVelocityY(0);                
+                this.player2.setVelocityY(0);
             } else {
                 this.player2.play('p2DefeatRight', true);
                 this.player2.setImmovable(true);
                 this.player2.setVelocityX(0);
-                this.player2.setVelocityY(0); 
+                this.player2.setVelocityY(0);
             }
-        } else {            
+        } else {
 
             for (var i = 0; i < this.activeEnemies.length; i++) {
                 if (this.activeEnemies[i].alive) {
 
-                    var playerPos = this.player2.getCenter();                    
-                    this.player2.depth  = this.player2.getCenter().y; //Para que no se superpongan
+                    var playerPos = this.player2.getCenter();
+                    this.player2.depth = this.player2.getCenter().y; //Para que no se superpongan
                     var enemyPos = this.activeEnemies[i].getCenter();
                     var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
-                    var distx = Phaser.Math.Distance.Between(playerPos.x,0, enemyPos.x,0);
-                    var disty = Phaser.Math.Distance.Between(0,playerPos.y,0,enemyPos.y);
+                    var distx = Phaser.Math.Distance.Between(playerPos.x, 0, enemyPos.x, 0);
+                    var disty = Phaser.Math.Distance.Between(0, playerPos.y, 0, enemyPos.y);
                     var separation = 60;
 
                     // Eventos de controles del JUGADOR 2
-                        // Movimiento vertical
-                        if (this.cursors.up.isDown) {
-                            this.player2.setVelocityY(-160);
-                            if (this.player2.turnedLeft) {
-                                this.player2.play('p2Left', true); 
-                            } else {
-                                this.player2.play('p2Right', true);
-                            }
+                    // Movimiento vertical
+                    if (this.cursors.up.isDown) {
+                        this.player2.setVelocityY(-160);
+                        if (this.player2.turnedLeft) {
+                            this.player2.play('p2Left', true);
+                        } else {
+                            this.player2.play('p2Right', true);
+                        }
                     } else if (this.cursors.down.isDown) {
-                            this.player2.setVelocityY(160);
-                            if (this.player2.turnedLeft) {
-                                this.player2.play('p2Left', true); 
-                            } else {
-                                this.player2.play('p2Right', true);
-                            }
-                    } else if(this.cursors.left.isDown){
-                            this.player2.setVelocityY(0);
-                            if (this.player2.turnedLeft) {
-                                this.player2.play('p2Left', true); 
-                            } else {
-                                this.player2.play('p2Right', true);
-                            } 
-                    }else if(this.cursors.right.isDown){
-                            this.player2.setVelocityY(0);
-                            if (this.player2.turnedLeft) {
-                                this.player2.play('p2Left', true); 
-                            } else {
-                                this.player2.play('p2Right', true);
-                            } 
-                    }
-                    else{
+                        this.player2.setVelocityY(160);
+                        if (this.player2.turnedLeft) {
+                            this.player2.play('p2Left', true);
+                        } else {
+                            this.player2.play('p2Right', true);
+                        }
+                    } else if (this.cursors.left.isDown) {
                         this.player2.setVelocityY(0);
-                            if (this.player2.turnedLeft) {
-                                this.player2.play('p2TurnLeft');
-                            } else {
-                                this.player2.play('p2TurnRight');
-                            }
+                        if (this.player2.turnedLeft) {
+                            this.player2.play('p2Left', true);
+                        } else {
+                            this.player2.play('p2Right', true);
+                        }
+                    } else if (this.cursors.right.isDown) {
+                        this.player2.setVelocityY(0);
+                        if (this.player2.turnedLeft) {
+                            this.player2.play('p2Left', true);
+                        } else {
+                            this.player2.play('p2Right', true);
+                        }
+                    }
+                    else {
+                        this.player2.setVelocityY(0);
+                        if (this.player2.turnedLeft) {
+                            this.player2.play('p2TurnLeft');
+                        } else {
+                            this.player2.play('p2TurnRight');
+                        }
                     }
 
                     // Movimiento horizontal
                     if (this.cursors.left.isDown) {
-                            this.player2.setVelocityX(-160);
-                            this.player2.turnedLeft = true;
-                            this.player2.play('p2Left', true); 
+                        this.player2.setVelocityX(-160);
+                        this.player2.turnedLeft = true;
+                        this.player2.play('p2Left', true);
                     } else if (this.cursors.right.isDown) {
-                            this.player2.setVelocityX(160);
-                            this.player2.turnedLeft = false;
-                            this.player2.play('p2Right', true); 
-                    } else if(this.cursors.up.isDown){
-                            this.player2.setVelocityX(0);
-                            if (this.player2.turnedLeft) {
-                                this.player2.play('p2Left', true); 
-                            } else {
-                                this.player2.play('p2Right', true);
-                            }
+                        this.player2.setVelocityX(160);
+                        this.player2.turnedLeft = false;
+                        this.player2.play('p2Right', true);
+                    } else if (this.cursors.up.isDown) {
+                        this.player2.setVelocityX(0);
+                        if (this.player2.turnedLeft) {
+                            this.player2.play('p2Left', true);
+                        } else {
+                            this.player2.play('p2Right', true);
+                        }
                     }
-                    else if(this.cursors.down.isDown){
-                            this.player2.setVelocityX(0);
-                            if (this.player2.turnedLeft) {
-                                this.player2.play('p2Left', true); 
-                            } else {
-                                this.player2.play('p2Right', true);
-                            }
-                    }else {
-                            this.player2.setVelocityX(0);
-                            if (this.player2.turnedLeft) {
-                                this.player2.play('p2TurnLeft');
-                            } else {
-                                this.player2.play('p2TurnRight');
-                            }
+                    else if (this.cursors.down.isDown) {
+                        this.player2.setVelocityX(0);
+                        if (this.player2.turnedLeft) {
+                            this.player2.play('p2Left', true);
+                        } else {
+                            this.player2.play('p2Right', true);
+                        }
+                    } else {
+                        this.player2.setVelocityX(0);
+                        if (this.player2.turnedLeft) {
+                            this.player2.play('p2TurnLeft');
+                        } else {
+                            this.player2.play('p2TurnRight');
+                        }
                     }
-                }        
-            
+                }
+
             }
 
             // Ataque JUGADOR 2
@@ -823,25 +836,25 @@ class Level3 extends Phaser.Scene {
                 this.player2.attackRight = false;
                 this.player2.attackLeft = false;
             }
-        
+
         }
-        
-            
+
+
 
         var velocitiesSize = this.velocities.length;
-        var mediumVelocity = this.velocities[Math.floor(velocitiesSize/5)];
+        var mediumVelocity = this.velocities[Math.floor(velocitiesSize / 5)];
 
         for (var i = 0; i < this.activeEnemies.length; i++) {
             if (this.activeEnemies[i].alive) {
-                if(this.velocities[i]>=mediumVelocity){
+                if (this.velocities[i] >= mediumVelocity) {
                     if (i % 2 == 0) {
-                        if(this.player1.life > 0){
+                        if (this.player1.life > 0) {
                             this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i]);
                         } else {
                             this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
                         }
                     } else {
-                        if(this.player2.life > 0){
+                        if (this.player2.life > 0) {
                             this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
                         } else {
                             this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i]);
@@ -849,13 +862,13 @@ class Level3 extends Phaser.Scene {
                     }
                 } else {
                     if (i % 2 == 0) {
-                        if(this.player1.life > 0){
+                        if (this.player1.life > 0) {
                             this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i] - 1);
                         } else {
                             this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
                         }
                     } else {
-                        if(this.player2.life > 0){
+                        if (this.player2.life > 0) {
                             this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
                         } else {
                             this.enemyFollow(this.player1, this.activeEnemies[i], this.velocities[i] - 1);
@@ -874,7 +887,7 @@ class Level3 extends Phaser.Scene {
                 var playerPos = this.player1.getCenter();
                 var enemyPos = this.activeEnemies[i].getCenter();
                 var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
-                if(dist <=101){
+                if (dist <= 101) {
 
                     if (this.player1.atkP1.isDown) {
                         this.activeEnemies[i].life--;
@@ -883,19 +896,19 @@ class Level3 extends Phaser.Scene {
                             this.activeEnemies[i].y = -100;
                             this.activeEnemies[i].body.moves = false;
                         }
-                    }                
+                    }
                 }
             }
         }
 
         for (var i = 0; i < this.activeEnemies.length; i++) {
             if (this.activeEnemies[i].alive) {
-                
+
                 var playerPos = this.player2.getCenter();
                 var enemyPos = this.activeEnemies[i].getCenter();
-                var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);                
-                if(dist <=101){
-                    
+                var dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, enemyPos.x, enemyPos.y);
+                if (dist <= 101) {
+
                     if (this.player2.atkP2.isDown) {
                         this.activeEnemies[i].life--;
                         console.log("pucch");
@@ -903,7 +916,7 @@ class Level3 extends Phaser.Scene {
                             this.activeEnemies[i].y = -100;
                             this.activeEnemies[i].body.moves = false;
                         }
-                    }                
+                    }
                 }
             }
         }
@@ -919,7 +932,7 @@ class Level3 extends Phaser.Scene {
             }
         }
 
-        
+
         if (this.countDead == this.activeEnemies.length) {
             this.roundCont++;
             if (this.roundCont == 2) {
@@ -932,31 +945,31 @@ class Level3 extends Phaser.Scene {
                 this.countDead = 0;
                 this.createEnemies(this.activeEnemies, this.quantEnemiesRound3);
                 this.updateVelocities(velocitiesSize);
-            
+
             }
         }
 
-        if(this.roundCont > 3){
+        if (this.roundCont > 3) {
             var mensaje = this.scene.settings.data.mensaje
-            mensaje[1]=true
-            this.scene.start('gameWin3',{mensaje:mensaje});
+            mensaje[1] = true
+            this.scene.start('gameWin3', { mensaje: mensaje });
             this.scene.stop('Level1');
             this.scene.stop('pauseScene');
-            
+
         }
 
         //cambiar escena a gameover
-        if(this.player1.life<=0 && this.player2.life<=0){
+        if (this.player1.life <= 0 && this.player2.life <= 0) {
             var mensaje = this.scene.settings.data.mensaje
-            this.scene.start('gameOver',{mensaje:mensaje});
+            this.scene.start('gameOver', { mensaje: mensaje });
             this.scene.stop('Level1');
-            this.scene.stop('pauseScene');          
-            
+            this.scene.stop('pauseScene');
+
         }
 
         //ACTUALIZA CORAZONES
         this.updateHearts();
-   
+
 
     }
 
