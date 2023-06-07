@@ -23,6 +23,7 @@ public class App implements WebSocketConfigurer {
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(gameHandler(), "/grafficjam").setAllowedOrigins("*");
 		registry.addHandler(syncHandler(), "/sync").setAllowedOrigins("*");
+		registry.addHandler(sync2Handler(), "/sync2").setAllowedOrigins("*");
 		registry.addHandler(enemySyncHandler(), "/enemysync").setAllowedOrigins("*");
 	}
 
@@ -39,5 +40,10 @@ public class App implements WebSocketConfigurer {
 	@Bean
 	public EnemySyncHandler enemySyncHandler() {
 		return new EnemySyncHandler();
+	}
+
+	@Bean
+	public Sync2Handler sync2Handler() {
+		return new Sync2Handler();
 	}
 }

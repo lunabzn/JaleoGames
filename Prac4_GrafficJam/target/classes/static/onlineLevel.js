@@ -1680,13 +1680,23 @@ class onlineLevel extends Phaser.Scene {
 
 
     makeSyncWSSendMessage() {
-        if(StartGame == true){ // Si la partida está en curso
-            if (player2_life >= 0 && Soy_J1) { // si el jugador del otro cliente sigue vivo y soy el Jugador 1
+        if(StartGame == true){ 
+
+            // Si soy J1, mando la posición de VIVO
+            if (player2_life >= 0 && Soy_J1) { 
                 // Sincronización posición jugadores:
                 // Este mensaje lo envía el J1, por lo que la pos de Vivo será la de player1 y la de Tuerto la de player2
-                syncWS.sendWS(player1_global.getCenter(), player2_global.getCenter(), player1_turnedLeft, player2_turnedLeft) // envío mensaje de WS para actualizar la información de las posiciones
+                syncWS.sendWS(player1_global.getCenter(), player2_global.getCenter(), player1_turnedLeft, player2_turnedLeft) 
+            }
+
+            // Si soy J2, mando la posición de TUERTO
+            if (player2_life >= 0 && Soy_J1 == false) { 
+                // Sincronización posición jugadores:
+                // Este mensaje lo envía el J2, por lo que la pos de Vivo será la de player2 y la de Tuerto la de player1
+                sync2WS.sendWS(player2_global.getCenter(), player1_global.getCenter(), player2_turnedLeft, player1_turnedLeft) 
             }
             
+            // La sincronización de la posición de los enemigos se basa en las posiciones en el Cliente 1
             if (Soy_J1) {
                 for (var i = 0; i < activeEnemies_length; i++) {
                     // if (activeEnemies_global[i].alive) { // si el enemigo está vivo, envío su posición para actulizarla en el otro cliente
