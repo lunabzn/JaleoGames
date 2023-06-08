@@ -17,7 +17,7 @@ class pauseOnlineScene extends Phaser.Scene{
     create(){
         this.background = this.add.image(0,0,"menup").setOrigin(0).setScale(1);
 
-        let logout = this.add.image(600,450,"restart").setScale(0.15);
+        let logout = this.add.image(600,450,"restart").setScale(0.1165);
         logout.setInteractive();
         logout.on('pointerdown',()=>{
             playerPauseLogOut(); // Avisamos al servidor de que salimos de la partida para que saque también al otro cliente
