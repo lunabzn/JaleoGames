@@ -761,9 +761,12 @@ class onlineLevel extends Phaser.Scene {
         // Sincronización de posiciones
         this.player.setPosition(player1_global.getCenter().x, player1_global.getCenter().y);
         this.player.turnedLeft = player1_turnedLeft;
+        this.player.life = player1_life;
 
         this.player2.setPosition(player2_global.getCenter().x, player2_global.getCenter().y);
         this.player2.turnedLeft = player2_turnedLeft;
+        this.player2.life = player2_life;
+
 
         for (var i = 0; i < this.activeEnemies.length; i++) {
             // Actualizo la posición de cada enemigo
