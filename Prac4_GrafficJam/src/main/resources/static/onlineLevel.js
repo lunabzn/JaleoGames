@@ -1,5 +1,8 @@
 
+// Comentario de prueba
+
 // VARIABLES PARA GESTIÓN DE WEBSOCKETS
+
 var WEB_goLeft = false;
 var WEB_goRight = false;
 var WEB_goUp = false;
