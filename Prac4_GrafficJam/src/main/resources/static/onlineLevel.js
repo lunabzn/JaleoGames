@@ -22,7 +22,7 @@ class onlineLevel extends Phaser.Scene {
     }
 
     //funcion que genera un numero aletorio comprendido entre un minimo y un maximo (ambos incluidos)
-    randomNum(min, max) {
+    generateRandomNum(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
@@ -590,19 +590,19 @@ class onlineLevel extends Phaser.Scene {
     enemyAttack(player, enemy) {
         // Numero con el que se ataca
         var nAttack = 1;
-
+        var random_;
         if(Soy_J1){//para que ambos clientes tengan la misma probabilidad de ataque
-            probability = this.randomNum(1, 100);
-            randomNumber();
+            random_ = this.generateRandomNum(1,200);
+            syncEAttack.sendWS(random_);
         } else {
-            probability = Random_Num;
+            random_ = Random_Num;
         }
 
         // La probabilidad del ataque del enemigo es del 0.0001%
         var playerCoords = player.getCenter();
         var enemyCoords = enemy.getCenter();
 
-        if (nAttack == probability) {
+        if (nAttack == random_) {
             if (playerCoords.x < enemyCoords.x) { //si el enemigo va hacia la izquierda
                 this.punchSound.play();
                 enemy.play('eAttackLeft', true);
