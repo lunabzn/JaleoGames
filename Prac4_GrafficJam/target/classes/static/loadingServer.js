@@ -4,11 +4,11 @@ class loadingServer extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('bg-image-menu', 'resources/bg-image-menu.jpg');
+        this.load.image('Lobby', 'resources/Lobby.png');
     }
 
     create() {
-        this.add.image(0, 0, "bg-image-menu").setOrigin(0).setScale(0.75);
+        this.add.image(0, 0, "Lobby").setOrigin(0).setScale(1);
     }
 
     update() {

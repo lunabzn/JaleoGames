@@ -797,11 +797,6 @@ class onlineLevel extends Phaser.Scene {
 
         ////////////////////////////////// APARTADO ONLINE (WEBSOCKETS)
 
-        console.log("PRE this.player.life: " + this.player.life);
-        console.log("PRE this.player2.life: " + this.player2.life);
-        console.log("PRE player1_life: " + player1_life);
-        console.log("PRE player2_life: " + player2_life);
-
         // Sincronización de posiciones
         this.player.setPosition(player1_global.getCenter().x, player1_global.getCenter().y);
         this.player.turnedLeft = player1_turnedLeft;
@@ -810,11 +805,6 @@ class onlineLevel extends Phaser.Scene {
         this.player2.setPosition(player2_global.getCenter().x, player2_global.getCenter().y);
         this.player2.turnedLeft = player2_turnedLeft;
         this.player2.life = player2_life;
-
-        console.log("POST this.player.life: " + this.player.life);
-        console.log("POST this.player2.life: " + this.player2.life);
-        console.log("POST player1_life: " + player1_life);
-        console.log("POST player2_life: " + player2_life);
 
         for (var i = 0; i < this.activeEnemies.length; i++) {
             // Actualizo la posición de cada enemigo
@@ -1435,9 +1425,6 @@ class onlineLevel extends Phaser.Scene {
 
         // ACTUALIZACIÓN PARA QUE LOS ENEMIGOS SIGAN A LOS PERSONAJES
 
-        // console.log("PRE this.player.life: " + this.player.life);
-        // console.log("PRE this.player2.life: " + this.player2.life);
-
         if (Soy_J1) {
             for (var i = 0; i < this.activeEnemies.length; i++) {
                 if (this.activeEnemies[i].alive) {
@@ -1507,9 +1494,6 @@ class onlineLevel extends Phaser.Scene {
                 }
             }
         }
-
-        // console.log("POST this.player.life: " + this.player.life);
-        // console.log("POST this.player2.life: " + this.player2.life);
 
         ////////////////////////////ATAQUE JUGADORES///////////////////////////////
         for (var i = 0; i < this.activeEnemies.length; i++) {
@@ -1636,7 +1620,6 @@ class onlineLevel extends Phaser.Scene {
     /////////// SINCRONIZACIÓN DE POSICIONES ENTRE JUGADORES //////////
     // Envío una actualización de las posiciones de los dos jugadores
     checkSync = setInterval(this.makeSyncWSSendMessage, 200);
-
 
     makeSyncWSSendMessage() {
         if(StartGame == true){ 
