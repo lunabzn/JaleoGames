@@ -8,14 +8,14 @@ class pauseOnlineScene extends Phaser.Scene{
     }
 
     preload() {
-        this.load.image('menup', 'resources/Fondopause.png');
+        this.load.image('menupo', 'resources/Fondopause.png');
         this.load.image('restart', 'resources/desconectar.png');
         this.load.image('resume', 'resources/reanudar.png');
 
     }
     
     create(){
-        this.background = this.add.image(0,0,"menup").setOrigin(0).setScale(1);
+        this.background = this.add.image(0,0,"menupo").setOrigin(0).setScale(1);
 
         let logout = this.add.image(600,450,"restart").setScale(0.1165);
         logout.setInteractive();

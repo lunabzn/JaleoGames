@@ -21,6 +21,14 @@ var WEB_gameOver = false;
 var WEB_gameWin = false;
 var WEB_enemyhasDied = false;
 
+var player1_global;
+var player1_life;
+var player1_turnedLeft;
+
+var player2_global;
+var player2_life;
+var player2_turnedLeft;
+
 
 class onlineLevel extends Phaser.Scene {
 
@@ -91,6 +99,9 @@ class onlineLevel extends Phaser.Scene {
         WEB_gameWin = false;
         WEB_enemyhasDied = false;
 
+        player1_life = 5;
+        player2_life = 5;
+
         this.background = this.add.image(400, 300, 'background');
         this.invisibleCollider = this.physics.add.sprite(400, -50, 'invisibleCollider');
 
@@ -119,9 +130,9 @@ class onlineLevel extends Phaser.Scene {
 
         this.probabilities = [];
 
-        this.quantEnemiesRound1 = 2;
-        this.quantEnemiesRound2 = 3;
-        this.quantEnemiesRound3 = 4;
+        this.quantEnemiesRound1 = 1;
+        this.quantEnemiesRound2 = 0;
+        this.quantEnemiesRound3 = 0;
         this.roundCont = 1;
 
         this.activeEnemies = [this.quantEnemiesRound1];
@@ -439,6 +450,11 @@ class onlineLevel extends Phaser.Scene {
         // Enemigos
         activeEnemies_global = this.activeEnemies;
         activeEnemies_length = this.activeEnemies.length;
+
+        console.log("CREATE this.player.life: " + this.player.life);
+        console.log("CREATE this.player2.life: " + this.player2.life);
+        console.log("CREATE player1_life: " + player1_life);
+        console.log("CREATE player2_life: " + player2_life);
     }
 
     /////////// FUNCIONES AUXILIARES //////////
@@ -479,6 +495,7 @@ class onlineLevel extends Phaser.Scene {
             enemies[i].alive = true;
             enemies[i].turnedLeft = true;
             enemies[i].life = 3;
+            enemies[i].isAttacking = false;
 
             this.physics.add.collider(this.player, enemies[i], function (player, police) {
                 // if (player.atkP1.isDown) {
@@ -550,11 +567,11 @@ class onlineLevel extends Phaser.Scene {
         var playerCoords = player.getCenter();
         var enemyCoords = enemy.getCenter();
 
-        if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
+        if ((playerCoords.x < enemyCoords.x) && (enemy.isAttacking == false))//si el enemigo va hacia la izquierda
         {
             enemy.play('eLeft', true);
         }
-        else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
+        else if ((playerCoords.x > enemyCoords.x) && (enemy.isAttacking == false))//si el enemigo va hacia la derecha
         {
             enemy.play('eRight', true);
         }
@@ -565,11 +582,11 @@ class onlineLevel extends Phaser.Scene {
         var enemyCoords = enemy.getCenter();
         enemy.setVelocityX(0);
         enemy.setVelocityY(0);
-        if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
+        if ((playerCoords.x < enemyCoords.x) && (enemy.isAttacking == false))//si el enemigo va hacia la izquierda
         {
             enemy.play('eTurnLeft', true);
         }
-        else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
+        else if ((playerCoords.x > enemyCoords.x) && (enemy.isAttacking == false))//si el enemigo va hacia la derecha
         {
             enemy.play('eTurnRight', true);
         }
@@ -627,27 +644,49 @@ class onlineLevel extends Phaser.Scene {
         var playerCoords = player.getCenter();
         var enemyCoords = enemy.getCenter();
 
-        if (nAttack == probability) {
-            if (playerCoords.x < enemyCoords.x) { //si el enemigo va hacia la izquierda
-                this.punchSound.play();
-                enemy.play('eAttackLeft', true);
-                player.life -= 1;
-                this.updateHearts();
-            } else if (playerCoords.x > enemyCoords.x) { //si el enemigo va hacia la derecha
-                this.punchSound.play();
-                enemy.play('eAttackRight', true);
-                player.life -= 1;
-                this.updateHearts();
-            }
-            if (player == this.player && player.life <= 0) {
-                console.log("MATO A JUGADOR");
-                killPlayer();
+        var dist = Phaser.Math.Distance.Between(playerCoords.x, playerCoords.y, enemyCoords.x, enemyCoords.y);
+
+        if (enemy.isAttacking == false) {
+            if (dist <= 101) {
+                if (nAttack == probability) {
+                    if (playerCoords.x < enemyCoords.x) { //si el enemigo va hacia la izquierda
+                              
+                        this.punchSound.play();
+                        enemy.play('eAttackLeft', true);
+                        enemy.isAttacking = true;
+                        player.life--;
+
+                        setTimeout(function () {
+                            enemy.isAttacking = false;
+                        }, 200);
+
+                        this.updateHearts();
+
+                    } else if (playerCoords.x > enemyCoords.x) { //si el enemigo va hacia la derecha
+                        
+                        this.punchSound.play();
+                        enemy.play('eAttackRight', true);
+                        enemy.isAttacking = true;
+                        player.life--;
+
+                        setTimeout(function () {
+                            enemy.isAttacking = false;
+                        }, 200);
+
+                        this.updateHearts();
+                    }
+                    if (player == this.player && player.life <= 0) {
+                        console.log("MATO A JUGADOR");
+                        killPlayer();
+                    }
+                }
             }
         }
     }
 
     updateHearts() {
         if (Soy_J1) {
+            console.log("[updateHearts] this.player.life: " + this.player.life);
             if (this.player.life == 4) {
                 this.cora5.destroy();
                 console.log("cora5 destruido");
@@ -690,7 +729,7 @@ class onlineLevel extends Phaser.Scene {
                 console.log("cora6 destruido");
             }
         } else {
-            console.log("cliente 2");
+            console.log("this.player2.life" + this.player2.life); 
             if (this.player2.life == 4) {
                 this.cora5.destroy();
                 console.log("cora5 destruido");
@@ -758,6 +797,11 @@ class onlineLevel extends Phaser.Scene {
 
         ////////////////////////////////// APARTADO ONLINE (WEBSOCKETS)
 
+        console.log("PRE this.player.life: " + this.player.life);
+        console.log("PRE this.player2.life: " + this.player2.life);
+        console.log("PRE player1_life: " + player1_life);
+        console.log("PRE player2_life: " + player2_life);
+
         // Sincronización de posiciones
         this.player.setPosition(player1_global.getCenter().x, player1_global.getCenter().y);
         this.player.turnedLeft = player1_turnedLeft;
@@ -767,6 +811,10 @@ class onlineLevel extends Phaser.Scene {
         this.player2.turnedLeft = player2_turnedLeft;
         this.player2.life = player2_life;
 
+        console.log("POST this.player.life: " + this.player.life);
+        console.log("POST this.player2.life: " + this.player2.life);
+        console.log("POST player1_life: " + player1_life);
+        console.log("POST player2_life: " + player2_life);
 
         for (var i = 0; i < this.activeEnemies.length; i++) {
             // Actualizo la posición de cada enemigo
@@ -1386,6 +1434,10 @@ class onlineLevel extends Phaser.Scene {
         var mediumVelocity = this.velocities[Math.floor(velocitiesSize / 2)];
 
         // ACTUALIZACIÓN PARA QUE LOS ENEMIGOS SIGAN A LOS PERSONAJES
+
+        // console.log("PRE this.player.life: " + this.player.life);
+        // console.log("PRE this.player2.life: " + this.player2.life);
+
         if (Soy_J1) {
             for (var i = 0; i < this.activeEnemies.length; i++) {
                 if (this.activeEnemies[i].alive) {
@@ -1455,6 +1507,9 @@ class onlineLevel extends Phaser.Scene {
                 }
             }
         }
+
+        // console.log("POST this.player.life: " + this.player.life);
+        // console.log("POST this.player2.life: " + this.player2.life);
 
         ////////////////////////////ATAQUE JUGADORES///////////////////////////////
         for (var i = 0; i < this.activeEnemies.length; i++) {
@@ -1575,6 +1630,7 @@ class onlineLevel extends Phaser.Scene {
 
         activeEnemies_global = this.activeEnemies;
         activeEnemies_length = this.activeEnemies.length;
+        
     }
 
     /////////// SINCRONIZACIÓN DE POSICIONES ENTRE JUGADORES //////////
