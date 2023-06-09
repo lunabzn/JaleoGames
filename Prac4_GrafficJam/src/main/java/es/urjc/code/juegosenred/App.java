@@ -25,6 +25,7 @@ public class App implements WebSocketConfigurer {
 		registry.addHandler(syncHandler(), "/sync").setAllowedOrigins("*");
 		registry.addHandler(sync2Handler(), "/sync2").setAllowedOrigins("*");
 		registry.addHandler(enemySyncHandler(), "/enemysync").setAllowedOrigins("*");
+		registry.addHandler(syncEnemyAttackHandler(), "/enemyAttack").setAllowedOrigins("*");
 	}
 
 	@Bean
@@ -45,5 +46,10 @@ public class App implements WebSocketConfigurer {
 	@Bean
 	public Sync2Handler sync2Handler() {
 		return new Sync2Handler();
+	}
+
+	@Bean
+	public SyncEnemyAttackHandler syncEnemyAttackHandler() {
+		return new SyncEnemyAttackHandler();
 	}
 }
