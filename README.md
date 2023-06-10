@@ -160,19 +160,23 @@ Los siguientes errores han sido solucionados:
     
 Nuevas implementaciones:
 
-- Cuenta atrás antes de comenzar el nivel: 
+- Cuenta atrás antes de comenzar el nivel: <br>
   Ahora, al comienzo de cada nivel se dará una cuenta atrás para que los jugadores se preparen para superar el nivel.
 
 ![Countdown](https://user-images.githubusercontent.com/115088130/211434448-cb918ceb-89ae-4aab-9b27-6ec448eb4374.jpg)
 
-- Nuevos niveles.
+- Nuevos niveles: <br>
+  Se han implementado dos nuevos niveles con diferente temática, en el segundo de ellos nuestros personajes se encontrarán en una carretera, mientras que en el tercer nivel los personajes estarán en una estación de trenes. <br>
+  Además, para poder acceder al nivel 2, los jugadores necesitarán superar el nivel 1 y, en caso de querer acceder al nivel 3, los jugadores tendrán que completar el nivel 2.
 
 ![Nivel 2](https://user-images.githubusercontent.com/115088130/211435235-aefc1550-0238-4bb5-a6aa-bc94476b6d87.png)
 ![fondollvl3(1)](https://user-images.githubusercontent.com/115088130/211435315-4bc50234-a48e-4d5c-9afb-6a84bf6bd365.jpg)
 
 
 
-- Nuevos enemigos.
+- Nuevos enemigos: <br>
+  Además de implementar nuevos niveles se han desarrollado nuevos policias para los nuevos niveles.
+  Asimismo, en el juego, los policias del nivel 2 quitarán un total de 2 corazones por golpe, y, los policias del nivel 3 quitarán 3 corazones por ataque realizado.
 
 ![imagen](https://user-images.githubusercontent.com/115088130/211435521-b3746afe-bae2-4ed1-8a5f-5a03aae95cc3.png)
 ![imagen](https://user-images.githubusercontent.com/115088130/211435529-703f1c51-6f86-4a8e-a9fc-98c20b0d4a40.png)
