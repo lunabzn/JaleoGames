@@ -58,7 +58,7 @@ class Level3 extends Phaser.Scene {
         console.log(mensaje[1])
 
         //boton de pausa
-        let pause = this.add.image(425, 50, "pause").setScale(0.07);
+        let pause = this.add.image(400, 50, "pause").setScale(0.07);
         pause.setInteractive();
         pause.on('pointerdown', () => {
             mensaje[2] = 3
