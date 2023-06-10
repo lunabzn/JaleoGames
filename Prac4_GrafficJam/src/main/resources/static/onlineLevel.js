@@ -1,5 +1,8 @@
 
+// Comentario de prueba
+
 // VARIABLES PARA GESTIÓN DE WEBSOCKETS
+
 var WEB_goLeft = false;
 var WEB_goRight = false;
 var WEB_goUp = false;
@@ -14,6 +17,17 @@ var WEB_dontPlayerAttack = false;
 var WEB_playerStop = false;
 var WEB_randomNum = 0;
 var WEB_playerHasDied = false;
+var WEB_gameOver = false;
+var WEB_gameWin = false;
+var WEB_enemyhasDied = false;
+
+var player1_global;
+var player1_life;
+var player1_turnedLeft;
+
+var player2_global;
+var player2_life;
+var player2_turnedLeft;
 
 
 class onlineLevel extends Phaser.Scene {
@@ -23,7 +37,7 @@ class onlineLevel extends Phaser.Scene {
     }
 
     //funcion que genera un numero aletorio comprendido entre un minimo y un maximo (ambos incluidos)
-    randomNum(min, max) {
+    generateRandomNum(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
@@ -53,7 +67,7 @@ class onlineLevel extends Phaser.Scene {
         this.load.spritesheet('tuerto', 'resources/spritesTuertoDef.png', { frameWidth: fStandarWidth, frameHeight: fStandarHeight, endframe: endF });
 
         //collider pared
-        this.load.spritesheet('invisibleCollider','resources/invisible.png',{frameWidth: 800, frameHeigh:100 , endframe:1});
+        this.load.spritesheet('invisibleCollider', 'resources/invisible.png', { frameWidth: 800, frameHeigh: 100, endframe: 1 });
 
         //carga de enemigo: policia chica
         this.load.spritesheet('girlPolice', 'resources/spritesPoliciaChicaDef.png', { frameWidth: fStandarWidth, frameHeight: fStandarHeight, endframe: endF });
@@ -66,8 +80,30 @@ class onlineLevel extends Phaser.Scene {
 
     create() {
 
+        // Al entrar a la escena, reseteamos todas las variables de WS para evitar que se mantengan estados de aprtidas anteriores
+        WEB_goLeft = false;
+        WEB_goRight = false;
+        WEB_goUp = false;
+        WEB_goDown = false;
+        WEB_dontGoLeft = false;
+        WEB_dontGoRight = false;
+        WEB_dontGoUp = false;
+        WEB_dontGoDown = false;
+        WEB_pauseGame = false;
+        WEB_playerAttack = false;
+        WEB_dontPlayerAttack = false;
+        WEB_playerStop = false;
+        WEB_randomNum = 0;
+        WEB_playerHasDied = false;
+        WEB_gameOver = false;
+        WEB_gameWin = false;
+        WEB_enemyhasDied = false;
+        gameOverOnlineActive = false;
+        player1_life = 5;
+        player2_life = 5;
+
         this.background = this.add.image(400, 300, 'background');
-        this.invisibleCollider = this.physics.add.sprite(400,-50,'invisibleCollider');
+        this.invisibleCollider = this.physics.add.sprite(400, -50, 'invisibleCollider');
 
         // Boton de pausa
         let pause = this.add.image(425, 50, "pause").setScale(0.07);
@@ -80,7 +116,7 @@ class onlineLevel extends Phaser.Scene {
         })
 
         // Creación de los dos personajes
-        if(Soy_J1){
+        if (Soy_J1) {
             console.log("Soy el Jugador 1");
             this.player = this.physics.add.sprite(100, 300, 'vivo').setCollideWorldBounds(true);
             this.player2 = this.physics.add.sprite(100, 500, 'tuerto').setCollideWorldBounds(true);
@@ -92,21 +128,20 @@ class onlineLevel extends Phaser.Scene {
             LocalJ1 = false;
         }
 
-        this.probabilities=[];
 
-        this.quantEnemiesRound1 = 3;
-        this.quantEnemiesRound2 = 4;
-        this.quantEnemiesRound3 = 5;
+        this.quantEnemiesRound1 = 2;
+        this.quantEnemiesRound2 = 3;
+        this.quantEnemiesRound3 = 4;
         this.roundCont = 1;
 
         this.activeEnemies = [this.quantEnemiesRound1];
-        this.velocities = [100,80,60];
+        this.velocities = [100, 80, 60];
         this.countDead = 0;
 
         this.createEnemies(this.activeEnemies, this.quantEnemiesRound1);
 
-        this.player.body.setSize(this.player.width*0.5, this.player.height*0.85);
-        this.player2.body.setSize(this.player2.width*0.5, this.player2.height*0.85);
+        this.player.body.setSize(this.player.width * 0.5, this.player.height * 0.85);
+        this.player2.body.setSize(this.player2.width * 0.5, this.player2.height * 0.85);
         this.invisibleCollider.body.setSize(800, 385);
 
         this.player.turnedLeft = false;
@@ -121,8 +156,8 @@ class onlineLevel extends Phaser.Scene {
         this.player2.attackRight = false;
 
         this.physics.add.collider(this.player, this.player2);
-        this.physics.add.collider(this.player,this.invisibleCollider);
-        this.physics.add.collider(this.player2,this.invisibleCollider);
+        this.physics.add.collider(this.player, this.invisibleCollider);
+        this.physics.add.collider(this.player2, this.invisibleCollider);
         this.invisibleCollider.setImmovable(true);
 
         //Añadir vida vivo
@@ -132,15 +167,15 @@ class onlineLevel extends Phaser.Scene {
         this.cora3 = this.add.image(180, 55, 'corazon');
         this.cora4 = this.add.image(215, 55, 'corazon');
         this.cora5 = this.add.image(250, 55, 'corazon');
-  
+
         this.vivoLife.setScrollFactor(0);
         this.cora1.setScrollFactor(0);
         this.cora2.setScrollFactor(0);
         this.cora3.setScrollFactor(0);
         this.cora4.setScrollFactor(0);
         this.cora5.setScrollFactor(0);
-  
-  
+
+
         //Añadir vida tuerto
         this.tuertoLife = this.add.image(745, 50, 'tuertoLife');
         this.cora6 = this.add.image(685, 55, 'corazon');
@@ -148,7 +183,7 @@ class onlineLevel extends Phaser.Scene {
         this.cora8 = this.add.image(615, 55, 'corazon');
         this.cora9 = this.add.image(580, 55, 'corazon');
         this.cora10 = this.add.image(545, 55, 'corazon');
-  
+
         this.tuertoLife.setScrollFactor(0);
         this.cora6.setScrollFactor(0);
         this.cora7.setScrollFactor(0);
@@ -395,58 +430,75 @@ class onlineLevel extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
-        
+
         // Preparamos los dos personajes orientados hacia la derecha
-        if(Soy_J1){
+        if (Soy_J1) {
             this.player2.play('p2TurnRight');
         } else {
             this.player2.play('p1TurnRight');
         }
 
+        // WS SYNC
+        // Jugadores
+        player1_global = this.player;
+        player1_turnedLeft = this.player.turnedLeft;
+
+        player2_global = this.player2;
+        player2_turnedLeft = this.player2.turnedLeft;
+
+        // Enemigos
+        activeEnemies_global = this.activeEnemies;
+        activeEnemies_length = this.activeEnemies.length;
+
+        console.log("CREATE this.player.life: " + this.player.life);
+        console.log("CREATE this.player2.life: " + this.player2.life);
+        console.log("CREATE player1_life: " + player1_life);
+        console.log("CREATE player2_life: " + player2_life);
+
+
+
+        console.log("INICIO vida player1 " + this.player.life + " vida player2 "+ this.player2.life);
     }
 
-    /////////// FIN FUNCION CREATE //////////
+    /////////// FUNCIONES AUXILIARES //////////
 
     createEnemies(enemies, size) {
 
         var enemyPosX = [];
         var enemyPosY = [];
-        var equaldistX = 400/size;
-        var equaldistY = 250/size;
-        var auxX=equaldistX;
-        var auxY=equaldistY;
+        var equaldistX = 400 / size;
+        var equaldistY = 250 / size;
+        var auxX = equaldistX;
+        var auxY = equaldistY;
 
-        for(var i=0;i<size;i++){
-            enemyPosX[i]= 750 - equaldistX;
-            equaldistX=auxX*(i+2);
-            console.log(enemyPosX[i]);
+        for (var i = 0; i < size; i++) {
+            enemyPosX[i] = 750 - equaldistX;
+            equaldistX = auxX * (i + 2);
         }
 
-        for(var i=0;i<size;i++){
-            enemyPosY[i]= 500 - equaldistY;
-            equaldistY=auxY*(i+2);
-            console.log(enemyPosY[i]);
+        for (var i = 0; i < size; i++) {
+            enemyPosY[i] = 500 - equaldistY;
+            equaldistY = auxY * (i + 2);
         }
 
-        var posbol=true;//boleano para alternar la creacion de las posiciones de los enemigos
+        var posbol = true;//boleano para alternar la creacion de las posiciones de los enemigos
 
         for (var i = 0; i < size; i++) {
 
-            console.log("se ha creado n " + i);
-
-            if(posbol==true){
+            if (posbol == true) {
                 enemies[i] = this.physics.add.sprite(enemyPosX[i], enemyPosY[i], 'girlPolice');
-            }else{
-                enemies[i] = this.physics.add.sprite(enemyPosX[i], enemyPosY[size-i], 'girlPolice');
+            } else {
+                enemies[i] = this.physics.add.sprite(enemyPosX[i], enemyPosY[size - i], 'girlPolice');
             }
-            
-            enemies[i].name =i.toString();
+
+            enemies[i].name = i.toString();
 
             enemies[i].body.setSize(enemies[i].width * 0.3, enemies[i].height * 0.85);
             enemies[i].setImmovable(true);
             enemies[i].alive = true;
             enemies[i].turnedLeft = true;
             enemies[i].life = 3;
+            enemies[i].isAttacking = false;
 
             this.physics.add.collider(this.player, enemies[i], function (player, police) {
                 // if (player.atkP1.isDown) {
@@ -506,10 +558,10 @@ class onlineLevel extends Phaser.Scene {
                 // }
             });
 
-            if(posbol==true){
-                posbol=false;
-            } else if(posbol==false){
-                posbol=true;
+            if (posbol == true) {
+                posbol = false;
+            } else if (posbol == false) {
+                posbol = true;
             }
         }
     }
@@ -518,11 +570,11 @@ class onlineLevel extends Phaser.Scene {
         var playerCoords = player.getCenter();
         var enemyCoords = enemy.getCenter();
 
-        if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
+        if ((playerCoords.x < enemyCoords.x) && (enemy.isAttacking == false))//si el enemigo va hacia la izquierda
         {
             enemy.play('eLeft', true);
         }
-        else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
+        else if ((playerCoords.x > enemyCoords.x) && (enemy.isAttacking == false))//si el enemigo va hacia la derecha
         {
             enemy.play('eRight', true);
         }
@@ -533,11 +585,11 @@ class onlineLevel extends Phaser.Scene {
         var enemyCoords = enemy.getCenter();
         enemy.setVelocityX(0);
         enemy.setVelocityY(0);
-        if (playerCoords.x < enemyCoords.x)//si el enemigo va hacia la izquierda
+        if ((playerCoords.x < enemyCoords.x) && (enemy.isAttacking == false))//si el enemigo va hacia la izquierda
         {
             enemy.play('eTurnLeft', true);
         }
-        else if (playerCoords.x > enemyCoords.x)//si el enemigo va hacia la derecha
+        else if ((playerCoords.x > enemyCoords.x) && (enemy.isAttacking == false))//si el enemigo va hacia la derecha
         {
             enemy.play('eTurnRight', true);
         }
@@ -549,7 +601,7 @@ class onlineLevel extends Phaser.Scene {
         return angle;
     }
 
-    enemyFollow(player, enemy, v) {
+    enemyFollow(player, enemy, v, enemies, index) {
         //velocidad del enemigo
         var vEnemy = v;
 
@@ -573,50 +625,76 @@ class onlineLevel extends Phaser.Scene {
         if (dist <= separation) {
             this.enemyStop(player, enemy);
             if ((anglePlayerEnemy >= angleTopRight && anglePlayerEnemy <= angleBottomRight)) {
-                this.enemyAttack(player, enemy);
+                if(player.life>0){
+                    this.enemyAttack(player, enemy, enemies, index);
+                }
             } else if ((anglePlayerEnemy >= -1 * pi && anglePlayerEnemy <= angleTopLeft) || (anglePlayerEnemy <= pi && anglePlayerEnemy >= angleBottomLeft)) {
-                this.enemyAttack(player, enemy);
+                if(player.life>0){
+                    this.enemyAttack(player, enemy, enemies, index);
+                }
             }
         }
     }
 
-    enemyAttack(player, enemy) {
+    enemyAttack(player, enemy, enemies, i) {
         // Numero con el que se ataca
         var nAttack = 1;
-
+        
+        var random_ = [0,0,0,0,0,0];
         if(Soy_J1){//para que ambos clientes tengan la misma probabilidad de ataque
-            probability = this.randomNum(1, 100);
-            randomNumber();
+            random_[i] = this.generateRandomNum(1,200);
+            syncEAttack.sendWS(random_[i], i);
         } else {
-            probability = Random_Num;
+            random_[i]= Random_Num[i];
         }
 
         // La probabilidad del ataque del enemigo es del 0.0001%
         var playerCoords = player.getCenter();
         var enemyCoords = enemy.getCenter();
 
-        if (nAttack == probability) {
-            if (playerCoords.x < enemyCoords.x) { //si el enemigo va hacia la izquierda
-                this.punchSound.play();
-                enemy.play('eAttackLeft', true);
-                player.life -= 1;
-                this.updateHearts();
-            } else if (playerCoords.x > enemyCoords.x) { //si el enemigo va hacia la derecha
-                this.punchSound.play();
-                enemy.play('eAttackRight', true);
-                player.life -= 1;
-                this.updateHearts();
-            }
-            if(player == this.player && player.life <= 0){
-                console.log("MATO A JUGADOR");
-                killPlayer();
+        var dist = Phaser.Math.Distance.Between(playerCoords.x, playerCoords.y, enemyCoords.x, enemyCoords.y);
+
+        if (enemy.isAttacking == false) {
+            if (dist <= 101) {
+                if (nAttack == random_[i]) {
+                    if (playerCoords.x < enemyCoords.x) { //si el enemigo va hacia la izquierda
+                              
+                        this.punchSound.play();
+                        enemy.play('eAttackLeft', true);
+                        enemy.isAttacking = true;
+                        player.life--;
+
+                        setTimeout(function () {
+                            enemy.isAttacking = false;
+                        }, 200);
+
+                        this.updateHearts();
+
+                    } else if (playerCoords.x > enemyCoords.x) { //si el enemigo va hacia la derecha
+                        
+                        this.punchSound.play();
+                        enemy.play('eAttackRight', true);
+                        enemy.isAttacking = true;
+                        player.life--;
+
+                        setTimeout(function () {
+                            enemy.isAttacking = false;
+                        }, 200);
+
+                        this.updateHearts();
+                    }
+                    if (player == this.player && player.life <= 0) {
+                        console.log("MATO A JUGADOR");
+                        killPlayer();
+                    }
+                }
             }
         }
     }
 
     updateHearts() {
         if (Soy_J1) {
-            console.log("Cliente 1 ");
+            console.log("[updateHearts] this.player.life: " + this.player.life);
             if (this.player.life == 4) {
                 this.cora5.destroy();
                 console.log("cora5 destruido");
@@ -659,7 +737,7 @@ class onlineLevel extends Phaser.Scene {
                 console.log("cora6 destruido");
             }
         } else {
-            console.log("cliente 2");
+            console.log("this.player2.life" + this.player2.life); 
             if (this.player2.life == 4) {
                 this.cora5.destroy();
                 console.log("cora5 destruido");
@@ -720,16 +798,33 @@ class onlineLevel extends Phaser.Scene {
         }
     }
 
+
+    /////////// UPDATE //////////
+
     update() {
 
         ////////////////////////////////// APARTADO ONLINE (WEBSOCKETS)
 
+        // Sincronización de posiciones
+        this.player.setPosition(player1_global.getCenter().x, player1_global.getCenter().y);
+        this.player.turnedLeft = player1_turnedLeft;
+        this.player.life = player1_life;
+
+        this.player2.setPosition(player2_global.getCenter().x, player2_global.getCenter().y);
+        this.player2.turnedLeft = player2_turnedLeft;
+        this.player2.life = player2_life;
+
+        for (var i = 0; i < this.activeEnemies.length; i++) {
+            // Actualizo la posición de cada enemigo
+            this.activeEnemies[i].setPosition(activeEnemies_global[i].getCenter().x, activeEnemies_global[i].getCenter().y);
+        }
+
         if (WEB_goLeft && !WEB_goRight) { // Movimiento L la izquierda del otro jugador
-            console.log("Mov. Izq");
+            //console.log("Mov. Izq");
             this.player2.setVelocityX(-160);
             this.player2.turnedLeft = true;
-            WEB_goRight = false;
-            
+            WEB_goLeft = false;
+
             if (Soy_J1) {
                 this.player2.play('p2Left', true); // si soy el J1, el player2 tiene el skin de Tuerto. Ejecutamos la animacion de mov L la izq de Tuerto 
             } else {
@@ -737,6 +832,7 @@ class onlineLevel extends Phaser.Scene {
             }
 
             if (WEB_goUp) {
+                this.player2.setVelocityY(-160);
                 if (Soy_J1) {
                     console.log("Mov. Izq-Up");
                     this.player2.stop('p2Left', true);
@@ -745,12 +841,12 @@ class onlineLevel extends Phaser.Scene {
                     console.log("Mov. Izq-Up");
                     this.player2.stop('p1Left', true);
                     this.player2.play('p1Left', true);
-                }
-                this.player2.setVelocityY(-160);
+                } 
                 WEB_goDown = false;
             }
 
             if (WEB_goDown) {
+                this.player2.setVelocityY(160);
                 if (Soy_J1) {
                     console.log("Mov. Izq-Down");
                     this.player2.stop('p2Left', true);
@@ -760,7 +856,6 @@ class onlineLevel extends Phaser.Scene {
                     this.player2.stop('p2Left', true);
                     this.player2.play('p1Left', true);
                 }
-                this.player2.setVelocityY(160);
                 WEB_goUp = false;
             }
 
@@ -784,13 +879,13 @@ class onlineLevel extends Phaser.Scene {
                 WEB_dontGoLeft = false;
             }
 
-        } 
-        
+        }
+
         if (WEB_goRight && !WEB_goLeft) {
-            console.log("Mov. Der");
+            //console.log("Mov. Der");
             this.player2.setVelocityX(160);
             this.player2.turnedLeft = false;
-            WEB_goLeft = false;
+            WEB_goRight = false;
 
             if (Soy_J1) {
                 this.player2.play('p2Right', true); // si soy el J1, el player2 tiene el skin de Tuerto. Ejecutamos la animacion de mov L la der de Tuerto 
@@ -799,18 +894,19 @@ class onlineLevel extends Phaser.Scene {
             }
 
             if (WEB_goUp) {
+                this.player2.setVelocityY(-160);
                 if (Soy_J1) {
                     console.log("Mov. Der-Up");
                     this.player2.play('p2UpRight', true);
                 } else {
                     console.log("Mov. Der-Up");
                     this.player2.play('p1UpRight', true);
-                } 
-                this.player2.setVelocityY(-160);
+                }
                 WEB_goDown = false;
             }
 
             if (WEB_goDown) {
+                this.player2.setVelocityY(160);
                 if (Soy_J1) {
                     console.log("Mov. Der-Down");
                     this.player2.play('p2DownRight', true);
@@ -818,7 +914,6 @@ class onlineLevel extends Phaser.Scene {
                     console.log("Mov. Der-Down");
                     this.player2.play('p1DownRight', true);
                 }
-                this.player2.setVelocityY(160);
                 WEB_goUp = false;
             }
 
@@ -842,10 +937,10 @@ class onlineLevel extends Phaser.Scene {
                 WEB_dontGoRight = false;
             }
 
-        } 
-        
+        }
+
         if (WEB_goUp) {
-            console.log("Mov. Up");
+            //console.log("Mov. Up");
             this.player2.setVelocityY(-160);
 
             if (this.player2.turnedLeft) {
@@ -864,10 +959,10 @@ class onlineLevel extends Phaser.Scene {
 
             if (WEB_goLeft) {
                 if (Soy_J1) {
-                    console.log("Mov. Up-Izq");
+                    //console.log("Mov. Up-Izq");
                     this.player2.play('p2UpLeft', true);
                 } else {
-                    console.log("Mov. Up-Izq");
+                    //console.log("Mov. Up-Izq");
                     this.player2.play('p1UpLeft', true);
                 }
                 this.player2.setVelocityX(-160);
@@ -876,10 +971,10 @@ class onlineLevel extends Phaser.Scene {
 
             if (WEB_goRight) {
                 if (Soy_J1) {
-                    console.log("Mov. Up-Der");
+                    //console.log("Mov. Up-Der");
                     this.player2.play('p2UpRight', true);
                 } else {
-                    console.log("Mov. Up-Der");
+                    //console.log("Mov. Up-Der");
                     this.player2.play('p1UpRight', true);
                 }
                 this.player2.setVelocityX(160);
@@ -887,7 +982,7 @@ class onlineLevel extends Phaser.Scene {
             }
 
             if (WEB_dontGoUp) {
-                console.log("WEB_dontGoUp  " + WEB_dontGoUp);
+                //console.log("WEB_dontGoUp  " + WEB_dontGoUp);
                 WEB_goUp = false;
                 //this.player2.setVelocityY(0);
                 if (this.player2.turnedLeft) {
@@ -906,20 +1001,20 @@ class onlineLevel extends Phaser.Scene {
                 WEB_dontGoUp = false;
             }
 
-        } 
-        
-        if (WEB_goDown){
-            console.log("Mov. Down");
+        }
+
+        if (WEB_goDown) {
+            //console.log("Mov. Down");
             this.player2.setVelocityY(160);
 
             if (this.player2.turnedLeft) {
-                if(Soy_J1){
+                if (Soy_J1) {
                     this.player2.play('p2DownLeft', true);
                 } else {
                     this.player2.play('p1DownLeft', true);
-                } 
+                }
             } else {
-                if(Soy_J1){
+                if (Soy_J1) {
                     this.player2.play('p2DownRight', true);
                 } else {
                     this.player2.play('p1DownRight', true);
@@ -928,10 +1023,10 @@ class onlineLevel extends Phaser.Scene {
 
             if (WEB_goLeft) {
                 if (Soy_J1) {
-                    console.log("Mov. Down-Izq");
+                    //console.log("Mov. Down-Izq");
                     this.player2.play('p2DownLeft', true);
                 } else {
-                    console.log("Mov. Down-Izq");
+                    //console.log("Mov. Down-Izq");
                     this.player2.play('p1DownLeft', true);
                 }
                 this.player2.setVelocityX(-160);
@@ -940,10 +1035,10 @@ class onlineLevel extends Phaser.Scene {
 
             if (WEB_goRight) {
                 if (Soy_J1) {
-                    console.log("Mov. Down-Der");
+                    //console.log("Mov. Down-Der");
                     this.player2.play('p2DownRight', true);
                 } else {
-                    console.log("Mov. Down-Der");
+                    //console.log("Mov. Down-Der");
                     this.player2.play('p1DownRight', true);
                 }
                 this.player2.setVelocityX(160);
@@ -951,7 +1046,7 @@ class onlineLevel extends Phaser.Scene {
             }
 
             if (WEB_dontGoDown) {
-                console.log("WEB_dontGoDown  " + WEB_dontGoDown);
+                //console.log("WEB_dontGoDown  " + WEB_dontGoDown);
                 WEB_goDown = false;
                 //this.player2.setVelocityX(0);
                 // this.player2.setVelocityY(0);
@@ -970,7 +1065,7 @@ class onlineLevel extends Phaser.Scene {
                 }
                 WEB_dontGoDown = false;
             }
-        }     
+        }
 
         if (WEB_playerStop) {
             this.player2.setVelocityX(0);
@@ -991,8 +1086,8 @@ class onlineLevel extends Phaser.Scene {
             }
             WEB_playerStop = false;
         }
-        
-        if(WEB_pauseGame){
+
+        if (WEB_pauseGame) {
             this.scene.stop('gameWin');
             this.scene.stop('gameOver');
             this.scene.switch('pauseOnlineScene');
@@ -1004,14 +1099,14 @@ class onlineLevel extends Phaser.Scene {
                 this.player2.setVelocityX(0);
                 this.player2.setVelocityY(0);
                 if (!this.player2.attackLeft) {
-                    if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá sonar el sonido de pintura
+                    if (Soy_J1) { // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá sonar el sonido de pintura
                         this.paintSound.play();
                     } else { // si yo soy el J2 (el que se unió L la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá sonar el sonido de spray
                         this.spraySound.play();
                     }
                 }
                 this.player2.attackLeft = true;
-                if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá ejecutarse la animación de ataque de Tuerto
+                if (Soy_J1) { // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá ejecutarse la animación de ataque de Tuerto
                     this.player2.play('p2AttackLeft');
                 } else { // si yo soy el J2 (el que se unió L la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá ejecutarse la animación de ataque de Vivo
                     this.player2.play('p1AttackLeft');
@@ -1020,14 +1115,14 @@ class onlineLevel extends Phaser.Scene {
                 this.player2.setVelocityX(0);
                 this.player2.setVelocityY(0);
                 if (!this.player2.attackRight) {
-                    if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá sonar el sonido de pintura
+                    if (Soy_J1) { // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá sonar el sonido de pintura
                         this.paintSound.play();
                     } else { // si yo soy el J2 (el que se unió L la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá sonar el sonido de spray
                         this.spraySound.play();
                     }
                 }
                 this.player2.attackRight = true;
-                if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá ejecutarse la animación de ataque de Tuerto
+                if (Soy_J1) { // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá ejecutarse la animación de ataque de Tuerto
                     this.player2.play('p2AttackRight');
                 } else { // si yo soy el J2 (el que se unió L la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá ejecutarse la animación de ataque de Vivo
                     this.player2.play('p1AttackRight');
@@ -1036,7 +1131,6 @@ class onlineLevel extends Phaser.Scene {
 
             if (WEB_dontPlayerAttack) {
                 WEB_playerAttack = false;
-                console.log("ha dejado de atacar");
                 this.player2.attackRight = false;
                 this.player2.attackLeft = false;
                 if (this.player2.turnedLeft) {
@@ -1056,30 +1150,74 @@ class onlineLevel extends Phaser.Scene {
             }
         }
 
-        if(WEB_playerHasDied){
-            console.log("Mato al player2")
+        if (WEB_playerHasDied) {
             if (this.player2.turnedLeft) {
-                if(Soy_J1){
+                if (Soy_J1) {
                     this.player2.play('p2DefeatLeft', true); // Animacion Tuerto
                 } else {
                     this.player2.play('p1DefeatLeft', true); // Animacion Vivo
                 }
-                this.player2.setImmovable(true); 
+                this.player2.setImmovable(true);
                 this.player2.setVelocityX(0);
-                this.player2.setVelocityY(0);                
+                this.player2.setVelocityY(0);
             } else {
-                if(Soy_J1){
+                if (Soy_J1) {
                     this.player2.play('p2DefeatRight', true); // Animacion Tuerto
                 } else {
                     this.player2.play('p1DefeatRight', true); // Animacion Vivo
                 }
                 this.player2.setImmovable(true);
                 this.player2.setVelocityX(0);
-                this.player2.setVelocityY(0); 
+                this.player2.setVelocityY(0);
             }
             WEB_playerHasDied = false;
         }
-        
+
+        if (WEB_gameOver) {
+            WEB_gameOver = false;
+            partidaCreada = false;
+            yaHayUnJugador = false;
+            StartGame = false;
+
+            if (gameOverOnlineActive == false) {
+                gameOverOnlineActive = true;
+                this.scene.start('gameOver');
+                this.scene.stop('onlineLevel');
+                this.scene.stop('pauseScene');
+            }
+        }
+
+        if (WEB_gameWin) {
+            WEB_gameWin = false;
+            partidaCreada = false;
+            yaHayUnJugador = false;
+            StartGame = false;
+
+            if (gameWinOnlineActive == false) {
+                gameWinOnlineActive = true;
+                this.scene.start('gameWinOnline');
+                this.scene.stop('onlineLevel');
+                this.scene.stop('pauseScene');
+            }
+        }
+
+        if (WEB_enemyhasDied) { // sincronización de la muerte de enemigos
+            if (idEnemyToKill != -1) {
+                console.log("idEnemyToKill = " + idEnemyToKill);
+                console.log("activeEnemies = " + this.activeEnemies);
+
+                this.countDead++;
+
+                this.activeEnemies[idEnemyToKill].life = -1;
+                this.activeEnemies[idEnemyToKill].y = -100;
+                this.activeEnemies[idEnemyToKill].body.moves = false;
+                this.activeEnemies[idEnemyToKill].alive = false;
+
+                console.log("Han matado al enemigo " + idEnemyToKill);
+            }
+            idEnemyToKill = -1;
+            WEB_enemyhasDied = false;
+        }
 
         // ACTUALIZA LA PROFUNDIDAD DE LOS ENEMIGOS
         for (var i = 0; i < this.activeEnemies.length; i++) {
@@ -1093,41 +1231,42 @@ class onlineLevel extends Phaser.Scene {
         // J1
         if (this.player.life <= 0) { // Si el jugador está muerto, no se puede mover
             if (this.player.turnedLeft) {
-                if(Soy_J1){
+                if (Soy_J1) {
                     this.player.play('p1DefeatLeft', true); // Animacion Vivo
                 } else {
                     this.player.play('p2DefeatLeft', true); // Animacion Tuerto
                 }
                 this.player.setImmovable(true);
                 this.player.setVelocityX(0);
-                this.player.setVelocityY(0); 
+                this.player.setVelocityY(0);
 
             } else {
-                if(Soy_J1){
+                if (Soy_J1) {
                     this.player.play('p1DefeatRight', true);
                 } else {
                     this.player.play('p2DefeatRight', true);
                 }
                 this.player.setImmovable(true);
                 this.player.setVelocityX(0);
-                this.player.setVelocityY(0); 
+                this.player.setVelocityY(0);
             }
         } else {
+
             // Eventos de controles del JUGADOR 1
             if (this.player.keyA.isDown) { // Si el Jugador 1 pulsa la A, se mueve hacia la izq
                 playerMoveLeft(); // Avisamos al otro cliente de que nos movemos L la izquierda
                 this.player.setVelocityX(-160);
                 this.player.turnedLeft = true;
-                
-                if(Soy_J1){
+
+                if (Soy_J1) {
                     this.player.play('p1Left', true);
                 } else {
                     this.player.play('p2Left', true);
-                }                
-                
+                }
+
                 if (this.player.keyW.isDown) {
                     playerMoveUp();
-                    console.log("Sumo mov. arriba");
+                    //console.log("Sumo mov. arriba");
                     this.player.setVelocityY(-160);
                 }
 
@@ -1140,12 +1279,12 @@ class onlineLevel extends Phaser.Scene {
                 playerMoveRight(); // Avisamos al otro cliente de que nos movemos L la derecha
                 this.player.setVelocityX(160);
                 this.player.turnedLeft = false;
-                
-                if(Soy_J1){
+
+                if (Soy_J1) {
                     this.player.play('p1Right', true);
                 } else {
                     this.player.play('p2Right', true);
-                } 
+                }
 
                 if (this.player.keyW.isDown) {
                     playerMoveUp();
@@ -1161,31 +1300,31 @@ class onlineLevel extends Phaser.Scene {
                 playerMoveUp(); // Avisamos al otro cliente de que nos movemos hacia arriba
                 this.player.setVelocityY(-160);
                 if (this.player.turnedLeft) {
-                    if(Soy_J1){
+                    if (Soy_J1) {
                         this.player.play('p1UpLeft', true);
                     } else {
                         this.player.play('p2UpLeft', true);
-                    } 
+                    }
                 } else {
-                    if(Soy_J1){
+                    if (Soy_J1) {
                         this.player.play('p1UpRight', true);
                     } else {
                         this.player.play('p2UpRight', true);
-                    } 
+                    }
                 }
-                console.log("Entra en Mov.Arriba");
+                //console.log("Entra en Mov.Arriba");
             }
             else if (this.player.keyS.isDown) { // Si el Jugador 1 pulsa la S, se mueve hacia abajo
                 playerMoveDown(); // Avisamos al otro cliente de que nos movemos hacia abajo
                 this.player.setVelocityY(160);
                 if (this.player.turnedLeft) {
-                    if(Soy_J1){
+                    if (Soy_J1) {
                         this.player.play('p1DownLeft', true);
                     } else {
                         this.player.play('p2DownLeft', true);
-                    } 
+                    }
                 } else {
-                    if(Soy_J1){
+                    if (Soy_J1) {
                         this.player.play('p1DownRight', true);
                     } else {
                         this.player.play('p2DownRight', true);
@@ -1199,13 +1338,13 @@ class onlineLevel extends Phaser.Scene {
                 this.player.setVelocityY(0);
 
                 if (this.player.turnedLeft) {
-                    if(Soy_J1){
+                    if (Soy_J1) {
                         this.player.play('p1TurnLeft');
                     } else {
                         this.player.play('p2TurnLeft');
                     }
                 } else {
-                    if(Soy_J1){
+                    if (Soy_J1) {
                         this.player.play('p1TurnRight');
                     } else {
                         this.player.play('p2TurnRight');
@@ -1213,19 +1352,19 @@ class onlineLevel extends Phaser.Scene {
                 }
             }
 
-            if(this.player.keyA.isUp){
+            if (this.player.keyA.isUp) {
                 //console.log("este jugador ha soltado la tecla A");
                 playerStopMoveLeft();
-            } 
+            }
             if (this.player.keyD.isUp) {
                 //console.log("este jugador ha soltado la tecla D");
                 playerStopMoveRight();
-            } 
-            if (this.player.keyW.isUp){
+            }
+            if (this.player.keyW.isUp) {
                 //console.log("este jugador ha soltado la tecla W");
                 playerStopMoveUp();
-            } 
-            if (this.player.keyS.isUp){
+            }
+            if (this.player.keyS.isUp) {
                 //console.log("este jugador ha soltado la tecla S");
                 playerStopMoveDown();
             }
@@ -1240,7 +1379,7 @@ class onlineLevel extends Phaser.Scene {
                         this.spraySound.play();
                     }
                     this.player.attackLeft = true;
-                    if(Soy_J1){
+                    if (Soy_J1) {
                         this.player.play('p1AttackLeft');
                     } else {
                         this.player.play('p2AttackLeft');
@@ -1252,7 +1391,7 @@ class onlineLevel extends Phaser.Scene {
                         this.spraySound.play();
                     }
                     this.player.attackRight = true;
-                    if(Soy_J1){
+                    if (Soy_J1) {
                         this.player.play('p1AttackRight');
                     } else {
                         this.player.play('p2AttackRight');
@@ -1269,163 +1408,60 @@ class onlineLevel extends Phaser.Scene {
         // J2
         if (this.player2.life <= 0) {
             if (this.player2.turnedLeft) {
-                if(Soy_J1){
+                if (Soy_J1) {
                     this.player2.play('p2DefeatLeft', true); // Animacion Tuerto
                 } else {
                     this.player2.play('p1DefeatLeft', true); // Animacion Vivo
                 }
-                this.player2.setImmovable(true); 
+                this.player2.setImmovable(true);
                 this.player2.setVelocityX(0);
-                this.player2.setVelocityY(0);                
+                this.player2.setVelocityY(0);
             } else {
-                if(Soy_J1){
+                if (Soy_J1) {
                     this.player2.play('p2DefeatRight', true); // Animacion Tuerto
                 } else {
                     this.player2.play('p1DefeatRight', true); // Animacion Vivo
                 }
                 this.player2.setImmovable(true);
                 this.player2.setVelocityX(0);
-                this.player2.setVelocityY(0); 
+                this.player2.setVelocityY(0);
             }
-        } else {
-            // Eventos de controles del JUGADOR 2 (para la versión en LOCAL, en online se eliminan)
-            if (this.cursors.left.isDown) {
-                // this.player2.setVelocityX(-160);
-                // this.player2.turnedLeft = true;
-                // this.player2.play('p2Left', true);
-
-                // if (this.cursors.up.isDown) {
-                //     this.player2.setVelocityY(-160);
-                // }
-
-                // if (this.cursors.down.isDown) {
-                //     this.player2.setVelocityY(160);
-                // }
-            }
-            else if (this.cursors.right.isDown) {
-                // this.player2.setVelocityX(160);
-                // this.player2.turnedLeft = false;
-                // this.player2.play('p2Right', true);
-
-                // if (this.cursors.up.isDown) {
-                //     this.player2.setVelocityY(-160);
-                // }
-
-                // if (this.cursors.down.isDown) {
-                //     this.player2.setVelocityY(160);
-                // }
-            }
-            else if (this.cursors.up.isDown) {
-                // this.player2.setVelocityY(-160);
-                // if (this.player2.turnedLeft) {
-                //     this.player2.play('p2UpLeft', true);
-                // } else {
-                //     this.player2.play('p2UpRight', true);
-                // }
-            }
-            else if (this.cursors.down.isDown) {
-                // this.player2.setVelocityY(160);
-                // if (this.player2.turnedLeft) {
-                //     this.player2.play('p2DownLeft', true);
-                // } else {
-                //     this.player2.play('p2DownRight', true);
-                // }
-            }
-            else {
-                // this.player2.setVelocityX(0);
-                // this.player2.setVelocityY(0);
-                // if (this.player2.turnedLeft) {
-                //     if(Soy_J1){
-                //         this.player2.play('p2TurnLeft');
-                //     } else {
-                //         this.player2.play('p1TurnLeft');
-                //     }
-                // } else {
-                //     if(Soy_J1){
-                //         this.player2.play('p2TurnRight');
-                //     } else {
-                //         this.player2.play('p1TurnRight');
-                //     }
-                // }
-            }
-
-            // Ataque JUGADOR 2
-            // if (WEB_playerAttack) {
-            //     if (this.player2.turnedLeft) { // ATAQUE A LA IZQ
-            //         this.player2.setVelocityX(0);
-            //         this.player2.setVelocityY(0);
-            //         if (!this.player2.attackLeft) {
-            //             if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá sonar el sonido de pintura
-            //                 this.paintSound.play();
-            //             } else { // si yo soy el J2 (el que se unió L la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá sonar el sonido de spray
-            //                 this.spraySound.play();
-            //             }
-            //         }
-            //         this.player2.attackLeft = true;
-            //         if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá ejecutarse la animación de ataque de Tuerto
-            //             this.player2.play('p2AttackLeft');
-            //         } else { // si yo soy el J2 (el que se unió L la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá ejecutarse la animación de ataque de Vivo
-            //             this.player2.play('p1AttackLeft');
-            //         }
-            //     } else { // ATAQUE A LA DER
-            //         this.player2.setVelocityX(0);
-            //         this.player2.setVelocityY(0);
-            //         if (!this.player2.attackRight) {
-            //             if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá sonar el sonido de pintura
-            //                 this.paintSound.play();
-            //             } else { // si yo soy el J2 (el que se unió L la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá sonar el sonido de spray
-            //                 this.spraySound.play();
-            //             }
-            //         }
-            //         this.player2.attackRight = true;
-            //         if(Soy_J1){ // si yo soy el J1 (el que creó la partida), el jugador 2 (usuario online) tiene la skin de Tuerto, por lo que deberá ejecutarse la animación de ataque de Tuerto
-            //             this.player2.play('p2AttackRight');
-            //         } else { // si yo soy el J2 (el que se unió L la partida), el jugador 2 (usuario online) tiene la skin de Vivo, por lo que deberá ejecutarse la animación de ataque de Vivo
-            //             this.player2.play('p1AttackRight');
-            //         }
-            //     }
-            // }
-            // if (WEB_dontPlayerAttack) {
-            //     console.log("ha dejado de atacar");
-            //     this.player2.attackRight = false;
-            //     this.player2.attackLeft = false;
-            //     WEB_dontPlayerAttack = false;
-            // }
         }
 
         var velocitiesSize = this.velocities.length;
-        var mediumVelocity = this.velocities[Math.floor(velocitiesSize/2)];
+        var mediumVelocity = this.velocities[Math.floor(velocitiesSize / 2)];
 
         // ACTUALIZACIÓN PARA QUE LOS ENEMIGOS SIGAN A LOS PERSONAJES
-        if(Soy_J1){
+
+        if (Soy_J1) {
             for (var i = 0; i < this.activeEnemies.length; i++) {
                 if (this.activeEnemies[i].alive) {
-                    if(this.velocities[i]>=mediumVelocity){
+                    if (this.velocities[i] >= mediumVelocity) {
                         if (i % 2 == 0) {
-                            if(this.player.life > 0){
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
+                            if (this.player.life > 0) {
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             }
                         } else {
-                            if(this.player2.life > 0){
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                            if (this.player2.life > 0) {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             }
                         }
                     } else {
                         if (i % 2 == 0) {
-                            if(this.player.life > 0){
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                            if (this.player.life > 0) {
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             }
                         } else {
-                            if(this.player2.life > 0){
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                            if (this.player2.life > 0) {
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             }
                         }
                     }
@@ -1437,29 +1473,29 @@ class onlineLevel extends Phaser.Scene {
                     if(this.velocities[i]>=mediumVelocity){
                         if (i % 2 == 0) {
                             if(this.player2.life > 0){
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             } else {
                                 this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
                             }
                         } else {
                             if(this.player.life > 0){
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             }
                         }
                     } else {
                         if (i % 2 == 0) {
                             if(this.player2.life > 0){
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             }
                         } else {
                             if(this.player.life > 0){
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             }
                         }
                     }
@@ -1477,10 +1513,11 @@ class onlineLevel extends Phaser.Scene {
                 if (dist <= 101) {
                     if (this.player.atkP1.isDown) {
                         this.activeEnemies[i].life -= 1;
-                        console.log("pucch");
-                        if (this.activeEnemies[i].life <= 0) {
+                        if (this.activeEnemies[i].life <= 0) { // hacer desaparecer enemigo si ataque el player
                             this.activeEnemies[i].y = -100;
                             this.activeEnemies[i].body.moves = false;
+                            console.log("[onlineLevel.js] Mato al enemigo " + i);
+                            killEnemy(i) // avisamos al servidor de que este enemigo ha muerto
                         }
                     }
                 }
@@ -1496,8 +1533,7 @@ class onlineLevel extends Phaser.Scene {
                 if (dist <= 101) {
                     if (WEB_playerAttack) {
                         this.activeEnemies[i].life -= 1;
-                        console.log("oucch");
-                        if (this.activeEnemies[i].life <= 0) {
+                        if (this.activeEnemies[i].life <= 0) { // hacer desaparecer enemigo si se avisa de ataque desde el servidor
                             this.activeEnemies[i].y = -100;
                             this.activeEnemies[i].body.moves = false;
                         }
@@ -1511,42 +1547,127 @@ class onlineLevel extends Phaser.Scene {
             if (this.activeEnemies[i].alive) {
                 if (this.activeEnemies[i].life <= 0) {
                     this.activeEnemies[i].alive = false;
+                    this.activeEnemies[i].y = -100;
+                    this.activeEnemies[i].body.moves = false;
                     this.countDead++;
+                    console.log("[onlineLevel.js] Enemigo " + i + " muerto");
                 }
             }
         }
 
+        // Cuando han muerto todos los enemigos de una ronda
         if (this.countDead == this.activeEnemies.length) {
             this.roundCont++;
             if (this.roundCont == 2) {
+                console.log("RONDA: " + this.roundCont);
                 this.activeEnemies.length = this.quantEnemiesRound2;
                 this.countDead = 0;
                 this.createEnemies(this.activeEnemies, this.quantEnemiesRound2);
                 this.updateVelocities(velocitiesSize);
+
+                activeEnemies_global = this.activeEnemies;
+                activeEnemies_length = this.activeEnemies.length;
             } else if (this.roundCont == 3) {
+                console.log("RONDA: " + this.roundCont);
                 this.activeEnemies.length = this.quantEnemiesRound3;
                 this.countDead = 0;
                 this.createEnemies(this.activeEnemies, this.quantEnemiesRound3);
                 this.updateVelocities(velocitiesSize);
-            }else if(this.roundCont > 3){
-                this.scene.start('gameWinOnline');
+
+                activeEnemies_global = this.activeEnemies;
+                activeEnemies_length = this.activeEnemies.length;
+            } else if (this.roundCont > 3) {
+
+                partidaCreada = false;
+                yaHayUnJugador = false;
+                StartGame = false;
+
+                gameWinSync(); // avisamos al otro cliente de que se ha acabado la partida
+
+                if (gameWinOnlineActive == false) {
+                    gameWinOnlineActive = true;
+                    this.scene.start('gameWinOnline');
+                    this.scene.stop('onlineLevel');
+                    this.scene.stop('pauseScene');
+                }
+
+            }
+        }
+
+        //Cambiar escena L gameover
+        console.log("vida player " + this.player.life + " vida player2 "+ this.player2.life);
+        if(this.player.life==0 && this.player2.life==0){
+            console.log("HA ACABADO LA PARTIDA");
+            partidaCreada = false;
+            yaHayUnJugador = false;
+            StartGame = false;
+
+            gameOverSync(); // avisamos al otro cliente de que se ha acabado la partida
+
+            if(gameOverOnlineActive == false){
+                console.log("Entra en gameOverOnlineActive");
+                gameOverOnlineActive = true;
+                this.scene.start('gameOver');
                 this.scene.stop('onlineLevel');
                 this.scene.stop('pauseScene');
             }
         }
 
-        //Cambiar escena L gameover
-        if(this.player.life==0 && this.player2.life==0){
-            this.scene.start('gameOver');
-            this.scene.stop('onlineLevel');
-            this.scene.stop('pauseScene');
-            deleteGame();
-        }
+        // WS SYNC
+        player1_global = this.player;
+        player1_life = this.player.life;
+        player1_turnedLeft = this.player.turnedLeft;
+
+        player2_global = this.player2;
+        player2_life = this.player2.life;
+        player2_turnedLeft = this.player2.turnedLeft;
+
+        activeEnemies_global = this.activeEnemies;
+        activeEnemies_length = this.activeEnemies.length;
+        
     }
 
+    /////////// SINCRONIZACIÓN DE POSICIONES ENTRE JUGADORES //////////
+    // Envío una actualización de las posiciones de los dos jugadores
+    checkSync = setInterval(this.makeSyncWSSendMessage, 200);
+
+    makeSyncWSSendMessage() {
+        if(StartGame == true){ 
+
+            // Si soy J1, mando la posición de VIVO
+            if (player2_life >= 0 && Soy_J1) { 
+                // Sincronización posición jugadores:
+                // Este mensaje lo envía el J1, por lo que la pos de Vivo será la de player1 y la de Tuerto la de player2
+                syncWS.sendWS(player1_global.getCenter(), player2_global.getCenter(), player1_turnedLeft, player2_turnedLeft) 
+            }
+
+            // Si soy J2, mando la posición de TUERTO
+            if (player2_life >= 0 && Soy_J1 == false) { 
+                // Sincronización posición jugadores:
+                // Este mensaje lo envía el J2, por lo que la pos de Vivo será la de player2 y la de Tuerto la de player1
+                sync2WS.sendWS(player2_global.getCenter(), player1_global.getCenter(), player2_turnedLeft, player1_turnedLeft) 
+            }
+            
+            // La sincronización de la posición de los enemigos se basa en las posiciones en el Cliente 1
+            if (Soy_J1) {
+                for (var i = 0; i < activeEnemies_length; i++) {
+                    // if (activeEnemies_global[i].alive) { // si el enemigo está vivo, envío su posición para actulizarla en el otro cliente
+                    //     // Sincronización posición enemigos:
+                    //     enemySyncWS.sendWS(i, activeEnemies_global[i].getCenter());
+                    // }
+
+                    enemySyncWS.sendWS(i, activeEnemies_global[i].getCenter());
+                }
+            }
+        }
+    }
 }
 
 // FUNCIONES A EJECUTAR CUANDO connection.js LO SOLICITE
+
+// Estas funciones se ejecutan cuando el cliente ha recibido en connection.js un aviso del servidor para que actualice algún aspecto del juego
+// Las funciones activan booleanos que en el update permiten actualizar el juego según las acciones del otro cliente
+
 function activate_WEB_goLeft(){
     //console.log("El OTRO jugador se va L mover L la izquierda");
     WEB_goLeft = true;
@@ -1571,30 +1692,51 @@ function deactivate_WEB_goLeft(){
     //console.log("El OTRO jugador ha soltado la tecla A");
     WEB_dontGoLeft = true;
 }
+
 function deactivate_WEB_goRight(){
     //console.log("El OTRO jugador ha soltado la tecla D");
     WEB_dontGoRight = true;
 }
+
 function deactivate_WEB_goUp(){
     //console.log("El OTRO jugador ha soltado la tecla W");
     WEB_dontGoUp = true;
 }
+
 function deactivate_WEB_goDown(){
     //console.log("El OTRO jugador ha soltado la tecla S");
     WEB_dontGoDown = true;
 }
+
 function makePauseGame(){
     WEB_pauseGame = true;
 }
+
 function activate_WEB_playerAttack(){
     WEB_playerAttack = true;
 }
+
 function deactivate_WEB_dontPlayerAttack(){
     WEB_dontPlayerAttack = true;
 }
+
 function activate_WEB_playerStop(){
     WEB_playerStop = true;
 }
+
 function activate_WEB_playerHasDied(){
     WEB_playerHasDied = true;
+}
+
+function activate_WEB_gameOver(){
+    WEB_gameOver = true;
+}
+
+function activate_WEB_gameWin(){
+    WEB_gameWin = true;
+    console.log("activate_WEB_gameWin");
+}
+
+function activate_WEB_enemyHasDied(){
+    WEB_enemyhasDied = true;
 }

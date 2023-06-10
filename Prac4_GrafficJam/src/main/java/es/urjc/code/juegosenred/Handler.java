@@ -34,6 +34,7 @@ public class Handler extends TextWebSocketHandler {
     int currentGames = 0;
     int currentPlayers = 0;
 
+    @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         JsonNode node = mapper.readTree(message.getPayload()); // Nodo
         ObjectNode msg = mapper.createObjectNode(); // Mensaje que se enviara a un cliente
@@ -44,19 +45,20 @@ public class Handler extends TextWebSocketHandler {
             case (0): // Crear una partida
                 int idLocal = 0;
                 Game gameAux_c0 = new Game();
-                String debug = "Me he unido a la partida";
-                if (currentGames < MAX_GAMES) {
+                String debug = "Me he unido a la partida ";
+                
+                if (currentGames < MAX_GAMES) { // si no se ha superado el máximo de partida
                     int idJug = node.get("idJugador").asInt();
-                    for (Game p : gameList) {// Recorro mi lista por cada elemento partida
-                        if (!p.getHayJugador()) { // SI NO HAY J1 (es decir, no hay jugadores)
-                            createGame(currentGames, playerList.get(idJug));// Llamo a mi función crearPartida
-                                                                                   // con los datos necesarios
-                            msg.put("soyJ1", true);
+                    for (Game game : gameList) {// Recorro mi lista por cada elemento partida
+                        if (!game.getHayJugador()) { // SI NO HAY J1 (es decir, no hay jugadores)
+                            createGame(idLocal, playerList.get(idJug));// Creo una partida
+                            msg.put("soyJ1", true); // al ser el primer jugador en entrar, será el J1
+                            gameAux_c0 = game;
                             break;
-                        } else if (p.getNeedsMorePlayers()) { // SI HAY UN J1, compruebo si hay un J2
-                            fillGame(p, playerList.get(idJug), msg); // Si no lo hay, lleno ese J2
-                            currentGames++; // Aumento el número de partidas que existen
-                            gameAux_c0 = p;
+                        } else if (game.getNeedsMorePlayers()) { // SI HAY UN J1, compruebo si hay un J2
+                            fillGame(game, playerList.get(idJug), msg); // Si no lo hay, lleno ese J2
+                            currentGames++; // Aumento el número de partidas que existen, para que la próxima partida se cree en la siguiente posición del array de partidas
+                            gameAux_c0 = game;
                             msg.put("soyJ1", false);
                             break;
                         }
@@ -66,7 +68,7 @@ public class Handler extends TextWebSocketHandler {
                     debug = "No se ha podido crear la partida (se ha alcanzado el NUM MAX de partidas)";
                 }
 
-                debug += " Id Partida: " + idLocal;
+                debug += idLocal; // indico a qué partida me he unido
                 msg.put("idPartida", idLocal);
                 msgaux.put("idPartida", idLocal);
 
@@ -78,7 +80,7 @@ public class Handler extends TextWebSocketHandler {
                     WebSocketSession localSesJ1 = gameAux_c0.getJ1().getSession();
                     WebSocketSession localSesJ2 = gameAux_c0.getJ2().getSession();
                     
-                    System.err.println("Iniciar la partida");
+                    System.out.println("Se va a iniciar la partida");
 
                     msg.put("idFuncion", 6);
                     msgaux.put("idFuncion", 6);
@@ -86,15 +88,17 @@ public class Handler extends TextWebSocketHandler {
                     msg.put("estadoPartida", true);
                     msgaux.put("estadoPartida", true);
 
-                    localSesJ1.sendMessage(new TextMessage(msg.toString()));
-                    localSesJ2.sendMessage(new TextMessage(msgaux.toString()));
+                    localSesJ1.sendMessage(new TextMessage(msg.toString())); // se le envía al J1
+                    localSesJ2.sendMessage(new TextMessage(msgaux.toString())); // se le envía al J2
                 }
                 break;
 
-            case (1): // Cerrar partida
+            case (1): // Borrar partida
                 int idJugador1 = node.get("idJugador1").asInt();
                 int idJugador2 = node.get("idJugador2").asInt();
                 int gameId_aux = node.get("idPartida").asInt();
+                Boolean sesionEsJ1 = node.get("soyJ1").asBoolean();
+
 
                 Game gameToDelete = gameList.get(gameId_aux);
                 Player player1ToDelete = playerList.get(idJugador1);
@@ -104,19 +108,40 @@ public class Handler extends TextWebSocketHandler {
                 int idP1ToDelete = player1ToDelete.getId();
                 int idP2ToDelete = player2ToDelete.getId();
 
-                System.err.println("Voy a borrar la partida: " + gameId_aux + "que esta guardada con id " + idGameToDelete);
+                // Accedemos a la sesión del otro cliente para avisarle también del borrado de partida
+
+                WebSocketSession otherSession;
+                if(sesionEsJ1){ // si la sesion que ha mandado borrar la partida es la sesión del J1
+                    otherSession = gameToDelete.getJ2().getSession(); // guardamos al sesión del otro jugador
+                } else { // si la sesión que ha mandado borrar la partida es la sesión del J2
+                    otherSession = gameToDelete.getJ1().getSession(); // guardamos la sesión del otro jugador
+                }
+                
+                String texto = "NO se ha borrado la partida ";
+
                 if (!gameToDelete.getNeedsMorePlayers()) {
-                    System.err.println("He entrado a borrar");
+                    System.err.println("Voy a borrar la partida: " + gameId_aux + " que esta guardada con id " + idGameToDelete);
+                    System.out.println("He entrado a borrar");
+                    System.out.println("Número de partidas ANTES de borrar: " + currentGames);
                     Game newAux = new Game();
                     gameList.set(idGameToDelete, newAux); // añado una partida vacía en la posicion de la que vamos a borrar
                     currentGames--;
-                    System.err.println(currentGames);
+                    System.out.println("Número de partidas DESPUÉS de borrar: " + currentGames);
+                    texto = "Se ha borrado la partida ";
                 }
 
-                String texto = "Se ha borrado la partida";
+                // Mando la orden de borrar la partida a la sesión que ejecutó la llamada
                 msg.put("mensajeBorrado", texto);
                 msg.put("idFuncion", 1);
+                msg.put("idPartida", idGameToDelete);
                 session.sendMessage(new TextMessage(msg.toString()));
+
+                // Mando la orden de borrar la partida a la otra sesión
+                msgaux.put("mensajeBorrado", texto);
+                msgaux.put("idFuncion", 1);
+                msgaux.put("idPartida", idGameToDelete);
+                otherSession.sendMessage(new TextMessage(msgaux.toString()));
+
                 break;
 
             case (2): // Ataque jugador
@@ -139,22 +164,24 @@ public class Handler extends TextWebSocketHandler {
                 }
                 break;
 
-            case(3): //Crear jugador
+            case (3): // Crear jugador
                 if(firstEntry) { // si es la primera vez, se tienen que inicializar los arrays de partidas y jugadores
                     initGamesPlayers();
+                    System.out.println("First Entry");
                     firstEntry=false;
                 }
                 int localId_auxc3 = 0;
                 
                 if (currentPlayers < MAX_PLAYERS) { 
-                    for (Player x : playerList) {
-                        if (!x.getInGame()) {
-                            Player j = new Player (localId_auxc3,session); // Creo al jugador con la sesion del WebSocket
-                            j.setSession(session);  
+                    for (Player player : playerList) {
+                        if (!player.getInGame()) { // si el jugador no está en una partida
+                            Player newPlayer = new Player (localId_auxc3,session); // Creo al jugador con la sesion del WebSocket
+                            //newPlayer.setSession(session);  
+
                             currentPlayers++; //Actualizo el numero de jugadores que hay en el server
-                            playerList.set(localId_auxc3, j);//Añado mi jugador a la lista en la posición correspondiente
+                            playerList.set(localId_auxc3, newPlayer);//Añado mi jugador a la lista en la posición correspondiente
                             msg.put("idJugador", currentPlayers-1); //Le envio el id al jugador para que lo guarde
-                            String debug_c3 = "Se ha creado el jugador "+ (currentPlayers-1); //MENSAJE DEBUG(SOBRA)
+                            String debug_c3 = "Se ha creado el jugador con ID "+ (currentPlayers-1); //MENSAJE DEBUG
                             msg.put("mensaje", debug_c3); //Debug
                             break;
                         }
@@ -165,6 +192,7 @@ public class Handler extends TextWebSocketHandler {
                 }
                 msg.put("idFuncion", 3); // La función en cliente que quiero que haga al recibir el mensaje del servidor
                 session.sendMessage(new TextMessage(msg.toString())); // Envio el mensaje
+                System.out.println("Se ha creado el jugador " + (currentPlayers-1));
 
                 break;
 
@@ -192,7 +220,7 @@ public class Handler extends TextWebSocketHandler {
             case (5): // Movimiento hacia la derecha
                 int gameId_c5 = node.get("idPartida").asInt();
                 int playerId_c5 = node.get("idJugador").asInt();
-                Game gameAux_c5 = gameList.get(gameId_c5);
+                Game gameAux_c5 = gameList.get(gameId_c5); // accedemos a la partida correspondiente
 
                 msg.put("idFuncion", 5);
 
@@ -450,7 +478,7 @@ public class Handler extends TextWebSocketHandler {
                     auxSession2_c20.sendMessage(new TextMessage(msg.toString()));
                 }
                 break;
-            
+
             case (21): // Matar a jugador
                 int gameId_c21 = node.get("idPartida").asInt();
                 int playerId_c21 = node.get("idJugador").asInt();
@@ -470,19 +498,87 @@ public class Handler extends TextWebSocketHandler {
                     auxSession2_c21.sendMessage(new TextMessage(msg.toString()));
                 }
                 break;
-            
+            case (22): // Game Over Sync
+                int gameId_c22 = node.get("idPartida").asInt();
+                int playerId_c22 = node.get("idJugador").asInt();
+                Game gameAux_c22 = gameList.get(gameId_c22);
+
+                msg.put("idFuncion", 22);
+
+                if (playerId_c22 == gameAux_c22.getJ1().getId()) {
+                    // Si el jugador que ha enviado el mensaje al servidor
+                    // es el J1, enviamos de vuelta un mensaje al J2 de su
+                    // misma partida
+                    WebSocketSession auxSession_c22 = gameAux_c22.getJ2().getSession();
+                    auxSession_c22.sendMessage(new TextMessage(msg.toString()));
+                } else {
+                    // Si el jugador que ha enviado el mensaje al servidor es el J2, enviamos de
+                    // vuelta un mensaje al J1 de su misma partida
+                    WebSocketSession auxSession2_c22 = gameAux_c22.getJ1().getSession();
+                    auxSession2_c22.sendMessage(new TextMessage(msg.toString()));
+                }
+
+                break;
+
+            case (23): // Game Win Sync
+                int gameId_c23 = node.get("idPartida").asInt();
+                int playerId_c23 = node.get("idJugador").asInt();
+                Game gameAux_c23 = gameList.get(gameId_c23);
+
+                msg.put("idFuncion", 23);
+
+                if (playerId_c23 == gameAux_c23.getJ1().getId()) {
+                    // Si el jugador que ha enviado el mensaje al servidor
+                    // es el J1, enviamos de vuelta un mensaje al J2 de su
+                    // misma partida
+                    WebSocketSession auxSession_c23 = gameAux_c23.getJ2().getSession();
+                    auxSession_c23.sendMessage(new TextMessage(msg.toString()));
+                } else {
+                    // Si el jugador que ha enviado el mensaje al servidor es el J2, enviamos de
+                    // vuelta un mensaje al J1 de su misma partida
+                    WebSocketSession auxSession2_c23 = gameAux_c23.getJ1().getSession();
+                    auxSession2_c23.sendMessage(new TextMessage(msg.toString()));
+                }
+
+                break;
+
+            case (24): // Muerte de un enemigo
+                int gameId_c24 = node.get("idPartida").asInt();
+                int playerId_c24 = node.get("idJugador").asInt();
+                Game gameAux_c24 = gameList.get(gameId_c24);
+
+                msg.put("idFuncion", 24);
+                msg.put("idEnemy", node.get("idEnemy").asInt());
+
+                if (playerId_c24 == gameAux_c24.getJ1().getId()) {
+                    // Si el jugador que ha enviado el mensaje al servidor
+                    // es el J1, enviamos de vuelta un mensaje al J2 de su
+                    // misma partida
+                    System.out.println("Enviamos un mensaje al J2");
+                    WebSocketSession auxSession_c24 = gameAux_c24.getJ2().getSession();
+                    auxSession_c24.sendMessage(new TextMessage(msg.toString()));
+                } else {
+                    // Si el jugador que ha enviado el mensaje al servidor es el J2, enviamos de
+                    // vuelta un mensaje al J1 de su misma partida
+                    System.out.println("Enviamos un mensaje al J1");
+                    WebSocketSession auxSession2_c24 = gameAux_c24.getJ1().getSession();
+                    auxSession2_c24.sendMessage(new TextMessage(msg.toString()));
+                }
+                break;
         }
     }
 
-    public void createGame(int ID, Player player) { // Creación de partidas
-        player.setinGame(true);
-        Game p = new Game(ID, player); 
-        p.setHayJugador(true);
-        gameList.set(ID, p); // añado la partida a la lista de partidas en su posicion correspondiente
+    // Creación de partidas
+    public void createGame(int posInGameList, Player player) { 
+        player.setinGame(true); // indicamos en la info del jugador que este se encuentra en una partida
+        Game newGame = new Game(posInGameList, player); // creamos la partida
+        newGame.setHayJugador(true); // indicamos que esa partida tiene un jugador
+        gameList.set(posInGameList, newGame); // añado la partida a la lista de partidas en su posicion correspondiente
+
+        System.out.println("Se ha creado la partida " + posInGameList);
     }
 
     public void fillGame(Game p, Player J, ObjectNode msg) {
-        System.err.println("He entrado a llenar con el J2");
         J.setinGame(true);
         p.setPlayer2(J); // Añado a la partida el jugador 2
         p.setNeedsMorePlayers(false); // cuando añado el segundo jugador, se completa la partida
@@ -492,13 +588,13 @@ public class Handler extends TextWebSocketHandler {
     // Cuando se inicie el server, lleno mi lista de partidas de elementos partida
     // con valores por defecto para poder recorrer el for each de creación de partidas.
     public void initGamesPlayers() { 
-        Game g = new Game();
         for (int i = 0; i < MAX_GAMES; i++) {
+            Game g = new Game();
             g.setId(i);
             gameList.add(g);
         }
-        Player p = new Player();
         for (int i = 0; i < MAX_PLAYERS; i++) {
+            Player p = new Player();
             playerList.add(p);
         }
     }

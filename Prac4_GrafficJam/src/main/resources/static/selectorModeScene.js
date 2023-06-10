@@ -30,23 +30,29 @@ class selectorModeScene extends Phaser.Scene {
             this.scene.start('mainScene',{mensaje: mensaje})
         })
 
+        // MODO OFFLINE
         playButtonOffline.setInteractive();
         playButtonOffline.on('pointerdown', () => {
             this.clickSound.play();
             this.scene.start('selectorLevelScene', {mensaje: mensaje})
         })
 
+        // LOBBY API REST
         playButtonLobby.setInteractive();
         playButtonLobby.on('pointerdown', () => {
             this.clickSound.play();
             this.scene.start('Lobby')
         })
 
+        // MODO ONLINE
         playButtonOnline.setInteractive();
         playButtonOnline.on('pointerdown', () => {
             this.clickSound.play();
             this.scene.start('loadingServer')
-            createPlayer();
+            createPlayer(); // función de connection.js que crea al jugador
         })
     }
+
+    // IGUAL AÑADIR UNA FUNCIÓN PARA BORRAR LA ANTERIOR PARTIDA ONLINE?
+    // Problema de jugar más de una partida online
 }

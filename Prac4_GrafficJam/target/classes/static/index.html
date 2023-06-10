@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title> Graffic Jam </title>
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
+
+    <script type="text/javascript" src="syncWS.js"></script>
+    <script type="text/javascript" src="sync2WS.js"></script>
+    <script type="text/javascript" src="syncEnemiesWS.js"></script>
+    <script type="text/javascript" src="syncEnemyAttackWS.js"></script>
+    <script type="text/javascript" src="connection.js"></script>
+    <script type="text/javascript" src="onlineLevel.js"></script>
+    <script type="text/javascript" src="pauseOnlineScene.js"></script>
+    <script type="text/javascript" src="audioManager.js"></script>
+    <script type="text/javascript" src="mainScene.js"></script>
+    <script type="text/javascript" src="loadingServer.js"></script>
+    <script type="text/javascript" src="selectorModeScene.js"></script>
+    <script type="text/javascript" src="selectorLevelScene.js"></script>
+    <script type="text/javascript" src="countdown.js"></script>
+    <script type="text/javascript" src="countdown2.js"></script>
+    <script type="text/javascript" src="countdown3.js"></script>
+    <script type="text/javascript" src="Level1.js"></script>
+    <script type="text/javascript" src="Level2.js"></script>
+    <script type="text/javascript" src="Level3.js"></script>
+    <script type="text/javascript" src="pauseScene.js"></script>
+    <script type="text/javascript" src="gameOver.js"></script>
+    <script type="text/javascript" src="gameWinOnline.js"></script>
+    <script type="text/javascript" src="gameWin.js"></script>
+    <script type="text/javascript" src="gameWin2.js"></script>
+    <script type="text/javascript" src="gameWin3.js"></script>
+    <script type="text/javascript" src="Lobby.js"></script>
+    <script type="text/javascript" src="game.js"></script>
+</head>
+
+<body>
+    <script>
+        var partidaCreada = false;
+        var yaHayUnJugador = false;
+        var ID_Funcion = 5;
+        var Soy_J1 = false;
+        var StartGame = false;
+        var ID_Partida = 0;
+        var iAmFirst = false;
+        var gameAlreadyDeleted = false;
+
+        var LocalJ1 = false;
+
+        var J1_id = 10;
+        var J2_id = 10;
+
+        var hola = "He llegado al server";
+
+        // Numero aleatorio
+        var Random_Num = [0,0,0,0,0,0];
+
+        // Sincronización Web Sockets
+        var checkSync;
+
+        var player1_global;
+        var player1_life = 5;
+        var player1_turnedLeft;
+
+        var player2_global;
+        var player2_life = 5;
+        var player2_turnedLeft;
+
+        var activeEnemies_global;
+        var activeEnemies_length;
+        var idEnemyToKill = -1;
+
+        var gameWinOnlineActive = false; 
+        var gameOverOnlineActive = false;        
+       
+
+    </script>
+
+	<div id="videogame"></div>
+</body>
+
+</html>
