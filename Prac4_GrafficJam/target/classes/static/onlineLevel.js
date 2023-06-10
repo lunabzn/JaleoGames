@@ -98,7 +98,7 @@ class onlineLevel extends Phaser.Scene {
         WEB_gameOver = false;
         WEB_gameWin = false;
         WEB_enemyhasDied = false;
-
+        gameOverOnlineActive = false;
         player1_life = 5;
         player2_life = 5;
 
@@ -131,8 +131,8 @@ class onlineLevel extends Phaser.Scene {
         this.probabilities = [];
 
         this.quantEnemiesRound1 = 2;
-        this.quantEnemiesRound2 = 0;
-        this.quantEnemiesRound3 = 0;
+        this.quantEnemiesRound2 = 3;
+        this.quantEnemiesRound3 = 4;
         this.roundCont = 1;
 
         this.activeEnemies = [this.quantEnemiesRound1];
@@ -455,6 +455,10 @@ class onlineLevel extends Phaser.Scene {
         console.log("CREATE this.player2.life: " + this.player2.life);
         console.log("CREATE player1_life: " + player1_life);
         console.log("CREATE player2_life: " + player2_life);
+
+
+
+        console.log("INICIO vida player1 " + this.player.life + " vida player2 "+ this.player2.life);
     }
 
     /////////// FUNCIONES AUXILIARES //////////
@@ -598,7 +602,7 @@ class onlineLevel extends Phaser.Scene {
         return angle;
     }
 
-    enemyFollow(player, enemy, v) {
+    enemyFollow(player, enemy, v, enemies, index) {
         //velocidad del enemigo
         var vEnemy = v;
 
@@ -622,23 +626,27 @@ class onlineLevel extends Phaser.Scene {
         if (dist <= separation) {
             this.enemyStop(player, enemy);
             if ((anglePlayerEnemy >= angleTopRight && anglePlayerEnemy <= angleBottomRight)) {
-                this.enemyAttack(player, enemy);
+                if(player.life>0){
+                    this.enemyAttack(player, enemy, enemies, index);
+                }
             } else if ((anglePlayerEnemy >= -1 * pi && anglePlayerEnemy <= angleTopLeft) || (anglePlayerEnemy <= pi && anglePlayerEnemy >= angleBottomLeft)) {
-                this.enemyAttack(player, enemy);
+                if(player.life>0){
+                    this.enemyAttack(player, enemy, enemies, index);
+                }
             }
         }
     }
 
-    enemyAttack(player, enemy) {
+    enemyAttack(player, enemy, enemies, i) {
         // Numero con el que se ataca
         var nAttack = 1;
-
-        var random_;
+        
+        var random_ = [0,0,0,0,0,0];
         if(Soy_J1){//para que ambos clientes tengan la misma probabilidad de ataque
-            random_ = this.generateRandomNum(1,200);
-            syncEAttack.sendWS(random_);
+            random_[i] = this.generateRandomNum(1,200);
+            syncEAttack.sendWS(random_[i], i);
         } else {
-            random_ = Random_Num;
+            random_[i]= Random_Num[i];
         }
 
         // La probabilidad del ataque del enemigo es del 0.0001%
@@ -649,7 +657,7 @@ class onlineLevel extends Phaser.Scene {
 
         if (enemy.isAttacking == false) {
             if (dist <= 101) {
-                if (nAttack == random_) {
+                if (nAttack == random_[i]) {
                     if (playerCoords.x < enemyCoords.x) { //si el enemigo va hacia la izquierda
                               
                         this.punchSound.play();
@@ -1432,29 +1440,29 @@ class onlineLevel extends Phaser.Scene {
                     if (this.velocities[i] >= mediumVelocity) {
                         if (i % 2 == 0) {
                             if (this.player.life > 0) {
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             }
                         } else {
                             if (this.player2.life > 0) {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             }
                         }
                     } else {
                         if (i % 2 == 0) {
                             if (this.player.life > 0) {
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             }
                         } else {
                             if (this.player2.life > 0) {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             }
                         }
                     }
@@ -1466,29 +1474,29 @@ class onlineLevel extends Phaser.Scene {
                     if(this.velocities[i]>=mediumVelocity){
                         if (i % 2 == 0) {
                             if(this.player2.life > 0){
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             } else {
                                 this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
                             }
                         } else {
                             if(this.player.life > 0){
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i]);
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             }
                         }
                     } else {
                         if (i % 2 == 0) {
                             if(this.player2.life > 0){
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             }
                         } else {
                             if(this.player.life > 0){
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1);
+                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1);
+                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             }
                         }
                     }
@@ -1588,8 +1596,9 @@ class onlineLevel extends Phaser.Scene {
         }
 
         //Cambiar escena L gameover
+        console.log("vida player " + this.player.life + " vida player2 "+ this.player2.life);
         if(this.player.life==0 && this.player2.life==0){
-            
+            console.log("HA ACABADO LA PARTIDA");
             partidaCreada = false;
             yaHayUnJugador = false;
             StartGame = false;
@@ -1597,6 +1606,7 @@ class onlineLevel extends Phaser.Scene {
             gameOverSync(); // avisamos al otro cliente de que se ha acabado la partida
 
             if(gameOverOnlineActive == false){
+                console.log("Entra en gameOverOnlineActive");
                 gameOverOnlineActive = true;
                 this.scene.start('gameOver');
                 this.scene.stop('onlineLevel');

@@ -16,20 +16,22 @@ syncEAttack.onclose = function (event) {
 syncEAttack.onmessage = function(msg){
     var data = JSON.parse(msg.data);
     console.log("[syncEAttack.onmessage()] ME HA LLEGADO UN MENSAJE");
-    console.log("El n es: "+ data.random);
+    console.log("El n es: "+ data.random + " lo recibe " + data.i);
     if(Soy_J1 == false){ 
-        Random_Num = data.random;
+        Random_Num[data.i] = data.random;
+        
     }
 }
 
 
 // Cuando envía un mensaje al servidor
-syncEAttack.sendWS = function(_random){
+syncEAttack.sendWS = function(_random, i_){
     // console.log("Voy a enviar pos VIVO: (" + _posVivo.x + ", " + _posVivo.y + ")");
     // console.log("Voy a enviar pos TUERTO: (" + _posTuerto.x + ", " + _posTuerto.y + ")");
-    console.log("El n es: "+ _random);
+    console.log("El n es: "+ _random + " y lo envía i_");
     let message = {
-        random: _random
+        random: _random,
+        i : i_
     }
 
     syncEAttack.send(JSON.stringify(message));
