@@ -116,7 +116,7 @@ De esta forma, las acciones de cada uno de los Jugadores se transmiten de forma 
 ___
 # **ENTREGA FASE 5: MEJORAS FINALES**
 
-**LOS FALLOS OBSERVADOS SON:** 
+**LOS FALLOS OBSERVADOS A MEJORAR EN ESTA ENTREGA SON:** 
 
 - El fondo de las pantallas de pausa, gameOver y gameWin dan fallo cuando se carga una de las pantallas. El fondo del primer menu en aparecer es el que sale en los tres menus restantes.
 
@@ -127,12 +127,18 @@ Se detecta la colisión por el bounding box de cada uno por lo que solo se detec
 
 - Están implementados los world colliders pero si el personaje es empujado por el enemigo estos no funcionan.
 
+- El movimiento en diagonal del personaje permanece cuando se suelta uno de los botones de movimiento.
+
+- Cuando pausas en los niveles 2 y 3 no te deja volver a la partida.
+
+- Los enemigos atacan muy rápido, por lo que, derrepente el jugador podría perder muchas vidas si tiene varios enemigos cerca.
+
 
 ___
 **PRODUCTO FINAL**
 Los siguientes errores han sido solucionados:
 
-- Daño de los enemigos. (Actualmente los enemigos solo quitan un corazón cuando te atacan).
+- Daño de los enemigos. (Actualmente los enemigos quitan los corazones indicados cuando te atacan, es decir, en el nivel 1 tan solo 1 corazón, en el nivel 2 dos corazones y en el nivel 3 tres corazones).
 
 - Superposición (Añadimos la capacidad de cambiar de la profundidad, creando la sensación de que los enemigos estan unos detrás de otros).
 
@@ -143,10 +149,19 @@ Los siguientes errores han sido solucionados:
 - Misma resolución de los personajes (Los personajes tienen ahora la misma resolución de imagen).
 
 - Correcta gestión de escenas de pausa, gameover y gamewin.
+
+- La animación de ataque de los enemigos ha sido ralentizada de modo que ahora sí puede verse correctamente.
+
+- El movimiento en diagonal del personaje ya funciona correctamente, por lo que, si se deja de pulsar uno de los botones de movimiento, tan solo va a la dirección que estes pulsando.
+
+- Ya deja volver a la partida aunque pauses en los niveles 2 y 3.
+
+- Se ha arreglado el hecho de que los enemigos atacasen muy rápido.
     
 Nuevas implementaciones:
 
-- Cuenta atrás antes de comenzar el nivel.
+- Cuenta atrás antes de comenzar el nivel: 
+  Ahora, al comienzo de cada nivel se dará una cuenta atrás para que los jugadores se preparen para superar el nivel.
 
 ![Countdown](https://user-images.githubusercontent.com/115088130/211434448-cb918ceb-89ae-4aab-9b27-6ec448eb4374.jpg)
 
