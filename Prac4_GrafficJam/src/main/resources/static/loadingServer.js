@@ -8,6 +8,8 @@ class loadingServer extends Phaser.Scene {
     }
 
     create() {
+        console.log("barrera = " + barrera);
+        console.log("crearPartidaBool = " + crearPartidaBool);
         this.add.image(0, 0, "Lobby").setOrigin(0).setScale(1);
     }
 

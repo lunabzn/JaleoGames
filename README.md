@@ -106,7 +106,7 @@ EJ: Movimiento a la derecha del Jugador 1
 1. Cuando el Jugador 1 pulsa la tecla D, se ejecuta la función playerMoveRight() de connection.js, enviando así un mensaje al servidor
 2. El servidor lo recibe y en Handler.java utiliza el atributo idFuncion = 5 para ejecutar el case(5), que envía otro mensaje pero esta vez al Jugador 2,         notificándole del movimiento de Vivo (Jugador 1)
 3. El Jugador 2 recibe el mensaje en su clase connection.js, que gracias a ID_Funcion = 5 ejecuta la función activate_WEB_goRight() en el case 5
-4. activate_WEB_goRight() está en onlineLevel.js y activa un booleano de forma que en el siguiente update, ahrá que se entre en un if() y se mueva a Vivo
+4. activate_WEB_goRight() está en onlineLevel.js y activa un booleano de forma que en el siguiente update, hará que se entre en un if() y se mueva a Vivo
 
 De esta forma, las acciones de cada uno de los Jugadores se transmiten de forma correcta entre cada uno de ellos y se puede jugar online sin problemas.
 
@@ -116,7 +116,7 @@ De esta forma, las acciones de cada uno de los Jugadores se transmiten de forma 
 ___
 # **ENTREGA FASE 5: MEJORAS FINALES**
 
-**LOS FALLOS OBSERVADOS SON:** 
+**LOS FALLOS OBSERVADOS A MEJORAR EN ESTA ENTREGA SON:** 
 
 - El fondo de las pantallas de pausa, gameOver y gameWin dan fallo cuando se carga una de las pantallas. El fondo del primer menu en aparecer es el que sale en los tres menus restantes.
 
@@ -127,12 +127,18 @@ Se detecta la colisión por el bounding box de cada uno por lo que solo se detec
 
 - Están implementados los world colliders pero si el personaje es empujado por el enemigo estos no funcionan.
 
+- El movimiento en diagonal del personaje permanece cuando se suelta uno de los botones de movimiento.
+
+- Cuando pausas en los niveles 2 y 3 no te deja volver a la partida.
+
+- Los enemigos atacan muy rápido, por lo que, derrepente el jugador podría perder muchas vidas si tiene varios enemigos cerca.
+
 
 ___
 **PRODUCTO FINAL**
 Los siguientes errores han sido solucionados:
 
-- Daño de los enemigos. (Actualmente los enemigos solo quitan un corazón cuando te atacan).
+- Daño de los enemigos. (Actualmente los enemigos quitan los corazones indicados cuando te atacan, es decir, en el nivel 1 tan solo 1 corazón, en el nivel 2 dos corazones y en el nivel 3 tres corazones).
 
 - Superposición (Añadimos la capacidad de cambiar de la profundidad, creando la sensación de que los enemigos estan unos detrás de otros).
 
@@ -143,24 +149,51 @@ Los siguientes errores han sido solucionados:
 - Misma resolución de los personajes (Los personajes tienen ahora la misma resolución de imagen).
 
 - Correcta gestión de escenas de pausa, gameover y gamewin.
+
+- La animación de ataque de los enemigos ha sido ralentizada de modo que ahora sí puede verse correctamente.
+
+- El movimiento en diagonal del personaje ya funciona correctamente, por lo que, si se deja de pulsar uno de los botones de movimiento, tan solo va a la dirección que estes pulsando.
+
+- Ya deja volver a la partida aunque pauses en los niveles 2 y 3.
+
+- Se ha arreglado el hecho de que los enemigos atacasen muy rápido.
     
 Nuevas implementaciones:
 
-- Cuenta atrás antes de comenzar el nivel.
+- Cuenta atrás antes de comenzar el nivel: <br>
+  Ahora, al comienzo de cada nivel se dará una cuenta atrás para que los jugadores se preparen para superar el nivel.
 
 ![Countdown](https://user-images.githubusercontent.com/115088130/211434448-cb918ceb-89ae-4aab-9b27-6ec448eb4374.jpg)
 
-- Nuevos niveles.
+- Nuevos niveles: <br>
+  Se han implementado dos nuevos niveles con diferente temática, en el segundo de ellos nuestros personajes se encontrarán en una carretera, mientras que en el tercer nivel los personajes estarán en una estación de trenes. <br>
+  Además, para poder acceder al nivel 2, los jugadores necesitarán superar el nivel 1 y, en caso de querer acceder al nivel 3, los jugadores tendrán que completar el nivel 2.
 
 ![Nivel 2](https://user-images.githubusercontent.com/115088130/211435235-aefc1550-0238-4bb5-a6aa-bc94476b6d87.png)
 ![fondollvl3(1)](https://user-images.githubusercontent.com/115088130/211435315-4bc50234-a48e-4d5c-9afb-6a84bf6bd365.jpg)
 
+- Nuevos fondos de victoria: <br>
+  Tanto el nivel 2 como el nivel 3 tendrán su propio fondo de victoria.
+  
+![image](https://github.com/lunsbzn/JaleoGames/assets/82967594/e519764b-e023-4fd8-8227-e9360f479bd1)
+![image](https://github.com/lunsbzn/JaleoGames/assets/82967594/f2380c53-cf31-4d9d-89fa-45c1a3119d2b)
 
-
-- Nuevos enemigos.
+- Nuevos enemigos: <br>
+  Además de implementar nuevos niveles se han desarrollado nuevos policias para los nuevos niveles.
+  Asimismo, en el juego, los policias del nivel 2 quitarán un total de 2 corazones por golpe, y, los policias del nivel 3 quitarán 3 corazones por ataque realizado.
 
 ![imagen](https://user-images.githubusercontent.com/115088130/211435521-b3746afe-bae2-4ed1-8a5f-5a03aae95cc3.png)
 ![imagen](https://user-images.githubusercontent.com/115088130/211435529-703f1c51-6f86-4a8e-a9fc-98c20b0d4a40.png)
+
+- Nuevo fondo de Pausa: <br>
+  Se ha actualizado el aspecto visual del antiguo fondo de pausa. Ahora, además contiene los controles de los personajes.
+  
+![image](https://github.com/lunsbzn/JaleoGames/assets/82967594/24f0d8a5-0346-4208-96a8-175e848e3ab9)
+
+- Nuevo fondo de Derrota: <br>
+  Se ha actualizado el aspecto visual del fondo de derrota ya que el anterior nos parecía muy simple.
+  
+![image](https://github.com/lunsbzn/JaleoGames/assets/82967594/e36bee63-7fe0-4b2b-b8a1-cd50fb5d83e7)
 
 
 
