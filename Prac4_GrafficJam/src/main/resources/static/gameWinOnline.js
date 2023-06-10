@@ -9,12 +9,12 @@ class gameWinOnline extends Phaser.Scene{
     }
 
     preload() {
-        this.load.image('menuOnline', 'resources/finalL1.png');
+        this.load.image('finalLO', 'resources/finalLO.jpg');
         this.load.image('inicioOnline', 'resources/menu.png');
     }
     
     create(){
-        this.background = this.add.image(0,0,'menuOnline').setOrigin(0).setScale(1);
+        this.background = this.add.image(0,0,'finalLO').setOrigin(0).setScale(1);
         //gameWinOnlineActive = true;
 
         console.log("He cambiado WEB_gameWin a false");
