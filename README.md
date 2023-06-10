@@ -172,7 +172,10 @@ Nuevas implementaciones:
 ![Nivel 2](https://user-images.githubusercontent.com/115088130/211435235-aefc1550-0238-4bb5-a6aa-bc94476b6d87.png)
 ![fondollvl3(1)](https://user-images.githubusercontent.com/115088130/211435315-4bc50234-a48e-4d5c-9afb-6a84bf6bd365.jpg)
 
-
+- Nuevos fondos de victoria: <br>
+  Tanto el nivel 2 como el nivel 3 tendrán su propio fondo de victoria.
+  ![image](https://github.com/lunsbzn/JaleoGames/assets/82967594/e519764b-e023-4fd8-8227-e9360f479bd1)
+  ![image](https://github.com/lunsbzn/JaleoGames/assets/82967594/f2380c53-cf31-4d9d-89fa-45c1a3119d2b)
 
 - Nuevos enemigos: <br>
   Además de implementar nuevos niveles se han desarrollado nuevos policias para los nuevos niveles.
@@ -180,6 +183,14 @@ Nuevas implementaciones:
 
 ![imagen](https://user-images.githubusercontent.com/115088130/211435521-b3746afe-bae2-4ed1-8a5f-5a03aae95cc3.png)
 ![imagen](https://user-images.githubusercontent.com/115088130/211435529-703f1c51-6f86-4a8e-a9fc-98c20b0d4a40.png)
+
+- Nuevo fondo de Pausa: <br>
+  Se ha actualizado el aspecto visual del antiguo fondo de pausa. Ahora, además contiene los controles de los personajes.
+  ![image](https://github.com/lunsbzn/JaleoGames/assets/82967594/24f0d8a5-0346-4208-96a8-175e848e3ab9)
+
+- Nuevo fondo de Derrota: <br>
+  Se ha actualizado el aspecto visual del fondo de derrota ya que el anterior nos parecía muy simple.
+  ![image](https://github.com/lunsbzn/JaleoGames/assets/82967594/e36bee63-7fe0-4b2b-b8a1-cd50fb5d83e7)
 
 
 
