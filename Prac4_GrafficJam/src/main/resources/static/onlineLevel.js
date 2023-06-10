@@ -111,7 +111,7 @@ class onlineLevel extends Phaser.Scene {
         pause.on('pointerdown', () => {
             pauseGame();
             this.scene.stop('gameWin');
-            this.scene.stop('gameOver');
+            this.scene.stop('gameOverOnline');
             this.scene.switch('pauseOnlineScene');
         })
 
@@ -1089,7 +1089,7 @@ class onlineLevel extends Phaser.Scene {
 
         if (WEB_pauseGame) {
             this.scene.stop('gameWin');
-            this.scene.stop('gameOver');
+            this.scene.stop('gameOverOnline');
             this.scene.switch('pauseOnlineScene');
             WEB_pauseGame = false;
         }
@@ -1181,7 +1181,7 @@ class onlineLevel extends Phaser.Scene {
 
             if (gameOverOnlineActive == false) {
                 gameOverOnlineActive = true;
-                this.scene.start('gameOver');
+                this.scene.start('gameOverOnline');
                 this.scene.stop('onlineLevel');
                 this.scene.stop('pauseScene');
             }
@@ -1607,7 +1607,7 @@ class onlineLevel extends Phaser.Scene {
             if(gameOverOnlineActive == false){
                 console.log("Entra en gameOverOnlineActive");
                 gameOverOnlineActive = true;
-                this.scene.start('gameOver');
+                this.scene.start('gameOverOnline');
                 this.scene.stop('onlineLevel');
                 this.scene.stop('pauseScene');
             }

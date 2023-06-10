@@ -13,15 +13,15 @@ class gameOver extends Phaser.Scene{
         this.load.image('inic', 'resources/menu.png');
 
     }
-    
-    create(){
-        this.background = this.add.image(0,0,'menus').setOrigin(0).setScale(1);
 
-        var mensaje = this.scene.settings.data.mensaje
-            console.log(mensaje[0])
-            console.log(mensaje[1])
+    create() {
+        this.background = this.add.image(0, 0, 'menus').setOrigin(0).setScale(1);
 
-        let inicio = this.add.image(400,460,'inic').setScale(0.1);
+        var mensaje = this.scene.settings.data.mensaje;
+        console.log(mensaje[0]);
+        console.log(mensaje[1]);
+
+        let inicio = this.add.image(400, 460, 'inic').setScale(0.1);
 
         inicio.setInteractive();
 

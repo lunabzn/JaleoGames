@@ -14,6 +14,10 @@ class countdown extends Phaser.Scene{
     create(){
         //función del contador
         this.start = false;
+        var mensaje = this.scene.settings.data.mensaje
+        console.log(mensaje[0])
+        console.log(mensaje[1])
+
         var countdownText = this.add.text(350, 200, '', { font: '180px Arial', fill: '#ffffff', stroke: '#000', strokeThickness: '8' });
         var countdownTime = 4;
 
@@ -35,9 +39,9 @@ class countdown extends Phaser.Scene{
         });
 
         this.time.delayedCall(4000, () => {
-			this.scene.switch('Level1'),
             this.scene.stop('countdown'),
-            console.log('cambio')
+            console.log('cambio'),
+            this.scene.start('Level1',{mensaje: mensaje})
 		})
 
     }

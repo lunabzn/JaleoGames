@@ -1,11 +1,11 @@
-class pauseScene extends Phaser.Scene{
+class pauseScene2 extends Phaser.Scene{
    
     constructor(){
-        super("pauseScene");
+        super("pauseScene2");
     }
 
     initialize(){
-        Phaser.Scene.call(this,{"key": "pauseScene"})
+        Phaser.Scene.call(this,{"key": "pauseScene2"})
     }
 
     preload() {
@@ -21,9 +21,9 @@ class pauseScene extends Phaser.Scene{
         var restart = this.add.image(600,450,"restart").setScale(0.1165);
         restart.setInteractive();
         restart.on('pointerdown', function(){       
-            this.scene.stop('gameWin');
+            this.scene.stop('gameWin2');
             this.scene.stop('gameOver');
-            this.scene.stop('Level1');
+            this.scene.stop('Level2');
             this.scene.start('selectorLevelScene');
             
         }, this);
@@ -31,13 +31,10 @@ class pauseScene extends Phaser.Scene{
         let resume = this.add.image(200,450,'resume').setScale(0.5);
         resume.setInteractive();
         resume.on('pointerdown',function(){    
-            this.scene.stop('gameWin');
+            this.scene.stop('gameWin2');
             this.scene.stop('gameOver'); 
-            this.scene.stop('pauseScene');  
-            
-            this.scene.wake('Level1');
-           
-            
+            this.scene.stop('pauseScene2');       
+            this.scene.wake('Level2');
         }, this);
 
     }
