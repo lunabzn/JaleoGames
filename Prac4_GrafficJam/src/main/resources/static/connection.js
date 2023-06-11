@@ -120,7 +120,7 @@ socket.onmessage = function (event) {
 
 		case (24): // Muerte de un enemigo
 			idEnemyToKill = messageReceived.idEnemy;
-			console.log("[connection.js] Me han mandado matar al enemigo " + idEnemyToKill);
+			//console.log("[connection.js] Me han mandado matar al enemigo " + idEnemyToKill);
 			activate_WEB_enemyHasDied();
 			break;
 

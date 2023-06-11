@@ -26,6 +26,7 @@ public class App implements WebSocketConfigurer {
 		registry.addHandler(sync2Handler(), "/sync2").setAllowedOrigins("*");
 		registry.addHandler(enemySyncHandler(), "/enemysync").setAllowedOrigins("*");
 		registry.addHandler(syncEnemyAttackHandler(), "/enemyAttack").setAllowedOrigins("*");
+
 	}
 
 	@Bean

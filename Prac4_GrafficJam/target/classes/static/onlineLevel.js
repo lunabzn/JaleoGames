@@ -99,8 +99,6 @@ class onlineLevel extends Phaser.Scene {
         WEB_gameWin = false;
         WEB_enemyhasDied = false;
         gameOverOnlineActive = false;
-        player1_life = 5;
-        player2_life = 5;
 
         this.background = this.add.image(400, 300, 'background');
         this.invisibleCollider = this.physics.add.sprite(400, -50, 'invisibleCollider');
@@ -131,7 +129,7 @@ class onlineLevel extends Phaser.Scene {
 
         this.quantEnemiesRound1 = 2;
         this.quantEnemiesRound2 = 3;
-        this.quantEnemiesRound3 = 4;
+        this.quantEnemiesRound3 = 3;
         this.roundCont = 1;
 
         this.activeEnemies = [this.quantEnemiesRound1];
@@ -442,22 +440,15 @@ class onlineLevel extends Phaser.Scene {
         // Jugadores
         player1_global = this.player;
         player1_turnedLeft = this.player.turnedLeft;
+        player1_life = 5;
 
         player2_global = this.player2;
         player2_turnedLeft = this.player2.turnedLeft;
+        player2_life = 5;
 
         // Enemigos
         activeEnemies_global = this.activeEnemies;
         activeEnemies_length = this.activeEnemies.length;
-
-        console.log("CREATE this.player.life: " + this.player.life);
-        console.log("CREATE this.player2.life: " + this.player2.life);
-        console.log("CREATE player1_life: " + player1_life);
-        console.log("CREATE player2_life: " + player2_life);
-
-
-
-        console.log("INICIO vida player1 " + this.player.life + " vida player2 "+ this.player2.life);
     }
 
     /////////// FUNCIONES AUXILIARES //////////
@@ -601,7 +592,7 @@ class onlineLevel extends Phaser.Scene {
         return angle;
     }
 
-    enemyFollow(player, enemy, v, enemies, index) {
+    enemyFollow(player, player2, enemy, v, enemies, index) {
         //velocidad del enemigo
         var vEnemy = v;
 
@@ -625,11 +616,11 @@ class onlineLevel extends Phaser.Scene {
         if (dist <= separation) {
             this.enemyStop(player, enemy);
             if ((anglePlayerEnemy >= angleTopRight && anglePlayerEnemy <= angleBottomRight)) {
-                if(player.life>0){
+                if(player.life>0 || player2.life>0){
                     this.enemyAttack(player, enemy, enemies, index);
                 }
             } else if ((anglePlayerEnemy >= -1 * pi && anglePlayerEnemy <= angleTopLeft) || (anglePlayerEnemy <= pi && anglePlayerEnemy >= angleBottomLeft)) {
-                if(player.life>0){
+                if(player.life>0 || player2.life>0){
                     this.enemyAttack(player, enemy, enemies, index);
                 }
             }
@@ -645,6 +636,9 @@ class onlineLevel extends Phaser.Scene {
             random_[i] = this.generateRandomNum(1,200);
             syncEAttack.sendWS(random_[i], i);
         } else {
+            console.log("i: " + i);
+            console.log("Random_Num: " + Random_Num[i]);
+            console.log("random_: " + random_[i]);
             random_[i]= Random_Num[i];
         }
 
@@ -655,8 +649,12 @@ class onlineLevel extends Phaser.Scene {
         var dist = Phaser.Math.Distance.Between(playerCoords.x, playerCoords.y, enemyCoords.x, enemyCoords.y);
 
         if (enemy.isAttacking == false) {
+            console.log("Entra en isAttacking");
             if (dist <= 101) {
+                console.log("Entra en dist");
+                console.log("random_: " + random_[i]);
                 if (nAttack == random_[i]) {
+                    console.log("Entra en nAttack = random_[i]");
                     if (playerCoords.x < enemyCoords.x) { //si el enemigo va hacia la izquierda
                               
                         this.punchSound.play();
@@ -668,6 +666,10 @@ class onlineLevel extends Phaser.Scene {
                             enemy.isAttacking = false;
                         }, 200);
 
+                        console.log("LLAMADA E_ATTACK updateHearts()");
+                        console.log("player.life : " + player.life);
+                        console.log("player1_life : " + player1_life);
+                        console.log("player2_life : " + player2_life);
                         this.updateHearts();
 
                     } else if (playerCoords.x > enemyCoords.x) { //si el enemigo va hacia la derecha
@@ -681,6 +683,10 @@ class onlineLevel extends Phaser.Scene {
                             enemy.isAttacking = false;
                         }, 200);
 
+                        console.log("LLAMADA E_ATTACK updateHearts()");
+                        console.log("player.life : " + player.life);
+                        console.log("player1_life : " + player1_life);
+                        console.log("player2_life : " + player2_life);
                         this.updateHearts();
                     }
                     if (player == this.player && player.life <= 0) {
@@ -694,91 +700,177 @@ class onlineLevel extends Phaser.Scene {
 
     updateHearts() {
         if (Soy_J1) {
-            console.log("[updateHearts] this.player.life: " + this.player.life);
-            if (this.player.life == 4) {
+            console.log("[updateHearts] VIVO Life : " + this.player.life + " // " + player1_life);
+            console.log("[updateHearts] TUERTO Life : " + this.player2.life + " // " + player2_life);
+            if (player1_life == 4) {
                 this.cora5.destroy();
-                console.log("cora5 destruido");
+                //console.log("cora5 destruido");
             }
-            if (this.player.life == 3) {
+            if (player1_life == 3) {
                 this.cora4.destroy();
-                console.log("cora4 destruido");
+                //console.log("cora4 destruido");
             }
-            if (this.player.life == 2) {
+            if (player1_life == 2) {
                 this.cora3.destroy();
-                console.log("cora3 destruido");
+                //console.log("cora3 destruido");
             }
-            if (this.player.life == 1) {
+            if (player1_life == 1) {
                 this.cora2.destroy();
-                console.log("cora2 destruido");
+                //console.log("cora2 destruido");
             }
-            if (this.player.life == 0) {
+            if (player1_life == 0) {
                 this.cora1.destroy();
-                console.log("cora1 destruido");
+                //console.log("cora1 destruido");
             }
 
-            if (this.player2.life == 4) {
+            if (player2_life == 4) {
                 this.cora10.destroy();
-                console.log("cora10 destruido");
+                //console.log("cora10 destruido");
             }
-            if (this.player2.life == 3) {
+            if (player2_life == 3) {
                 this.cora9.destroy();
-                console.log("cora9 destruido");
+                //console.log("cora9 destruido");
             }
-            if (this.player2.life == 2) {
+            if (player2_life == 2) {
                 this.cora8.destroy();
-                console.log("cora8 destruido");
+                //console.log("cora8 destruido");
             }
-            if (this.player2.life == 1) {
+            if (player2_life == 1) {
                 this.cora7.destroy();
-                console.log("cora7 destruido");
+                //console.log("cora7 destruido");
             }
-            if (this.player2.life == 0) {
+            if (player2_life == 0) {
                 this.cora6.destroy();
-                console.log("cora6 destruido");
+                //console.log("cora6 destruido");
             }
+
+            // if (this.player.life == 4 && player1_life == 4) {
+            //     this.cora5.destroy();
+            //     //console.log("cora5 destruido");
+            // }
+            // if (this.player.life == 3 && player1_life == 3) {
+            //     this.cora4.destroy();
+            //     //console.log("cora4 destruido");
+            // }
+            // if (this.player.life == 2 && player1_life == 2) {
+            //     this.cora3.destroy();
+            //     //console.log("cora3 destruido");
+            // }
+            // if (this.player.life == 1 && player1_life == 1) {
+            //     this.cora2.destroy();
+            //     //console.log("cora2 destruido");
+            // }
+            // if (this.player.life == 0 && player1_life == 0) {
+            //     this.cora1.destroy();
+            //     //console.log("cora1 destruido");
+            // }
+
+            // if (this.player2.life == 4 && player2_life == 4) {
+            //     this.cora10.destroy();
+            //     //console.log("cora10 destruido");
+            // }
+            // if (this.player2.life == 3 && player2_life == 3) {
+            //     this.cora9.destroy();
+            //     //console.log("cora9 destruido");
+            // }
+            // if (this.player2.life == 2 && player2_life == 2) {
+            //     this.cora8.destroy();
+            //     //console.log("cora8 destruido");
+            // }
+            // if (this.player2.life == 1 && player2_life == 1) {
+            //     this.cora7.destroy();
+            //     //console.log("cora7 destruido");
+            // }
+            // if (this.player2.life == 0 && player2_life == 0) {
+            //     this.cora6.destroy();
+            //     //console.log("cora6 destruido");
+            // }
         } else {
-            console.log("this.player2.life" + this.player2.life); 
-            if (this.player2.life == 4) {
+            console.log("[updateHearts] VIVO Life : " + this.player2.life + " // " + player2_life);
+            console.log("[updateHearts] TUERTO Life : " + this.player.life + " // " + player1_life);
+
+            if (player2_life == 4) {
                 this.cora5.destroy();
-                console.log("cora5 destruido");
+                //console.log("cora5 destruido");
             }
-            if (this.player2.life == 3) {
+            if (player2_life == 3) {
                 this.cora4.destroy();
-                console.log("cora4 destruido");
+                //console.log("cora4 destruido");
             }
-            if (this.player2.life == 2) {
+            if (player2_life == 2) {
                 this.cora3.destroy();
-                console.log("cora3 destruido");
+                //console.log("cora3 destruido");
             }
-            if (this.player2.life == 1) {
+            if (player2_life == 1) {
                 this.cora2.destroy();
-                console.log("cora2 destruido");
+                //console.log("cora2 destruido");
             }
-            if (this.player2.life == 0) {
+            if (player2_life == 0) {
                 this.cora1.destroy();
-                console.log("cora1 destruido");
+                //console.log("cora1 destruido");
             }
 
-            if (this.player.life == 4) {
+            if (player1_life == 4) {
                 this.cora10.destroy();
-                console.log("cora10 destruido");
+                //console.log("cora10 destruido");
             }
-            if (this.player.life == 3) {
+            if (player1_life == 3) {
                 this.cora9.destroy();
-                console.log("cora9 destruido");
+                //console.log("cora9 destruido");
             }
-            if (this.player.life == 2) {
+            if (player1_life == 2) {
                 this.cora8.destroy();
-                console.log("cora8 destruido");
+                //console.log("cora8 destruido");
             }
-            if (this.player.life == 1) {
+            if (player1_life == 1) {
                 this.cora7.destroy();
-                console.log("cora7 destruido");
+                //console.log("cora7 destruido");
             }
-            if (this.player.life == 0) {
+            if (player1_life == 0) {
                 this.cora6.destroy();
-                console.log("cora6 destruido");
+                //console.log("cora6 destruido");
             }
+            // if (this.player2.life == 4 && player2_life == 4) {
+            //     this.cora5.destroy();
+            //     //console.log("cora5 destruido");
+            // }
+            // if (this.player2.life == 3 && player2_life == 3) {
+            //     this.cora4.destroy();
+            //     //console.log("cora4 destruido");
+            // }
+            // if (this.player2.life == 2 && player2_life == 2) {
+            //     this.cora3.destroy();
+            //     //console.log("cora3 destruido");
+            // }
+            // if (this.player2.life == 1 && player2_life == 1) {
+            //     this.cora2.destroy();
+            //     //console.log("cora2 destruido");
+            // }
+            // if (this.player2.life == 0 && player2_life == 0) {
+            //     this.cora1.destroy();
+            //     //console.log("cora1 destruido");
+            // }
+
+            // if (this.player.life == 4 && player1_life == 4) {
+            //     this.cora10.destroy();
+            //     //console.log("cora10 destruido");
+            // }
+            // if (this.player.life == 3 && player1_life == 3) {
+            //     this.cora9.destroy();
+            //     //console.log("cora9 destruido");
+            // }
+            // if (this.player.life == 2 && player1_life == 2) {
+            //     this.cora8.destroy();
+            //     //console.log("cora8 destruido");
+            // }
+            // if (this.player.life == 1 && player1_life == 1) {
+            //     this.cora7.destroy();
+            //     //console.log("cora7 destruido");
+            // }
+            // if (this.player.life == 0 && player1_life == 0) {
+            //     this.cora6.destroy();
+            //     //console.log("cora6 destruido");
+            // }
         }
     }
 
@@ -819,6 +911,18 @@ class onlineLevel extends Phaser.Scene {
             this.activeEnemies[i].setPosition(activeEnemies_global[i].getCenter().x, activeEnemies_global[i].getCenter().y);
         }
 
+        // Ajuste de enemigos para asegurar que los que se han muerto no aparezcan en pantalla
+        for(var i = 0; i< this.activeEnemies.length; i++){
+            if(this.activeEnemies[i].alive == false || this.activeEnemies[i].life <= 0){
+                this.activeEnemies[i].alive = false;
+                this.activeEnemies[i].y = -100;
+                this.activeEnemies[i].body.moves = false;
+            }
+        }
+
+        console.log("LLAMADA UPDATE updateHearts()");
+        this.updateHearts();
+
         if (WEB_goLeft && !WEB_goRight) { // Movimiento L la izquierda del otro jugador
             //console.log("Mov. Izq");
             this.player2.setVelocityX(-160);
@@ -834,11 +938,11 @@ class onlineLevel extends Phaser.Scene {
             if (WEB_goUp) {
                 this.player2.setVelocityY(-160);
                 if (Soy_J1) {
-                    console.log("Mov. Izq-Up");
+                    //console.log("Mov. Izq-Up");
                     this.player2.stop('p2Left', true);
                     this.player2.play('p2Left', true);
                 } else {
-                    console.log("Mov. Izq-Up");
+                    //console.log("Mov. Izq-Up");
                     this.player2.stop('p1Left', true);
                     this.player2.play('p1Left', true);
                 } 
@@ -848,11 +952,11 @@ class onlineLevel extends Phaser.Scene {
             if (WEB_goDown) {
                 this.player2.setVelocityY(160);
                 if (Soy_J1) {
-                    console.log("Mov. Izq-Down");
+                    //console.log("Mov. Izq-Down");
                     this.player2.stop('p2Left', true);
                     this.player2.play('p2Left', true);
                 } else {
-                    console.log("Mov. Izq-Down");
+                    //console.log("Mov. Izq-Down");
                     this.player2.stop('p2Left', true);
                     this.player2.play('p1Left', true);
                 }
@@ -860,7 +964,7 @@ class onlineLevel extends Phaser.Scene {
             }
 
             if (WEB_dontGoLeft) {
-                console.log("WEB_dontGoLeft  " + WEB_dontGoLeft);
+                //console.log("WEB_dontGoLeft  " + WEB_dontGoLeft);
                 WEB_goLeft = false;
                 this.player2.setVelocityX(0);
                 if (this.player2.turnedLeft) {
@@ -896,10 +1000,10 @@ class onlineLevel extends Phaser.Scene {
             if (WEB_goUp) {
                 this.player2.setVelocityY(-160);
                 if (Soy_J1) {
-                    console.log("Mov. Der-Up");
+                    //console.log("Mov. Der-Up");
                     this.player2.play('p2UpRight', true);
                 } else {
-                    console.log("Mov. Der-Up");
+                    //console.log("Mov. Der-Up");
                     this.player2.play('p1UpRight', true);
                 }
                 WEB_goDown = false;
@@ -908,17 +1012,17 @@ class onlineLevel extends Phaser.Scene {
             if (WEB_goDown) {
                 this.player2.setVelocityY(160);
                 if (Soy_J1) {
-                    console.log("Mov. Der-Down");
+                    //console.log("Mov. Der-Down");
                     this.player2.play('p2DownRight', true);
                 } else {
-                    console.log("Mov. Der-Down");
+                    //console.log("Mov. Der-Down");
                     this.player2.play('p1DownRight', true);
                 }
                 WEB_goUp = false;
             }
 
             if (WEB_dontGoRight) {
-                console.log("WEB_dontGoRight  " + WEB_dontGoRight);
+                //console.log("WEB_dontGoRight  " + WEB_dontGoRight);
                 WEB_goRight = false;
                 this.player2.setVelocityX(0);
                 if (this.player2.turnedLeft) {
@@ -1432,36 +1536,35 @@ class onlineLevel extends Phaser.Scene {
         var mediumVelocity = this.velocities[Math.floor(velocitiesSize / 2)];
 
         // ACTUALIZACIÓN PARA QUE LOS ENEMIGOS SIGAN A LOS PERSONAJES
-
         if (Soy_J1) {
             for (var i = 0; i < this.activeEnemies.length; i++) {
                 if (this.activeEnemies[i].alive) {
                     if (this.velocities[i] >= mediumVelocity) {
                         if (i % 2 == 0) {
                             if (this.player.life > 0) {
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
+                                this.enemyFollow(this.player, this.player2, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
+                                this.enemyFollow(this.player2, this.player, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             }
                         } else {
                             if (this.player2.life > 0) {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
+                                this.enemyFollow(this.player2, this.player, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
+                                this.enemyFollow(this.player, this.player2, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             }
                         }
                     } else {
                         if (i % 2 == 0) {
                             if (this.player.life > 0) {
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
+                                this.enemyFollow(this.player, this.player2, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
+                                this.enemyFollow(this.player2, this.player, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             }
                         } else {
                             if (this.player2.life > 0) {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
+                                this.enemyFollow(this.player2, this.player, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
+                                this.enemyFollow(this.player, this.player2, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             }
                         }
                     }
@@ -1473,29 +1576,29 @@ class onlineLevel extends Phaser.Scene {
                     if(this.velocities[i]>=mediumVelocity){
                         if (i % 2 == 0) {
                             if(this.player2.life > 0){
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
+                                this.enemyFollow(this.player2, this.player, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i]);
+                                this.enemyFollow(this.player, this.player2, this.activeEnemies[i], this.velocities[i], this.activeEnemies, i);
                             }
                         } else {
                             if(this.player.life > 0){
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
+                                this.enemyFollow(this.player, this.player2, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
+                                this.enemyFollow(this.player2, this.player, this.activeEnemies[i], this.velocities[i],this.activeEnemies, i);
                             }
                         }
                     } else {
                         if (i % 2 == 0) {
                             if(this.player2.life > 0){
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
+                                this.enemyFollow(this.player2, this.player, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
+                                this.enemyFollow(this.player, this.player2, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             }
                         } else {
                             if(this.player.life > 0){
-                                this.enemyFollow(this.player, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
+                                this.enemyFollow(this.player, this.player2, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             } else {
-                                this.enemyFollow(this.player2, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
+                                this.enemyFollow(this.player2, this.player, this.activeEnemies[i], this.velocities[i] - 1,this.activeEnemies, i);
                             }
                         }
                     }
@@ -1550,7 +1653,7 @@ class onlineLevel extends Phaser.Scene {
                     this.activeEnemies[i].y = -100;
                     this.activeEnemies[i].body.moves = false;
                     this.countDead++;
-                    console.log("[onlineLevel.js] Enemigo " + i + " muerto");
+                    //console.log("[onlineLevel.js] Enemigo " + i + " muerto");
                 }
             }
         }
@@ -1595,7 +1698,7 @@ class onlineLevel extends Phaser.Scene {
         }
 
         //Cambiar escena L gameover
-        console.log("vida player " + this.player.life + " vida player2 "+ this.player2.life);
+        //console.log("vida player " + this.player.life + " vida player2 "+ this.player2.life);
         if(this.player.life==0 && this.player2.life==0){
             console.log("HA ACABADO LA PARTIDA");
             partidaCreada = false;
@@ -1605,7 +1708,7 @@ class onlineLevel extends Phaser.Scene {
             gameOverSync(); // avisamos al otro cliente de que se ha acabado la partida
 
             if(gameOverOnlineActive == false){
-                console.log("Entra en gameOverOnlineActive");
+                //console.log("Entra en gameOverOnlineActive");
                 gameOverOnlineActive = true;
                 this.scene.start('gameOverOnline');
                 this.scene.stop('onlineLevel');
@@ -1638,14 +1741,14 @@ class onlineLevel extends Phaser.Scene {
             if (player2_life >= 0 && Soy_J1) { 
                 // Sincronización posición jugadores:
                 // Este mensaje lo envía el J1, por lo que la pos de Vivo será la de player1 y la de Tuerto la de player2
-                syncWS.sendWS(player1_global.getCenter(), player2_global.getCenter(), player1_turnedLeft, player2_turnedLeft) 
+                syncWS.sendWS(player1_global.getCenter(), player2_global.getCenter(), player1_turnedLeft, player2_turnedLeft, player1_life, player2_life);
             }
 
             // Si soy J2, mando la posición de TUERTO
             if (player2_life >= 0 && Soy_J1 == false) { 
                 // Sincronización posición jugadores:
                 // Este mensaje lo envía el J2, por lo que la pos de Vivo será la de player2 y la de Tuerto la de player1
-                sync2WS.sendWS(player2_global.getCenter(), player1_global.getCenter(), player2_turnedLeft, player1_turnedLeft) 
+                sync2WS.sendWS(player2_global.getCenter(), player1_global.getCenter(), player2_turnedLeft, player1_turnedLeft, player2_life, player1_life);
             }
             
             // La sincronización de la posición de los enemigos se basa en las posiciones en el Cliente 1

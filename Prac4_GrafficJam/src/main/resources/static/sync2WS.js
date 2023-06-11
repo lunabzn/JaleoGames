@@ -24,21 +24,21 @@ sync2WS.onmessage = function (msg) {
 
         player2_global.setPosition(data.posTuerto.x, data.posTuerto.y); // en el cliente 2 (J2), player2 es Vivo
         player2_turnedLeft = data.tuertoTurnedLeft;
+        player2_life = data.tuertoLife;
     }
 }
 
 
 // Cuando envía un mensaje al servidor
-sync2WS.sendWS = function(_posVivo, _posTuerto, _vivoTurnedLeft, _tuertoTurnedLeft){
-    // console.log("Voy a enviar pos VIVO: (" + _posVivo.x + ", " + _posVivo.y + ")");
-    // console.log("Voy a enviar pos TUERTO: (" + _posTuerto.x + ", " + _posTuerto.y + ")");
+sync2WS.sendWS = function(_posVivo, _posTuerto, _vivoTurnedLeft, _tuertoTurnedLeft, _vivoLife, _tuertoLife){
     let message = {
         posVivo: _posVivo,
         posTuerto: _posTuerto,
         vivoTurnedLeft: _vivoTurnedLeft,
-        tuertoTurnedLeft: _tuertoTurnedLeft
+        tuertoTurnedLeft: _tuertoTurnedLeft,
+        vivoLife: _vivoLife,
+        tuertoLife: _tuertoLife
     }
-
     sync2WS.send(JSON.stringify(message));
     //console.log("Info enviada");
     // if (syncWS.readyState === WebSocket.OPEN) {
