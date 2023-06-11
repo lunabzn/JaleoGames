@@ -36,11 +36,10 @@ class onlineLevel extends Phaser.Scene {
         super("onlineLevel");
     }
 
-    //funcion que genera un numero aletorio comprendido entre un minimo y un maximo (ambos incluidos)
+    // Funcion que genera un numero aletorio comprendido entre un minimo y un maximo (ambos incluidos)
     generateRandomNum(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
-
 
     preload() {
 
@@ -453,6 +452,7 @@ class onlineLevel extends Phaser.Scene {
 
     /////////// FUNCIONES AUXILIARES //////////
 
+    // creación de enemigos
     createEnemies(enemies, size) {
 
         var enemyPosX = [];
@@ -557,6 +557,7 @@ class onlineLevel extends Phaser.Scene {
         }
     }
 
+    // Movimiento de enemigos
     enemyWalk(player, enemy) {
         var playerCoords = player.getCenter();
         var enemyCoords = enemy.getCenter();
@@ -571,6 +572,7 @@ class onlineLevel extends Phaser.Scene {
         }
     }
 
+    // Detención de enemigos
     enemyStop(player, enemy) {
         var playerCoords = player.getCenter();
         var enemyCoords = enemy.getCenter();
@@ -586,12 +588,14 @@ class onlineLevel extends Phaser.Scene {
         }
     }
 
+    // Cálculo de ángulo para atacar
     angleBetweenPlayerThing(player, coordx, coordy) {
         var centerCoords = player.getCenter();
         var angle = Phaser.Math.Angle.Between(centerCoords.x, centerCoords.y, coordx, coordy);
         return angle;
     }
 
+    // Método de seguimiento del enemigo al jugador
     enemyFollow(player, player2, enemy, v, enemies, index) {
         //velocidad del enemigo
         var vEnemy = v;
@@ -627,18 +631,20 @@ class onlineLevel extends Phaser.Scene {
         }
     }
 
+    // Ataque del enemigo
     enemyAttack(player, enemy, enemies, i) {
         // Numero con el que se ataca
         var nAttack = 1;
         
+        // Gestión de la sincronización del ataque de enemigos entre clientes
         var random_ = [0,0,0,0,0,0];
         if(Soy_J1){//para que ambos clientes tengan la misma probabilidad de ataque
             random_[i] = this.generateRandomNum(1,200);
             syncEAttack.sendWS(random_[i], i);
         } else {
-            console.log("i: " + i);
-            console.log("Random_Num: " + Random_Num[i]);
-            console.log("random_: " + random_[i]);
+            // console.log("i: " + i);
+            // console.log("Random_Num: " + Random_Num[i]);
+            // console.log("random_: " + random_[i]);
             random_[i]= Random_Num[i];
         }
 
@@ -649,27 +655,37 @@ class onlineLevel extends Phaser.Scene {
         var dist = Phaser.Math.Distance.Between(playerCoords.x, playerCoords.y, enemyCoords.x, enemyCoords.y);
 
         if (enemy.isAttacking == false) {
-            console.log("Entra en isAttacking");
+            // console.log("Entra en isAttacking");
             if (dist <= 101) {
-                console.log("Entra en dist");
-                console.log("random_: " + random_[i]);
+                // console.log("Entra en dist");
+                // console.log("random_: " + random_[i]);
                 if (nAttack == random_[i]) {
-                    console.log("Entra en nAttack = random_[i]");
+                    // console.log("Entra en nAttack = random_[i]");
                     if (playerCoords.x < enemyCoords.x) { //si el enemigo va hacia la izquierda
                               
                         this.punchSound.play();
                         enemy.play('eAttackLeft', true);
                         enemy.isAttacking = true;
-                        player.life--;
+                        
+                        if(player == this.player){
+                            // console.log("Entra a player");
+                            player1_life--;
+                            // console.log("player1_life: " + player1_life);
+                        } else if(player == this.player2){
+                            // console.log("Entra a player2");
+                            player2_life--;
+                            // console.log("player2_life: " + player2_life);
+                        }
+                        //player.life--;
 
                         setTimeout(function () {
                             enemy.isAttacking = false;
                         }, 200);
 
-                        console.log("LLAMADA E_ATTACK updateHearts()");
-                        console.log("player.life : " + player.life);
-                        console.log("player1_life : " + player1_life);
-                        console.log("player2_life : " + player2_life);
+                        // console.log("LLAMADA E_ATTACK updateHearts()");
+                        // console.log("player.life : " + player.life);
+                        // console.log("player1_life : " + player1_life);
+                        // console.log("player2_life : " + player2_life);
                         this.updateHearts();
 
                     } else if (playerCoords.x > enemyCoords.x) { //si el enemigo va hacia la derecha
@@ -677,20 +693,31 @@ class onlineLevel extends Phaser.Scene {
                         this.punchSound.play();
                         enemy.play('eAttackRight', true);
                         enemy.isAttacking = true;
-                        player.life--;
+
+                        if(player == this.player){
+                            // console.log("Entra a player");
+                            player1_life--;
+                            // console.log("player1_life: " + player1_life);
+                        } else if(player == this.player2){
+                            // console.log("Entra a player2");
+                            player2_life--;
+                            // console.log("player2_life: " + player2_life);
+                        }
+                        //player.life--;
 
                         setTimeout(function () {
                             enemy.isAttacking = false;
                         }, 200);
 
-                        console.log("LLAMADA E_ATTACK updateHearts()");
-                        console.log("player.life : " + player.life);
-                        console.log("player1_life : " + player1_life);
-                        console.log("player2_life : " + player2_life);
+                        // console.log("LLAMADA E_ATTACK updateHearts()");
+                        // console.log("player.life : " + player.life);
+                        // console.log("player1_life : " + player1_life);
+                        // console.log("player2_life : " + player2_life);
                         this.updateHearts();
                     }
                     if (player == this.player && player.life <= 0) {
-                        console.log("MATO A JUGADOR");
+                        // console.log("MATO A JUGADOR");
+                        random_[i] = 0;
                         killPlayer();
                     }
                 }
@@ -698,10 +725,11 @@ class onlineLevel extends Phaser.Scene {
         }
     }
 
+    // Actualización visual de la vida de los jugadores
     updateHearts() {
         if (Soy_J1) {
-            console.log("[updateHearts] VIVO Life : " + this.player.life + " // " + player1_life);
-            console.log("[updateHearts] TUERTO Life : " + this.player2.life + " // " + player2_life);
+            // console.log("[updateHearts] VIVO Life : " + this.player.life + " // " + player1_life);
+            // console.log("[updateHearts] TUERTO Life : " + this.player2.life + " // " + player2_life);
             if (player1_life == 4) {
                 this.cora5.destroy();
                 //console.log("cora5 destruido");
@@ -743,48 +771,6 @@ class onlineLevel extends Phaser.Scene {
                 this.cora6.destroy();
                 //console.log("cora6 destruido");
             }
-
-            // if (this.player.life == 4 && player1_life == 4) {
-            //     this.cora5.destroy();
-            //     //console.log("cora5 destruido");
-            // }
-            // if (this.player.life == 3 && player1_life == 3) {
-            //     this.cora4.destroy();
-            //     //console.log("cora4 destruido");
-            // }
-            // if (this.player.life == 2 && player1_life == 2) {
-            //     this.cora3.destroy();
-            //     //console.log("cora3 destruido");
-            // }
-            // if (this.player.life == 1 && player1_life == 1) {
-            //     this.cora2.destroy();
-            //     //console.log("cora2 destruido");
-            // }
-            // if (this.player.life == 0 && player1_life == 0) {
-            //     this.cora1.destroy();
-            //     //console.log("cora1 destruido");
-            // }
-
-            // if (this.player2.life == 4 && player2_life == 4) {
-            //     this.cora10.destroy();
-            //     //console.log("cora10 destruido");
-            // }
-            // if (this.player2.life == 3 && player2_life == 3) {
-            //     this.cora9.destroy();
-            //     //console.log("cora9 destruido");
-            // }
-            // if (this.player2.life == 2 && player2_life == 2) {
-            //     this.cora8.destroy();
-            //     //console.log("cora8 destruido");
-            // }
-            // if (this.player2.life == 1 && player2_life == 1) {
-            //     this.cora7.destroy();
-            //     //console.log("cora7 destruido");
-            // }
-            // if (this.player2.life == 0 && player2_life == 0) {
-            //     this.cora6.destroy();
-            //     //console.log("cora6 destruido");
-            // }
         } else {
             console.log("[updateHearts] VIVO Life : " + this.player2.life + " // " + player2_life);
             console.log("[updateHearts] TUERTO Life : " + this.player.life + " // " + player1_life);
@@ -830,50 +816,10 @@ class onlineLevel extends Phaser.Scene {
                 this.cora6.destroy();
                 //console.log("cora6 destruido");
             }
-            // if (this.player2.life == 4 && player2_life == 4) {
-            //     this.cora5.destroy();
-            //     //console.log("cora5 destruido");
-            // }
-            // if (this.player2.life == 3 && player2_life == 3) {
-            //     this.cora4.destroy();
-            //     //console.log("cora4 destruido");
-            // }
-            // if (this.player2.life == 2 && player2_life == 2) {
-            //     this.cora3.destroy();
-            //     //console.log("cora3 destruido");
-            // }
-            // if (this.player2.life == 1 && player2_life == 1) {
-            //     this.cora2.destroy();
-            //     //console.log("cora2 destruido");
-            // }
-            // if (this.player2.life == 0 && player2_life == 0) {
-            //     this.cora1.destroy();
-            //     //console.log("cora1 destruido");
-            // }
-
-            // if (this.player.life == 4 && player1_life == 4) {
-            //     this.cora10.destroy();
-            //     //console.log("cora10 destruido");
-            // }
-            // if (this.player.life == 3 && player1_life == 3) {
-            //     this.cora9.destroy();
-            //     //console.log("cora9 destruido");
-            // }
-            // if (this.player.life == 2 && player1_life == 2) {
-            //     this.cora8.destroy();
-            //     //console.log("cora8 destruido");
-            // }
-            // if (this.player.life == 1 && player1_life == 1) {
-            //     this.cora7.destroy();
-            //     //console.log("cora7 destruido");
-            // }
-            // if (this.player.life == 0 && player1_life == 0) {
-            //     this.cora6.destroy();
-            //     //console.log("cora6 destruido");
-            // }
         }
     }
 
+    // Actualización de la velocidad de los enemigos
     updateVelocities(velocitiesSize) {
         var newVelocities = this.velocities;
         for (var i = 0; i < 2; i++) {
@@ -892,7 +838,6 @@ class onlineLevel extends Phaser.Scene {
 
 
     /////////// UPDATE //////////
-
     update() {
 
         ////////////////////////////////// APARTADO ONLINE (WEBSOCKETS)
@@ -920,7 +865,7 @@ class onlineLevel extends Phaser.Scene {
             }
         }
 
-        console.log("LLAMADA UPDATE updateHearts()");
+        // console.log("LLAMADA UPDATE updateHearts()");
         this.updateHearts();
 
         if (WEB_goLeft && !WEB_goRight) { // Movimiento L la izquierda del otro jugador
@@ -1718,11 +1663,11 @@ class onlineLevel extends Phaser.Scene {
 
         // WS SYNC
         player1_global = this.player;
-        player1_life = this.player.life;
+        // player1_life = this.player.life;
         player1_turnedLeft = this.player.turnedLeft;
 
         player2_global = this.player2;
-        player2_life = this.player2.life;
+        // player2_life = this.player2.life;
         player2_turnedLeft = this.player2.turnedLeft;
 
         activeEnemies_global = this.activeEnemies;
@@ -1734,6 +1679,8 @@ class onlineLevel extends Phaser.Scene {
     // Envío una actualización de las posiciones de los dos jugadores
     checkSync = setInterval(this.makeSyncWSSendMessage, 200);
 
+    // Intervalo de 200ms en el que se envía entre clientes la posición de los jugadores para que en ambos sea exactamente la misma
+    // También se envía la de los enemigos (solo la envía el Cliente 1)
     makeSyncWSSendMessage() {
         if(StartGame == true){ 
 
