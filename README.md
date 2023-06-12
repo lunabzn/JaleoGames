@@ -17,11 +17,11 @@ Graffic-Jam es un *beat ‘em up* en 2D para 2 jugadores, inspirado en la cultur
 
 **TRELLO:** https://trello.com/invite/b/K4BjzJWR/ATTI24e95a6ef74904da1f7067f482233aa1EF865F47/jaleo-games
 
-# **Vídeo WebSockets y explicación del juego
+### **Vídeo WebSockets y explicación del juego**
 https://youtu.be/QGXroDiclX4
+<br>
 
-
-# **ENTREGA FASE 2:  
+## **ENTREGA FASE 2:  
 
 Interfaz de inicio del juego Graffic-Jam con un botón que al ser pulsado llevará al jugador a la selección del modo de juego.
 
@@ -86,13 +86,13 @@ A continuación se mostrará el diseño del juego enseñando los diferentes spri
 
 ![bg-image-menu1](https://user-images.githubusercontent.com/82967594/204659344-277ca8d0-5e9e-4ad1-93aa-984bafdfb8e6.jpg)
 
-# **ENTREGA FASE 3: API REST** 
+## **ENTREGA FASE 3: API REST** 
 
 ![Diagrama de clases](https://user-images.githubusercontent.com/84155484/208774497-47ce8022-431c-4cda-8874-79595c80f759.png)
 
 Se han creado 6 clases para controlar el servidor. Las clases *Message*, *Player* y *Lobby* son clases  *@Service* que permiten añadir elementos al propio servidor. La clase Lobby está compuesta de listas de Mensajes enviados y listas de Jugadores que se han conectado. Por otro lado, *File* es una clase de tipo *@Repository* que será la encargada de gestionar la persistencia de datos una vez se finalice la ejecución del proyecto en el servidor. *LobbyController* es una clase de tipo *@Controller*. En está clase se sitúan los métodos GET, POST y DELETE para crear, introducir y eliminar datos en el servidor. Es la clase contenedora de todo lo que tiene que ver con el REST. Finalmente la clase *SBApplication* es de tipo *@SpringBootApplication* y será la encargada de configurar automáticamente la aplicación en función de las dependencias agregadas en el proyecto.
 
-## **Instrucciones para la ejecución de la aplicación**
+### **Instrucciones para la ejecución de la aplicación**
 1. Descomprimir JeR_22-23_F3_GRUPO-A.zip
 2. Abrir la consola de comandos
 3. El jar se encuentra dentr de la carpeta Prac3_GrafficJam\target. Escribir en la consola de comandos: java -jar Direccion del Jar (incluyendo al final de la dirección el nombre del archivo .jar)*
@@ -101,7 +101,7 @@ Se han creado 6 clases para controlar el servidor. Las clases *Message*, *Player
 *(Se puede producir un error si java no está actualizado)
 
 
-# **ENTREGA FASE 4: WEBSOCKETS** 
+## **ENTREGA FASE 4: WEBSOCKETS** 
 
 ![Diagrama de Clases_2023-01-09_21-54-40](https://user-images.githubusercontent.com/115088130/211434133-943360b4-91df-4714-acbc-580e7bc71035.png)
 
@@ -122,9 +122,9 @@ De esta forma, las acciones de cada uno de los Jugadores se transmiten de forma 
 
 
 ___
-# **ENTREGA FASE 5: MEJORAS FINALES**
+## **ENTREGA FASE 5: MEJORAS FINALES**
 
-## **LOS FALLOS OBSERVADOS A MEJORAR EN ESTA ENTREGA SON:** 
+### **Fallos observados para mejorar en la Fase 5: <br>**
 
 - El fondo de las pantallas de pausa, gameOver y gameWin dan fallo cuando se carga una de las pantallas. El fondo del primer menu en aparecer es el que sale en los tres menus restantes.
 
@@ -143,8 +143,8 @@ Se detecta la colisión por el bounding box de cada uno por lo que solo se detec
 
 
 ___
-## **RESOLICIÓN DE ERRORES**
-<br>
+### **Resolución de errores: <br>**
+
 Los siguientes errores han sido solucionados:
 
 - Daño de los enemigos. (Actualmente los enemigos quitan los corazones indicados cuando te atacan, es decir, en el nivel 1 tan solo 1 corazón, en el nivel 2 dos corazones y en el nivel 3 tres corazones).
@@ -166,8 +166,9 @@ Los siguientes errores han sido solucionados:
 - Ya deja volver a la partida aunque pauses en los niveles 2 y 3.
 
 - Se ha arreglado el hecho de que los enemigos atacasen muy rápido.
-    
-## **NUEVAS IMPLEMENTACIONES**
+<br>
+
+### **Nuevas Implementaciones: <br>**
 
 - **Cuenta atrás antes de comenzar el nivel: <br>**
   Ahora, al comienzo de cada nivel se dará una cuenta atrás para que los jugadores se preparen para superar el nivel.
