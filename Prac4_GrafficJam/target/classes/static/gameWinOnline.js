@@ -11,10 +11,12 @@ class gameWinOnline extends Phaser.Scene{
     preload() {
         this.load.image('finalLO', 'resources/finalLO.jpg');
         this.load.image('inicioOnline', 'resources/menu.png');
+        this.load.audio("click", ["resources/click.mp3"]);
     }
     
     create(){
         this.background = this.add.image(0,0,'finalLO').setOrigin(0).setScale(1);
+        this.clickSound = this.sound.add("click");
         //gameWinOnlineActive = true;
 
         console.log("He cambiado WEB_gameWin a false");
@@ -23,6 +25,7 @@ class gameWinOnline extends Phaser.Scene{
         inicio.setInteractive();
 
         inicio.on('pointerdown',function(){
+            this.clickSound.play(); 
             gameWinOnlineActive = false;
             this.scene.start('selectorModeScene');
             this.scene.stop('Level1');

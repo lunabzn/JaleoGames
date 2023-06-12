@@ -11,15 +11,17 @@ class pauseOnlineScene extends Phaser.Scene{
         this.load.image('menupo', 'resources/FondopauseOnline.png');
         this.load.image('restart', 'resources/desconectar.png');
         this.load.image('resume', 'resources/reanudar.png');
-
+        this.load.audio("click", ["resources/click.mp3"]);
     }
     
     create(){
         this.background = this.add.image(0,0,"menupo").setOrigin(0).setScale(1);
+        this.clickSound = this.sound.add("click");
 
         let logout = this.add.image(600,450,"restart").setScale(0.1165);
         logout.setInteractive();
         logout.on('pointerdown',()=>{
+            this.clickSound.play(); 
             playerPauseLogOut(); // Avisamos al servidor de que salimos de la partida para que saque también al otro cliente
             
             this.scene.stop('gameWin');
@@ -37,6 +39,7 @@ class pauseOnlineScene extends Phaser.Scene{
         let resume = this.add.image(200,450,'resume').setScale(0.5);
         resume.setInteractive();
         resume.on('pointerdown',function(){
+            this.clickSound.play(); 
             resumeGame(); // Avisamos al servidor para que reanude también la partida del otro cliente
             this.scene.stop('gameWin');
             this.scene.stop('gameOver');        
