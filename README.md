@@ -1,5 +1,5 @@
 # Graffic Jam
-**Jaleo games - Grupo A** </br>
+## **Jaleo games - Grupo A** </br>
 
 **Temática:** 
 Graffic-Jam es un *beat ‘em up* en 2D para 2 jugadores, inspirado en la cultura del graffiti. El juego cuenta con varios niveles. Cada uno de ellos es un escenario distinto relacionado con el mundo del graffiti, como por ejemplo las vías de un tren o las calles de una ciudad. Los jugadores tienen como objetivo llegar al final de dicho nivel para poder pintar una pieza de graffiti, y en el camino se encontrarán con diferentes oleadas de enemigos a los que tendrán que derrotar, como policías, cuerpos de seguridad u otras bandas. </br>
@@ -15,17 +15,13 @@ Graffic-Jam es un *beat ‘em up* en 2D para 2 jugadores, inspirado en la cultur
 | FABIO ELÍAS RENGIFO GARCÍA | fe.rengifo.2020@alumnos.urjc.e      |    faviolado |
 | LUCAS RUBIO LEZANA | l.rubiol.2020@alumnos.urjc.es      |    LucasWiggie |
 
-
-
-LUNA BOUZÓN RODRÍGUEZ *l.bouzon.2020@alumnos.urjc.es* **GITHUB:** *lunsbzn*</br>
-YERAY DA SILVA DE LAS HERAS *y.da.2020@alumnos.urjc.es* **GITHUB:** *yerayds*</br>
-RAFAEL GONZÁLEZ DE CANALES LORA *r.gonzalezl.2020@alumnos.urjc.es* **GITHUB:** *rafagcl01*</br>
-MARTA RABOSO GÓMEZ *m.raboso.2019@alumnos.urjc.es* **GITHUB:** *iamboredasf*</br>
-FABIO ELÍAS RENGIFO GARCÍA *fe.rengifo.2020@alumnos.urjc.es* **GITHUB:** *faviolado*</br>
-LUCAS RUBIO LEZANA *l.rubiol.2020@alumnos.urjc.es*  **GITHUB:** *LucasWiggie*</br>
-
 **TRELLO:** https://trello.com/invite/b/K4BjzJWR/ATTI24e95a6ef74904da1f7067f482233aa1EF865F47/jaleo-games
-ºº
+
+# **Vídeo WebSockets y explicación del juego
+https://youtu.be/QGXroDiclX4
+
+
+# **ENTREGA FASE 2:  
 
 Interfaz de inicio del juego Graffic-Jam con un botón que al ser pulsado llevará al jugador a la selección del modo de juego.
 
@@ -80,8 +76,6 @@ Diagrama de interfaz del final de partida en caso de Derrota con la opción de i
 
 ![image](https://user-images.githubusercontent.com/82967594/204658640-d4a37212-468a-459c-a053-1bd8115c9f65.png)
 
-# **Diagrama de las clases utilizadas para la implementación del Lobby:**
-
 A continuación se mostrará el diseño del juego enseñando los diferentes sprites:
 
 ![spritesapolis](https://user-images.githubusercontent.com/82967594/204659016-bad415a9-0bf2-4aec-b0ff-414f8d16a7d3.png)
@@ -98,7 +92,7 @@ A continuación se mostrará el diseño del juego enseñando los diferentes spri
 
 Se han creado 6 clases para controlar el servidor. Las clases *Message*, *Player* y *Lobby* son clases  *@Service* que permiten añadir elementos al propio servidor. La clase Lobby está compuesta de listas de Mensajes enviados y listas de Jugadores que se han conectado. Por otro lado, *File* es una clase de tipo *@Repository* que será la encargada de gestionar la persistencia de datos una vez se finalice la ejecución del proyecto en el servidor. *LobbyController* es una clase de tipo *@Controller*. En está clase se sitúan los métodos GET, POST y DELETE para crear, introducir y eliminar datos en el servidor. Es la clase contenedora de todo lo que tiene que ver con el REST. Finalmente la clase *SBApplication* es de tipo *@SpringBootApplication* y será la encargada de configurar automáticamente la aplicación en función de las dependencias agregadas en el proyecto.
 
-# **INSTRUCCIONES PRECISAS PARA EJECUTAR LA APLICACIÓN**
+## **Instrucciones para la ejecución de la aplicación**
 1. Descomprimir JeR_22-23_F3_GRUPO-A.zip
 2. Abrir la consola de comandos
 3. El jar se encuentra dentr de la carpeta Prac3_GrafficJam\target. Escribir en la consola de comandos: java -jar Direccion del Jar (incluyendo al final de la dirección el nombre del archivo .jar)*
@@ -130,7 +124,7 @@ De esta forma, las acciones de cada uno de los Jugadores se transmiten de forma 
 ___
 # **ENTREGA FASE 5: MEJORAS FINALES**
 
-**LOS FALLOS OBSERVADOS A MEJORAR EN ESTA ENTREGA SON:** 
+## **LOS FALLOS OBSERVADOS A MEJORAR EN ESTA ENTREGA SON:** 
 
 - El fondo de las pantallas de pausa, gameOver y gameWin dan fallo cuando se carga una de las pantallas. El fondo del primer menu en aparecer es el que sale en los tres menus restantes.
 
@@ -149,7 +143,8 @@ Se detecta la colisión por el bounding box de cada uno por lo que solo se detec
 
 
 ___
-**PRODUCTO FINAL**
+## **RESOLICIÓN DE ERRORES**
+<br>
 Los siguientes errores han sido solucionados:
 
 - Daño de los enemigos. (Actualmente los enemigos quitan los corazones indicados cuando te atacan, es decir, en el nivel 1 tan solo 1 corazón, en el nivel 2 dos corazones y en el nivel 3 tres corazones).
@@ -172,46 +167,55 @@ Los siguientes errores han sido solucionados:
 
 - Se ha arreglado el hecho de que los enemigos atacasen muy rápido.
     
-Nuevas implementaciones:
+## **NUEVAS IMPLEMENTACIONES**
 
-- Cuenta atrás antes de comenzar el nivel: <br>
+- **Cuenta atrás antes de comenzar el nivel: <br>**
   Ahora, al comienzo de cada nivel se dará una cuenta atrás para que los jugadores se preparen para superar el nivel.
 
 ![Countdown](https://user-images.githubusercontent.com/115088130/211434448-cb918ceb-89ae-4aab-9b27-6ec448eb4374.jpg)
 
-- Nuevos niveles: <br>
+- **Nuevos niveles: <br>**
   Se han implementado dos nuevos niveles con diferente temática, en el segundo de ellos nuestros personajes se encontrarán en una carretera, mientras que en el tercer nivel los personajes estarán en una estación de trenes. <br>
   Además, para poder acceder al nivel 2, los jugadores necesitarán superar el nivel 1 y, en caso de querer acceder al nivel 3, los jugadores tendrán que completar el nivel 2.
 
+*Nivel 2* <br>
 ![Nivel 2](https://user-images.githubusercontent.com/115088130/211435235-aefc1550-0238-4bb5-a6aa-bc94476b6d87.png)
+
+*Nivel 3* <br>
 ![fondollvl3(1)](https://user-images.githubusercontent.com/115088130/211435315-4bc50234-a48e-4d5c-9afb-6a84bf6bd365.jpg)
 
-- Nuevos fondos de victoria: <br>
+- **Nuevos fondos de victoria: <br>**
   Tanto el nivel 2 como el nivel 3 tendrán su propio fondo de victoria.
   
+*Nivel 2* <br>
 ![image](https://github.com/lunsbzn/JaleoGames/assets/82967594/e519764b-e023-4fd8-8227-e9360f479bd1)
+
+*Nivel 3* <br>
 ![image](https://github.com/lunsbzn/JaleoGames/assets/82967594/f2380c53-cf31-4d9d-89fa-45c1a3119d2b)
 
-- Nuevos enemigos: <br>
-  Además de implementar nuevos niveles se han desarrollado nuevos policias para los nuevos niveles.
-  Asimismo, en el juego, los policias del nivel 2 quitarán un total de 2 corazones por golpe, y, los policias del nivel 3 quitarán 3 corazones por ataque realizado.
+- **Nuevos enemigos: <br>**
+  Además de implementar nuevos niveles se han desarrollado nuevos policias para los nuevos niveles. Asimismo, en el juego, los policias del nivel 2 quitarán un total de 2 corazones por golpe, y, los policias del nivel 3 quitarán 3 corazones por ataque realizado.
 
 ![imagen](https://user-images.githubusercontent.com/115088130/211435521-b3746afe-bae2-4ed1-8a5f-5a03aae95cc3.png)
 ![imagen](https://user-images.githubusercontent.com/115088130/211435529-703f1c51-6f86-4a8e-a9fc-98c20b0d4a40.png)
 
-- Nuevo fondo de Pausa: <br>
-  Se ha actualizado el aspecto visual del antiguo fondo de pausa. Ahora, además contiene los controles de los personajes.
+- **Nuevo fondo de Pausa: <br>**
+  Se ha actualizado el aspecto visual del antiguo fondo de pausa. Ahora, además contiene los controles de los personajes para que los jugadores puedan consultarlos en cualquier momento.
   
 ![image](https://github.com/lunsbzn/JaleoGames/assets/82967594/24f0d8a5-0346-4208-96a8-175e848e3ab9)
 
-- Nuevo fondo de Derrota: <br>
+- **Nuevo fondo de Derrota: <br>**
   Se ha actualizado el aspecto visual del fondo de derrota ya que el anterior nos parecía muy simple.
   
 ![image](https://github.com/lunsbzn/JaleoGames/assets/82967594/e36bee63-7fe0-4b2b-b8a1-cd50fb5d83e7)
 
 
 
-- Juego Online.
+- Juego Online.k
+
+
+
+
     
     
 
