@@ -21,7 +21,7 @@ Graffic-Jam es un *beat ‘em up* en 2D para 2 jugadores, inspirado en la cultur
 https://youtu.be/QGXroDiclX4
 <br>
 
-## **ENTREGA FASE 2:  
+## **ENTREGA FASE 2:<br>**
 
 Interfaz de inicio del juego Graffic-Jam con un botón que al ser pulsado llevará al jugador a la selección del modo de juego.
 
