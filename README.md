@@ -26,7 +26,6 @@ https://trello.com/invite/b/K4BjzJWR/ATTI24e95a6ef74904da1f7067f482233aa1EF865F4
 https://youtu.be/QGXroDiclX4
 <br>
 <br>
-
 ___
 
 ## **ENTREGA FASE 2:<br>**
@@ -94,6 +93,7 @@ A continuación se mostrará el diseño del juego enseñando los diferentes spri
 
 ![bg-image-menu1](https://user-images.githubusercontent.com/82967594/204659344-277ca8d0-5e9e-4ad1-93aa-984bafdfb8e6.jpg)
 <br>
+___
 
 ## **ENTREGA FASE 3: API REST** 
 
