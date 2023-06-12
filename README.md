@@ -17,8 +17,9 @@ Graffic-Jam es un *beat ‘em up* en 2D para 2 jugadores, inspirado en la cultur
 
 **TRELLO:** https://trello.com/invite/b/K4BjzJWR/ATTI24e95a6ef74904da1f7067f482233aa1EF865F47/jaleo-games
 
-### **Vídeo WebSockets y explicación del juego**
+**Vídeo WebSockets y explicación del juego**
 https://youtu.be/QGXroDiclX4
+<br>
 <br>
 
 ## **ENTREGA FASE 2:<br>**
