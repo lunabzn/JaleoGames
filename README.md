@@ -108,7 +108,7 @@ Se han creado 6 clases para controlar el servidor. Las clases *Message*, *Player
 
 ![Diagrama de Clases_2023-01-09_21-54-40](https://user-images.githubusercontent.com/115088130/211434133-943360b4-91df-4714-acbc-580e7bc71035.png)
 
-Para el nivel online se han creado los archivos onlineLevel.js junto a pauseOnlineScene.js y gameWinOnline.js.
+Para el nivel online se han creado los archivos onlineLevel.js junto a pauseOnlineScene.js, gameWinOnline.js y gameOverOnline.js
 
 Para la inclusión de Websockets se ha creado la clase App.java, que se encarga de configurar el apartado de Websockets, además de Handler.java y connection.js. Cuando se quiere notificar al servidor de un cambio (para que este avise a su vez al otro jugador o para que actualice algún valor), connection.js se encargada de enviar un mensaje al servidor a través de la sesión del jugador. Este mensaje contiene un atributo llamado "idFunción" que al llegar al servidor, handler utiliza para seleccionar un case del switch que tiene. Cada case determina el tipo de acciones que se deberán llevar a cabo en consecuencia al aviso. Una vez se ha procesado el mensaje, se reenvía otro al cliente opuesto. Este lo recibe en connection.js, que utiliza la ID_Funcion del mensaje enviado desde el servidor para llevar a cabo las acciones necesarias y modificar lo que sea conveniente para que se transmita de forma correcta la información entre jugadores.
 
@@ -124,7 +124,16 @@ De esta forma, las acciones de cada uno de los Jugadores se transmiten de forma 
 ![websockets explicacion](https://user-images.githubusercontent.com/81293638/211439455-b2dbc21b-f204-43ec-a803-4c3f7633bf70.png)
 
 <br>
+
+Sin embargo, esta implementación presentó ciertos errores en la entrega ordinaria, por lo que se han implementado nuevos WebSockets para solucionarlos:
+
+- syncWS.js, sync2WS.js: cada 200ms, envían un mensaje mediante WebSockets al servidor con las coordenadas del personaje correspondiente al jugador. De esta forma, las posiciones de Vivo y Tuerto son siempre exactamente las mismas en ambos clientes. 
+- syncEnemiesWS.js: cada 200ms, el Jugador 1 envía un mensaje mediante WebSockets al servidor con las coordenadas de todos cada enemigo, de esta forma nos aseguramos que ambos clientes tienen los enemigos en la misma posición y no hay diferencias. 
+- syncEnemyAttackWS.js: sincroniza el ataque de los enemigos para que en ambos clientes ataquen al mismo tiempo, provocando que se quite la vida en ambos en caso de que un personaje reciba daño.
+
+
 ___
+
 ## **ENTREGA FASE 5: MEJORAS FINALES**
 
 ### **Fallos observados para mejorar en la Fase 5: <br>**
@@ -203,6 +212,11 @@ Los siguientes errores han sido solucionados:
 ![imagen](https://user-images.githubusercontent.com/115088130/211435521-b3746afe-bae2-4ed1-8a5f-5a03aae95cc3.png)
 ![imagen](https://user-images.githubusercontent.com/115088130/211435529-703f1c51-6f86-4a8e-a9fc-98c20b0d4a40.png)
 
+- **Nuevo logo e imagen principal:<br>**
+  Se ha refinado y rediseñado el logo del juego:
+  
+![image](https://github.com/lunsbzn/JaleoGames/assets/82967594/24f0d8a5-0346-4208-96a8-175e848e3ab9)
+
 - **Nuevo fondo de Pausa: <br>**
   Se ha actualizado el aspecto visual del antiguo fondo de pausa. Ahora, además contiene los controles de los personajes para que los jugadores puedan consultarlos en cualquier momento.
   
@@ -213,9 +227,6 @@ Los siguientes errores han sido solucionados:
   
 ![image](https://github.com/lunsbzn/JaleoGames/assets/82967594/e36bee63-7fe0-4b2b-b8a1-cd50fb5d83e7)
 
-
-
-- Juego Online.k
 
 
 
