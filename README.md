@@ -15,7 +15,8 @@ Graffic-Jam es un *beat ‘em up* en 2D para 2 jugadores, inspirado en la cultur
 | FABIO ELÍAS RENGIFO GARCÍA | fe.rengifo.2020@alumnos.urjc.e      |    faviolado |
 | LUCAS RUBIO LEZANA | l.rubiol.2020@alumnos.urjc.es      |    LucasWiggie |
 <br>
-**TRELLO:** https://trello.com/invite/b/K4BjzJWR/ATTI24e95a6ef74904da1f7067f482233aa1EF865F47/jaleo-games
+**TRELLO: <br>** 
+https://trello.com/invite/b/K4BjzJWR/ATTI24e95a6ef74904da1f7067f482233aa1EF865F47/jaleo-games
 <br>
 **Vídeo WebSockets y explicación del juego: <br>**
 https://youtu.be/QGXroDiclX4
@@ -107,7 +108,6 @@ Se han creado 6 clases para controlar el servidor. Las clases *Message*, *Player
 ## **ENTREGA FASE 4: WEBSOCKETS** 
 ![Diagrama clases](https://github.com/lunsbzn/JaleoGames/assets/81293638/1864073e-c9e6-4e63-9b52-d70254107bd0)
 <br>
-![Diagrama de Clases_2023-01-09_21-54-40](https://user-images.githubusercontent.com/115088130/211434133-943360b4-91df-4714-acbc-580e7bc71035.png)
 
 Para el nivel online se han creado los archivos onlineLevel.js junto a pauseOnlineScene.js, gameWinOnline.js y gameOverOnline.js
 
