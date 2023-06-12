@@ -10,7 +10,7 @@ class pauseScene extends Phaser.Scene{
 
     preload() {
         this.load.image('menup', 'resources/Fondopause.png');
-        this.load.image('restart', 'resources/volverM.png');
+        this.load.image('volver', 'resources/botonvolver.png');
         this.load.image('resume', 'resources/reanudar.png');
 
     }
@@ -18,9 +18,9 @@ class pauseScene extends Phaser.Scene{
     create(){
         this.add.image(0,0,'menup').setOrigin(0).setScale(1);
 
-        var restart = this.add.image(600,450,"restart").setScale(0.1165);
-        restart.setInteractive();
-        restart.on('pointerdown', function(){       
+        var volver = this.add.image(600,450,"volver").setScale(0.1165);
+        volver.setInteractive();
+        volver.on('pointerdown', function(){       
             this.scene.stop('gameWin');
             this.scene.stop('gameOver');
             this.scene.stop('Level1');

@@ -1425,7 +1425,11 @@ class onlineLevel extends Phaser.Scene {
                     this.player.setVelocityX(0);
                     this.player.setVelocityY(0);
                     if (!this.player.attackLeft) {
-                        this.spraySound.play();
+                        if(Soy_J1){
+                            this.spraySound.play();
+                        } else {
+                            this.paintSound.play();
+                        }
                     }
                     this.player.attackLeft = true;
                     if (Soy_J1) {
@@ -1437,7 +1441,11 @@ class onlineLevel extends Phaser.Scene {
                     this.player.setVelocityX(0);
                     this.player.setVelocityY(0);
                     if (!this.player.attackRight) {
-                        this.spraySound.play();
+                        if(Soy_J1){
+                            this.spraySound.play();
+                        } else {
+                            this.paintSound.play();
+                        }
                     }
                     this.player.attackRight = true;
                     if (Soy_J1) {

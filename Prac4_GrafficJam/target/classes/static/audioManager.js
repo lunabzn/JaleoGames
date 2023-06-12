@@ -100,6 +100,13 @@ class audioManager extends Phaser.Scene {
             this.pauseMusic.setMute(true);
             this.level1Music.setMute(false);
 
+        } else if (this.scene.isActive('onlineLevel')) {
+            this.mainMusic.resume();
+            this.pauseMusic.resume();
+            this.level1Music.resume();
+            this.mainMusic.setMute(true);
+            this.pauseMusic.setMute(true);
+            this.level1Music.setMute(false);
         } else {
             this.mainMusic.pause();
             this.pauseMusic.pause();
