@@ -6,7 +6,7 @@
 
 	<groupId>es.urjc.code.juegosenred</groupId>
 	<artifactId>items-backend-and-frontend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>GrafficJam</version>
 	<packaging>jar</packaging>
 
 	<name>rest_ejer1_con_ui</name>
