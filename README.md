@@ -17,7 +17,7 @@ Graffic-Jam es un *beat ‘em up* en 2D para 2 jugadores, inspirado en la cultur
 
 **TRELLO:** https://trello.com/invite/b/K4BjzJWR/ATTI24e95a6ef74904da1f7067f482233aa1EF865F47/jaleo-games
 
-**Vídeo WebSockets y explicación del juego**
+**Vídeo WebSockets y explicación del juego: <br>**
 https://youtu.be/QGXroDiclX4
 <br>
 <br>
@@ -86,6 +86,7 @@ A continuación se mostrará el diseño del juego enseñando los diferentes spri
 ![vivoLife](https://user-images.githubusercontent.com/82967594/204659151-f69eb419-8649-491a-a970-10bfe0a472ef.png)
 
 ![bg-image-menu1](https://user-images.githubusercontent.com/82967594/204659344-277ca8d0-5e9e-4ad1-93aa-984bafdfb8e6.jpg)
+<br>
 
 ## **ENTREGA FASE 3: API REST** 
 
@@ -100,6 +101,7 @@ Se han creado 6 clases para controlar el servidor. Las clases *Message*, *Player
 4. Abrir en un navegador localhost:8080
 
 *(Se puede producir un error si java no está actualizado)
+<br>
 
 
 ## **ENTREGA FASE 4: WEBSOCKETS** 
@@ -121,7 +123,7 @@ De esta forma, las acciones de cada uno de los Jugadores se transmiten de forma 
 
 ![websockets explicacion](https://user-images.githubusercontent.com/81293638/211439455-b2dbc21b-f204-43ec-a803-4c3f7633bf70.png)
 
-
+<br>
 ___
 ## **ENTREGA FASE 5: MEJORAS FINALES**
 
@@ -141,9 +143,8 @@ Se detecta la colisión por el bounding box de cada uno por lo que solo se detec
 - Cuando pausas en los niveles 2 y 3 no te deja volver a la partida.
 
 - Los enemigos atacan muy rápido, por lo que, derrepente el jugador podría perder muchas vidas si tiene varios enemigos cerca.
+<br>
 
-
-___
 ### **Resolución de errores: <br>**
 
 Los siguientes errores han sido solucionados:
@@ -185,6 +186,7 @@ Los siguientes errores han sido solucionados:
 
 *Nivel 3* <br>
 ![fondollvl3(1)](https://user-images.githubusercontent.com/115088130/211435315-4bc50234-a48e-4d5c-9afb-6a84bf6bd365.jpg)
+<br>
 
 - **Nuevos fondos de victoria: <br>**
   Tanto el nivel 2 como el nivel 3 tendrán su propio fondo de victoria.
