@@ -125,13 +125,20 @@ De esta forma, las acciones de cada uno de los Jugadores se transmiten de forma 
 
 <br>
 
-Sin embargo, esta implementación presentó ciertos errores en la entrega ordinaria, por lo que se han implementado nuevos WebSockets para solucionarlos:
+Sin embargo, esta implementación presentó ciertos errores en la entrega ordinaria, por lo que se han implementado nuevos WebSockets (con sus respectivos archivos java para la gestión en el servidor) para solucionarlos:
 
-- syncWS.js, sync2WS.js: cada 200ms, envían un mensaje mediante WebSockets al servidor con las coordenadas del personaje correspondiente al jugador. De esta forma, las posiciones de Vivo y Tuerto son siempre exactamente las mismas en ambos clientes. 
-- syncEnemiesWS.js: cada 200ms, el Jugador 1 envía un mensaje mediante WebSockets al servidor con las coordenadas de todos cada enemigo, de esta forma nos aseguramos que ambos clientes tienen los enemigos en la misma posición y no hay diferencias. 
-- syncEnemyAttackWS.js: sincroniza el ataque de los enemigos para que en ambos clientes ataquen al mismo tiempo, provocando que se quite la vida en ambos en caso de que un personaje reciba daño.
+- **syncWS.js, sync2WS.js:** cada 200ms, envían un mensaje mediante WebSockets al servidor con las coordenadas del personaje correspondiente al jugador. De esta forma, las posiciones de Vivo y Tuerto son siempre exactamente las mismas en ambos clientes. <br>
 
+![Explicación Sync](https://github.com/lunsbzn/JaleoGames/assets/81293638/940fa8a1-0618-4d53-a5eb-cf63cf05b69d)
 
+- **syncEnemiesWS.js:** cada 200ms, el Jugador 1 envía un mensaje mediante WebSockets al servidor con las coordenadas de todos cada enemigo, de esta forma nos aseguramos que ambos clientes tienen los enemigos en la misma posición y no hay diferencias. <br>
+
+![Explicación EnemySync](https://github.com/lunsbzn/JaleoGames/assets/81293638/26943343-90f8-40bd-8297-bfa0f2cbe366)
+
+- **syncEnemyAttackWS.js:** sincroniza el ataque de los enemigos para que en ambos clientes ataquen al mismo tiempo, provocando que se quite la vida en ambos en caso de que un personaje reciba daño. <br>
+
+![Explicación EnemyAttackSync](https://github.com/lunsbzn/JaleoGames/assets/81293638/45c409d5-2a12-4c21-8c1d-c7501f0b3723)
+<br>
 ___
 
 ## **ENTREGA FASE 5: MEJORAS FINALES**
